@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0a0e14">
-<title>متولي الموحد v20.0</title>
+<title>متولي الموحد v21.0</title>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script src="https://smtpjs.com/v3/smtp.js"></script>
 <style>
@@ -23,21 +23,30 @@ p { color:var(--muted); margin-bottom:15px; }
 .btn-danger { background:var(--err); color:#fff; }
 .input-field { width:100%; background:#000; border:1px solid var(--border); color:var(--text); padding:14px; font-size:16px; border-radius:8px; margin-bottom:12px; outline:none; text-align:right; }
 .input-field:focus { border-color:var(--accent); }
+.input-pin { text-align:center; letter-spacing:6px; font-size:24px; font-weight:bold; color:var(--gold); }
 .hw-panel { display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin-bottom:16px; }
 .hw-item { background:var(--card2); padding:10px; border-radius:8px; text-align:center; font-size:12px; }
 .hw-item b { display:block; font-size:14px; color:var(--accent); margin-top:4px; }
 .cmd-btn { display:block; width:100%; padding:14px; margin-bottom:8px; background:var(--card2); color:var(--text); border:1px solid var(--border); border-radius:10px; text-align:center; text-decoration:none; font-weight:bold; font-size:14px; }
 .cmd-btn:active { background:var(--border); }
+.formula-box { background:#000; border:1px solid var(--border); padding:10px; border-radius:8px; margin-bottom:15px; font-family:monospace; font-size:14px; color:var(--cyan); }
 </style>
 </head>
 <body>
 
-<!-- الشاشة الأولى: دخول مباشر -->
+<!-- الشاشة الأولى: القفل المتغير -->
 <div class="screen active" id="lockScreen">
   <div class="card" style="margin-top: 40px;">
-    <h1>بوابة السيادة</h1>
-    <p>مرحباً بك يا مدير. النظام جاهز.</p>
-    <button class="btn btn-primary" onclick="enterSystem()" style="font-size:18px; padding:20px;">🚀 دخول النظام السيادي</button>
+    <h1>النظام المحمي</h1>
+    <p>كلمة المرور تتغير كل يوم!</p>
+    
+    <!-- عرض المعادلة للمدير -->
+    <div class="formula-box" id="equationDisplay">جاري حساب المعادلة...</div>
+    
+    <input type="password" id="lockPin" class="input-field input-pin" placeholder="••••" maxlength="6" inputmode="numeric">
+    <button class="btn btn-primary" onclick="tryUnlock()">دخول سيادي</button>
+    <p style="font-size:10px; margin-top:10px;">(مفتاح الطوارئ الثابت هو 7777)</p>
+    <p id="lockMsg" style="color:var(--err); font-weight:bold;"></p>
   </div>
 </div>
 
@@ -52,9 +61,9 @@ p { color:var(--muted); margin-bottom:15px; }
       <div class="hw-item">الذاكرة <b id="hw-ram">-</b></div>
     </div>
 
-    <a href="#" class="cmd-btn" onclick="showScreen('contactScreen')">✉️ مراسلة المدير (إيميل)</a>
+    <a href="#" class="cmd-btn" onclick="showScreen('contactScreen')">✉️ مراسلة المدير</a>
     <a href="#" class="cmd-btn" onclick="showScreen('ocrScreen')">👁️ الماسح الضوئي (OCR)</a>
-    <a href="#" class="cmd-btn" onclick="showScreen('adminScreen')">⚙️ إعدادات المدير (الـ 16 حرفاً)</a>
+    <a href="#" class="cmd-btn" onclick="showScreen('adminScreen')">⚙️ إعدادات المدير (السر والتشفير)</a>
     
     <button class="btn btn-danger" onclick="lockSystem()">قفل النظام</button>
   </div>
@@ -72,13 +81,18 @@ p { color:var(--muted); margin-bottom:15px; }
   </div>
 </div>
 
-<!-- الشاشة الرابعة: الإعدادات -->
+<!-- الشاشة الرابعة: الإعدادات المشفرة -->
 <div class="screen" id="adminScreen">
   <div class="card">
     <h2>إعدادات المدير</h2>
-    <p style="font-size:12px;">ضع كلمة مرور التطبيق (16 حرفاً) التي أخذتها من Google:</p>
-    <input type="password" id="adminMailPass" class="input-field" placeholder="الـ 16 حرفاً هنا">
-    <button class="btn btn-primary" onclick="saveAdminSettings()">حفظ وتشفير</button>
+    
+    <label style="font-size:12px; color:var(--gold); text-align:right; display:block; margin-bottom:5px;">1. السر المتغير (رقم من 1 إلى 999):</label>
+    <input type="number" id="adminSeed" class="input-field" placeholder="مثال: 13">
+    
+    <label style="font-size:12px; color:var(--gold); text-align:right; display:block; margin-bottom:5px;">2. كلمة مرور التطبيق (16 حرفاً):</label>
+    <input type="password" id="adminMailPass" class="input-field" placeholder="الـ 16 حرفاً">
+    
+    <button class="btn btn-primary" onclick="saveAdminSettings()">🔒 حفظ وتشفير البيانات</button>
     <button class="btn" onclick="showScreen('mainScreen')">رجوع</button>
   </div>
 </div>
@@ -96,52 +110,153 @@ p { color:var(--muted); margin-bottom:15px; }
 </div>
 
 <script>
-// ═══ 1. التنقل بين الشاشات ═══
+// ═══ 1. نظام التشفير (AES-256) ═══
+const ENCRYPTION_KEY_PASSPHRASE = "SOVEREIGN_MASTER_KEY_2026"; // مفتاح التشفير الثابت
+
+async function getCryptoKey() {
+  const enc = new TextEncoder();
+  const keyMaterial = await crypto.subtle.importKey("raw", enc.encode(ENCRYPTION_KEY_PASSPHRASE), { name: "PBKDF2" }, false, ["deriveBits", "deriveKey"]);
+  return crypto.subtle.deriveKey({ name: "PBKDF2", salt: enc.encode("SALT_2026"), iterations: 100000, hash: "SHA-256" }, keyMaterial, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
+}
+
+async function encryptData(data) {
+  const key = await getCryptoKey();
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const encrypted = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, new TextEncoder().encode(JSON.stringify(data)));
+  const combined = new Uint8Array(iv.length + encrypted.byteLength);
+  combined.set(iv); combined.set(new Uint8Array(encrypted), iv.length);
+  return btoa(String.fromCharCode(...combined));
+}
+
+async function decryptData(encryptedStr) {
+  try {
+    const str = atob(encryptedStr);
+    const combined = new Uint8Array(str.split('').map(c => c.charCodeAt(0)));
+    const iv = combined.slice(0, 12); const data = combined.slice(12);
+    const key = await getCryptoKey();
+    const decrypted = await crypto.subtle.decrypt({ name: "AES-GCM", iv }, key, data);
+    return JSON.parse(new TextDecoder().decode(decrypted));
+  } catch (e) { return null; }
+}
+
+// ═══ 2. الإعدادات الافتراضية ═══
+let currentSettings = {
+  seed: 13, // السر المتغير الافتراضي
+  mailPass: ""
+};
+
+// ═══ 3. المعادلة المتغيرة ═══
+function getExpectedPin() {
+  const d = new Date();
+  const day = d.getDate();
+  const month = d.getMonth() + 1;
+  // المعادلة: (السر × اليوم) + الشهر
+  const result = (currentSettings.seed * day) + month;
+  return String(result).padStart(4, '0').slice(-4); // آخر 4 أرقام
+}
+
+function updateEquationDisplay() {
+  const d = new Date();
+  const day = d.getDate();
+  const month = d.getMonth() + 1;
+  const el = document.getElementById('equationDisplay');
+  if(el) {
+    el.innerHTML = `اليوم: <b>${day}</b> | الشهر: <b>${month}</b><br>
+                    المعادلة: (${currentSettings.seed} × ${day}) + ${month}`;
+  }
+}
+
+// ═══ 4. الدخول ═══
+async function tryUnlock() {
+  const enteredPin = document.getElementById('lockPin').value.trim();
+  const expectedPin = getExpectedPin();
+  const masterPin = "7777"; // مفتاح الطوارئ الثابت
+
+  if (enteredPin === expectedPin || enteredPin === masterPin) {
+    document.getElementById('lockMsg').textContent = "";
+    showScreen('mainScreen');
+  } else {
+    document.getElementById('lockMsg').textContent = "❌ رمز خاطئ. راجع المعادلة أو استخدم 7777.";
+  }
+}
+
+function lockSystem() {
+  document.getElementById('lockPin').value = '';
+  document.getElementById('lockMsg').textContent = "";
+  updateEquationDisplay();
+  showScreen('lockScreen');
+}
+
+// ═══ 5. التنقل والعتاد ═══
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   if (id === 'mainScreen') updateHardware();
+  if (id === 'adminScreen') loadSettingsUI();
 }
 
-function enterSystem() {
-  showScreen('mainScreen');
-}
-
-function lockSystem() {
-  showScreen('lockScreen');
-}
-
-// ═══ 2. العتاد الحي ═══
 async function updateHardware() {
   document.getElementById('hw-cores').textContent = navigator.hardwareConcurrency || '?';
   if (navigator.getBattery) {
     try {
       const bat = await navigator.getBattery();
       document.getElementById('hw-bat').textContent = Math.round(bat.level * 100) + '%';
-    } catch(e) { document.getElementById('hw-bat').textContent = 'N/A'; }
+    } catch(e) {}
   }
   document.getElementById('hw-net').textContent = navigator.onLine ? 'متصل' : 'مقطوع';
   if (navigator.deviceMemory) document.getElementById('hw-ram').textContent = navigator.deviceMemory + 'GB';
 }
 
-// ═══ 3. الإعدادات (حفظ الـ 16 حرفاً) ═══
-function saveAdminSettings() {
-  const pass = document.getElementById('adminMailPass').value.trim();
-  if(!pass) { alert('الرجاء لصق الـ 16 حرفاً!'); return; }
-  localStorage.setItem('MATWALI_PASS', pass);
-  alert('✅ تم حفظ كلمة المرور بنجاح! يمكنك الآن إرسال الإيميلات.');
+// ═══ 6. حفظ الإعدادات المشفرة ═══
+async function saveAdminSettings() {
+  const seed = parseInt(document.getElementById('adminSeed').value);
+  const mailPass = document.getElementById('adminMailPass').value.trim();
+  
+  if (!seed || seed < 1 || seed > 999) {
+    alert('الرجاء إدخال سر صحيح بين 1 و 999');
+    return;
+  }
+  if (!mailPass) {
+    alert('الرجاء إدخال كلمة مرور التطبيق (16 حرفاً)');
+    return;
+  }
+
+  currentSettings.seed = seed;
+  currentSettings.mailPass = mailPass;
+
+  // حفظ مشفر في المتصفح
+  const encrypted = await encryptData(currentSettings);
+  localStorage.setItem('MATWALI_ENCRYPTED_SETTINGS', encrypted);
+  
+  alert('✅ تم التشفير بنجاح! المعادلة الجديدة ستظهر في شاشة القفل.');
+  updateEquationDisplay();
   showScreen('mainScreen');
 }
 
-// ═══ 4. إرسال الإيميل ═══
+async function loadSettingsUI() {
+  document.getElementById('adminSeed').value = currentSettings.seed || 13;
+  document.getElementById('adminMailPass').value = currentSettings.mailPass || "";
+}
+
+// ═══ 7. التحميل الأولي ═══
+window.onload = async () => {
+  const encryptedData = localStorage.getItem('MATWALI_ENCRYPTED_SETTINGS');
+  if (encryptedData) {
+    const decrypted = await decryptData(encryptedData);
+    if (decrypted) currentSettings = decrypted;
+  }
+  updateEquationDisplay();
+};
+
+// ═══ 8. الإيميل والـ OCR ═══
 function sendMail() {
   const name = document.getElementById('contactName').value;
   const email = document.getElementById('contactEmail').value;
   const msg = document.getElementById('contactMsg').value;
-  const MY_APP_PASSWORD = localStorage.getItem('MATWALI_PASS');
+  const MY_APP_PASSWORD = currentSettings.mailPass;
 
   if(!name || !email || !msg) { alert("الرجاء ملء جميع الحقول"); return; }
-  if (!MY_APP_PASSWORD) { alert("اذهب إلى 'إعدادات المدير' وضع الـ 16 حرفاً أولاً!"); return; }
+  if (!MY_APP_PASSWORD) { alert("اذهب للإعدادات وضع الـ 16 حرفاً أولاً!"); return; }
 
   const btn = event.target;
   btn.textContent = "جاري الإرسال...";
@@ -152,37 +267,25 @@ function sendMail() {
     Password : MY_APP_PASSWORD,
     To : "aldhyalmtwly@gmail.com",
     From : "aldhyalmtwly@gmail.com",
-    Subject : "رسالة سيادية جديدة من البوابة",
+    Subject : "رسالة سيادية جديدة",
     Body : `<b>الاسم:</b> ${name} <br> <b>البريد:</b> ${email} <br> <b>الرسالة:</b> ${msg}`
   }).then(
-    message => {
-      alert("✅ تم إرسال الرسالة بنجاح إلى بريدك!");
-      btn.textContent = "إرسال الرسالة";
-      document.getElementById('contactName').value = "";
-      document.getElementById('contactEmail').value = "";
-      document.getElementById('contactMsg').value = "";
-      showScreen('mainScreen');
-    }
+    message => { alert("✅ تم إرسال الرسالة!"); btn.textContent = "إرسال"; showScreen('mainScreen'); }
   ).catch(
-    error => {
-      alert("❌ حدث خطأ: " + error);
-      btn.textContent = "إرسال الرسالة";
-    }
+    error => { alert("❌ فشل: " + error); btn.textContent = "إرسال"; }
   );
 }
 
-// ═══ 5. الماسح الضوئي OCR ═══
 async function processImage() {
   const fileInput = document.getElementById('imageInput');
   const progress = document.getElementById('ocrProgress');
   const output = document.getElementById('ocrOutput');
-  if (!fileInput.files.length) { alert("الرجاء اختيار صورة أولاً"); return; }
-  output.value = ""; progress.textContent = "جاري تهيئة الذكاء الاصطناعي...";
+  if (!fileInput.files.length) { alert("الرجاء اختيار صورة"); return; }
+  output.value = ""; progress.textContent = "جاري التحليل...";
   try {
     const worker = await Tesseract.createWorker('ara');
-    progress.textContent = "جاري تحليل الصورة...";
     const ret = await worker.recognize(fileInput.files[0]);
-    output.value = ret.data.text; progress.textContent = "✅ تمت القراءة بنجاح!";
+    output.value = ret.data.text; progress.textContent = "✅ تمت القراءة!";
     await worker.terminate();
   } catch (err) { progress.textContent = "❌ فشل: " + err.message; }
 }
