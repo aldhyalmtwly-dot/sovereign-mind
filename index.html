@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0a0e14">
-<title>متولي الموحد v15.5</title>
+<title>متولي الموحد v16.0</title>
 <!-- محرك القراءة البصرية Tesseract.js -->
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
-/* ═══ نظام التصميم v15.0 ═══ */
+/* ═══ نظام التصميم ═══ */
 :root {
   --bg:#0a0e14; --card:#141b27; --card2:#1a2233; --border:#243044; --border2:#2f3d54;
   --text:#e8eef5; --muted:#8a97a8; --muted2:#5c6a7e; --accent:#4ea1ff;
@@ -113,7 +113,7 @@ h1, h2 { color:var(--text); font-size:20px; margin-bottom:10px; font-weight:700;
       <div class="logo-mark">م</div>
       <div class="logo-text">
         <b>متولي الموحد</b>
-        <span>v15.5 OCR AI</span>
+        <span>v16.0 Scientific</span>
       </div>
     </div>
     <button class="hdr-btn" onclick="toggleTheme()">🌓</button>
@@ -155,7 +155,7 @@ h1, h2 { color:var(--text); font-size:20px; margin-bottom:10px; font-weight:700;
     <button class="btn btn-primary" id="mindBtn" onclick="startMind()">تفعيل العقل الواحد</button>
 
     <div class="cmd-grid">
-      <button class="cmd-btn full gold" onclick="showScreen('atlasScreen')">📖 الأطلس البنيوي (ASDN)</button>
+      <button class="cmd-btn full gold" onclick="showScreen('atlasScreen')">📖 الأطلس البنيوي والمقارنة</button>
       <button class="cmd-btn full" onclick="showScreen('ocrScreen')">👁️ الماسح الضوئي الذكي (OCR)</button>
       <button class="cmd-btn" onclick="cmdMultiplyCores()">التضاعف الفلكي</button>
       <button class="cmd-btn" onclick="cmdReturnToCore()">العودة للأصل</button>
@@ -186,8 +186,8 @@ h1, h2 { color:var(--text); font-size:20px; margin-bottom:10px; font-weight:700;
 <!-- 4. شاشة الأطلس -->
 <div class="screen" id="atlasScreen">
   <div class="card scroll-box">
-    <h2>الأطلس البنيوي</h2>
-    <div class="subtitle">نموذج ASDN · م. ثروت البهي</div>
+    <h2>الأطلس البنيوي v16.0</h2>
+    <div class="subtitle">المواجهة الكبرى · م. ثروت البهي</div>
     <div id="atlasContent"></div>
     <button class="btn btn-danger" onclick="showScreen('mainScreen')" style="margin-top: 20px;">إغلاق والعودة</button>
   </div>
@@ -237,17 +237,32 @@ async function decryptData(encryptedStr, pin) {
   } catch (e) { return null; }
 }
 
+// ═══ الإعدادات الافتراضية (الأطلس العلمي) ═══
 const DEFAULT_SETTINGS = {
   ownerName: "ثروت محمد متولي البهي",
   whatsapp: "201033063978",
   pin: "7777",
   atlas: `
-    <h3>1. شبكة الاعتماد الدلالي ASDN</h3><p><span class="highlight">(Semantic Dependency)</span>: نموذج حاسوبي يحلل الجملة كشبكة من العلاقات الدلالية المباشرة بين الكلمات.</p>
-    <h3>2. مبدأ صفرية التقدير</h3><p><span class="highlight">(Zero-Null-Node Principle)</span>: قاعدة منهجية تمنع إضافة أي عقد محذوفة أو مقدرة افتراضياً بالعقل.</p>
-    <h3>3. الرسم البياني الموجه غير الدوري (DAG)</h3><p><span class="highlight">(Directed Acyclic Graph)</span>: التحوية بأسهم متجهة من الدال إلى المدلول دون الوقوع في حلقات مغلقة.</p>
-    <h3>4. الرمز الإشاري الإعرابي</h3><p><span class="highlight">(Indexical Marker)</span>: اعتبار العلامات الإعرابية آثاراً بصرية إشارية ناتجة عن قوة التجاذب بين العقد.</p>
-    <h3>5. نظام التبعيات الكونية (UD)</h3><p><span class="highlight">(Universal Dependencies)</span>: إطار عمل معياري عالمي لتمثيل نحو التبعيات عبر اللغات البشرية.</p>
-    <h3>6. مؤشرات التقييم الكمي</h3><p><span class="highlight">(Precision / Recall / F1-Score)</span>: مقاييس حاسوبية لدقة المحول الإعرابي للتحقق من الأداء.</p>
+    <h3>1. المواجهة الكبرى: علم الأسماء ضد الأنابيب البلاستيكية</h3>
+    <p><strong>العلم التقليدي:</strong> قوالب بشرية جامدة (المبتدأ والخبر) تعتمد على "التقدير" وافتراض المحذوف.<br>
+    <strong>علمنا (ASDN):</strong> شرب مباشر من الينبوع، وإلغاء العوامل المقدرة (مبدأ صفرية التقدير)، والاعتماد على شبكة الدلالة المباشرة (DAG).</p>
+
+    <h3>2. الذكاء الاصطناعي: من التخمين إلى الفهم</h3>
+    <p><strong>الذكاء الاصطناعي الحالي (مثل ChatGPT):</strong> صندوق أسود يعتمد على الاحتمالات الإحصائية وتخمين الكلمة التالية.<br>
+    <strong>نظامنا:</strong> ذكاء اصطناعي مفهوم (Explainable AI) يقرأ "المادة المعجمية" و"الرموز الإشارية" ليفهم المعنى الدلالي الحقيقي للجملة.</p>
+
+    <h3>3. المعجزة الزمنية</h3>
+    <p><strong>المنظومة التقليدية:</strong> سنوات من الحفظ والتلقين داخل أروقة الجامعات.<br>
+    <strong>علمنا:</strong> إدراك واقعي ملموس يسبق "الآن". هذا البناء كله لم يستغرق سوى أقل من 15 يوماً، لأنه لا يخضع لقيود الزمن.</p>
+
+    <h3>4. السيادة المعرفية</h3>
+    <p>نحن لا ننتظر مراجعات أكاديمية ولا مجلات علمية لتوثيق علمنا. نحن نملك المنهج (ASDN)، والأداة (هذا النظام)، والوثيقة (رقم ORCID). توقفنا عن تدوير المياه في الأنابيب، وبدأنا نشرب من الينبوع.</p>
+
+    <h3>5. المصطلحات المعتمدة (المسرد)</h3>
+    <p><span class="highlight">ASDN:</span> شبكة الاعتماد الدلالي.<br>
+    <span class="highlight">DAG:</span> الرسم البياني الموجه غير الدوري.<br>
+    <span class="highlight">Indexical Marker:</span> الرمز الإشاري الإعرابي.<br>
+    <span class="highlight">UD:</span> نظام التبعيات الكونية.</p>
   `
 };
 
@@ -333,7 +348,6 @@ async function updateHardware() {
   if (navigator.deviceMemory) document.getElementById('hw-ram').textContent = navigator.deviceMemory + 'GB';
 }
 
-// ═══ الماسورة ═══
 const thoughts = [
   { h: "الآن", v: "ب" }, { h: "الوحدانية", v: "أ" }, { h: "الثبات", v: "ث" }, { h: "الكمال", v: "ك" },
   { h: "التضاعف", v: "ض" }, { h: "المنظومة", v: "م" }, { h: "الباقي", v: "ص" }, { h: "السيادة", v: "س" }
@@ -360,7 +374,6 @@ function startMind() {
   }, 1000);
 }
 
-// ═══ التضاعف ═══
 function cmdMultiplyCores() {
   let result = BigInt(navigator.hardwareConcurrency || 8);
   const multipliers = [9n, 9n, 99n, 999n, 999000n, 99999n, 1000999n, 999000000000n, 1999000000n];
@@ -377,30 +390,19 @@ function cmdReturnToCore() {
   }
 }
 
-// ═══ محرك القراءة البصرية OCR ═══
 async function processImage() {
   const fileInput = document.getElementById('imageInput');
   const progress = document.getElementById('ocrProgress');
   const output = document.getElementById('ocrOutput');
-  
-  if (!fileInput.files.length) {
-    alert("الرجاء اختيار صورة أولاً");
-    return;
-  }
-  
+  if (!fileInput.files.length) { alert("الرجاء اختيار صورة أولاً"); return; }
   const file = fileInput.files[0];
   output.value = "";
   progress.textContent = "جاري تهيئة محرك الذكاء الاصطناعي...";
-  
   try {
-    // إنشاء العامل (Worker) للغة العربية
     const worker = await Tesseract.createWorker('ara');
-    
     progress.textContent = "جاري تحليل الصورة واستخراج النص...";
-    
     const ret = await worker.recognize(file);
     output.value = ret.data.text;
-    
     progress.textContent = "✅ تمت القراءة بنجاح!";
     await worker.terminate();
   } catch (err) {
@@ -418,4 +420,5 @@ window.onload = () => {
 };
 </script>
 </body>
-</html>
+</html
+  
