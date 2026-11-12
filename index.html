@@ -4,7 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#000000">
-<title>النظام السيادي · ثروت البهي</title>
+<!-- الأطلس البنيوي الموحد -->
+<meta name="author" content="ثروت محمد متولي البهي (الحداد) - Sovereign Director">
+<meta name="creator" content="MATWALI Sovereign OS">
+<title>بوابة السيادة · الأطلس البنيوي</title>
 <style>
 :root { --gold:#ffd700; --cyan:#00ffcc; --red:#ff0055; --green:#00ff88; --bg:#000; --dim:#555; }
 * { -webkit-tap-highlight-color:transparent; box-sizing:border-box; }
@@ -12,59 +15,85 @@ body { background:var(--bg); color:var(--cyan); font-family:'Courier New',monosp
   margin:0; padding:10px; min-height:100vh; display:flex; align-items:center;
   justify-content:center; user-select:none; -webkit-user-select:none; overflow-x:hidden; }
 .screen { display:none; width:100%; max-width:480px; }
-.screen.active { display:block; animation:fadeIn .3s; }
+.screen.active { display:block; animation:fadeIn .4s ease; }
 @keyframes fadeIn { from{opacity:0;transform:scale(.98);} to{opacity:1;transform:scale(1);} }
-.box { border:2px solid var(--gold); border-radius:12px; padding:18px;
-  background:#050505; box-shadow:0 0 50px rgba(255,215,0,.15); }
-h1, h2 { color:var(--gold); text-shadow:0 0 15px var(--gold);
-  text-align:center; margin:0 0 4px; font-size:20px; }
-.subtitle { color:var(--dim); font-size:10px; text-align:center;
-  letter-spacing:2px; margin-bottom:14px; }
 
+/* ═══ شاشة الإقلاع 0x00 ═══ */
+#bootScreen { text-align: center; }
+.circle-container { width: 160px; height: 160px; border-radius: 50%; border: 3px solid var(--gold);
+  box-shadow: 0 0 25px var(--gold), inset 0 0 20px var(--cyan); display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 30px auto; animation: pulse 2s infinite alternate; }
+@keyframes pulse { from { box-shadow: 0 0 15px var(--gold); } to { box-shadow: 0 0 35px var(--gold), inset 0 0 30px var(--cyan); } }
+.circle-text { font-size: 40px; color: var(--gold); text-shadow: 0 0 15px var(--gold); font-weight: bold; }
+.main-name { font-size: 28px; font-weight: bold; margin-bottom: 10px; text-shadow: 0 0 20px var(--gold); color: var(--gold); }
+.sub-name { font-size: 14px; color: var(--cyan); letter-spacing: 2px; margin-bottom: 40px; }
+
+/* ═══ لوحة التحكم ═══ */
+.box { border:2px solid var(--gold); border-radius:12px; padding:18px; background:#050505; box-shadow:0 0 50px rgba(255,215,0,.15); }
+h1, h2 { color:var(--gold); text-shadow:0 0 15px var(--gold); text-align:center; margin:0 0 4px; font-size:20px; }
+.subtitle { color:var(--dim); font-size:10px; text-align:center; letter-spacing:2px; margin-bottom:14px; }
 .hw-panel { display:grid; grid-template-columns:repeat(4, 1fr); gap:5px; margin-bottom:12px; }
 .hw-item { background:#080808; border:1px solid #222; border-radius:5px; padding:6px 3px; text-align:center; }
 .hw-label { font-size:8px; color:var(--dim); }
 .hw-val { font-size:11px; color:var(--cyan); font-weight:bold; margin-top:2px; min-height:14px; }
 
-.btn { width:100%; background:transparent; color:var(--gold); border:2px solid var(--gold);
-  padding:12px; font-size:14px; font-weight:bold; border-radius:8px; cursor:pointer;
-  font-family:inherit; margin-top:6px; transition:.3s; }
+/* ═══ ماسورة المياه ═══ */
+.pipe-container { width: 100%; height: 12px; background: #111; border-radius: 6px; overflow: hidden; margin-bottom: 12px; border: 1px solid #333; }
+.water { height: 100%; width: 0%; background: linear-gradient(90deg, var(--cyan), var(--gold)); transition: width 0.3s ease; box-shadow: 0 0 15px var(--cyan); }
+.mind-box { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.mind-item { border: 1px solid #333; padding: 8px; border-radius: 6px; background: #050505; text-align: center; }
+.mind-title { font-size: 10px; color: var(--dim); margin-bottom: 4px; }
+.mind-value { font-size: 16px; color: var(--cyan); font-weight: bold; min-height: 20px; transition: 0.5s; }
+
+/* ═══ الأزرار ═══ */
+.btn { width:100%; background:transparent; color:var(--gold); border:2px solid var(--gold); padding:12px; font-size:14px; font-weight:bold; border-radius:8px; cursor:pointer; font-family:inherit; margin-top:6px; transition:.3s; text-decoration: none; display: block; }
 .btn:active:not(:disabled) { background:var(--gold); color:#000; }
-.btn:disabled { opacity:.4; }
 .btn-red { border-color:var(--red); color:var(--red); }
 .btn-red:active { background:var(--red); color:#000; }
 .btn-cyan { border-color:var(--cyan); color:var(--cyan); }
 .btn-cyan:active { background:var(--cyan); color:#000; }
+.btn:disabled { opacity: .5; }
 
 .cmd-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:8px; }
-.cmd-btn { background:#0a0a0a; border:1px solid #333; color:var(--cyan); padding:10px;
-  font-size:11px; border-radius:6px; cursor:pointer; font-family:inherit; transition:.2s; }
+.cmd-btn { background:#0a0a0a; border:1px solid #333; color:var(--cyan); padding:10px; font-size:11px; border-radius:6px; cursor:pointer; font-family:inherit; transition:.2s; text-align: center; }
 .cmd-btn:active { background:var(--cyan); color:#000; }
 .cmd-btn.gold { border-color:var(--gold); color:var(--gold); }
 .cmd-btn.gold:active { background:var(--gold); color:#000; }
 .cmd-btn.red { border-color:var(--red); color:var(--red); }
 .cmd-btn.red:active { background:var(--red); color:#000; }
 
-.log { background:#000; border:1px solid #222; height:150px; overflow-y:auto;
-  padding:6px; font-size:9px; text-align:left; border-radius:5px;
-  margin-top:10px; line-height:1.5; font-family:monospace; color:var(--cyan); }
+.log { background:#000; border:1px solid #222; height:100px; overflow-y:auto; padding:6px; font-size:9px; text-align:left; border-radius:5px; margin-top:10px; line-height:1.5; font-family:monospace; color:var(--cyan); }
 .log .l-ok { color:var(--green); }
 .log .l-err { color:var(--red); }
 .log .l-gold { color:var(--gold); }
-
-.input-pin { width:100%; background:#000; border:1px solid #333; color:var(--cyan);
-  padding:12px; font-size:18px; text-align:center; border-radius:8px;
-  font-family:inherit; outline:none; margin-bottom:8px; letter-spacing:4px; }
+.input-pin { width:100%; background:#000; border:1px solid #333; color:var(--cyan); padding:12px; font-size:18px; text-align:center; border-radius:8px; font-family:inherit; outline:none; margin-bottom:8px; letter-spacing:4px; }
 .input-pin:focus { border-color:var(--cyan); }
 .footer { text-align:center; color:#333; font-size:8px; margin-top:10px; letter-spacing:1px; }
+.glow { box-shadow: inset 0 0 80px var(--gold) !important; background: #0a0500 !important; }
+
+/* ═══ شاشة الأطلس البنيوي ═══ */
+#atlasScreen .box { text-align: right; max-height: 80vh; overflow-y: auto; }
+#atlasScreen h3 { color: var(--gold); font-size: 16px; margin-top: 15px; margin-bottom: 8px; border-bottom: 1px dashed var(--dim); padding-bottom: 4px; }
+#atlasScreen p { font-size: 13px; line-height: 1.8; color: #ccc; margin-bottom: 10px; text-align: justify; }
+#atlasScreen .meta { color: var(--cyan); font-size: 11px; text-align: center; margin-bottom: 15px; }
+#atlasScreen .highlight { color: var(--gold); font-weight: bold; }
 </style>
 </head>
 <body>
 
-<div class="screen active" id="mainScreen">
-  <div class="box">
+<!-- 1. شاشة الإقلاع -->
+<div class="screen active" id="bootScreen">
+  <div class="circle-container"><div class="circle-text">0x00</div></div>
+  <div class="main-name">ثروت المتولي</div>
+  <div class="sub-name">المدير السيادي - المالك المحقق</div>
+  <button class="btn btn-cyan" onclick="enterSystem()">دخول النظام السيادي</button>
+</div>
+
+<!-- 2. لوحة التحكم -->
+<div class="screen" id="mainScreen">
+  <div class="box" id="mainBox">
     <h1>النظام السيادي</h1>
-    <div class="subtitle">المدير: ثروت محمد البهي</div>
+    <div class="subtitle">MATWALI Sovereign OS</div>
     
     <div class="hw-panel">
       <div class="hw-item"><div class="hw-label">الأنوية</div><div class="hw-val" id="hw-cores">-</div></div>
@@ -73,31 +102,63 @@ h1, h2 { color:var(--gold); text-shadow:0 0 15px var(--gold);
       <div class="hw-item"><div class="hw-label">الذاكرة</div><div class="hw-val" id="hw-ram">-</div></div>
     </div>
 
+    <!-- ماسورة المياه (الينبوع) -->
+    <div class="pipe-container"><div class="water" id="water"></div></div>
+    <div class="mind-box">
+      <div class="mind-item"><div class="mind-title">الباطن (المعنى)</div><div class="mind-value" id="hidden">-</div></div>
+      <div class="mind-item"><div class="mind-title">الظاهر (الحرف)</div><div class="mind-value" id="visible">-</div></div>
+    </div>
+
+    <button class="btn btn-cyan" id="mindBtn" onclick="startMind()">تفعيل العقل الواحد (المياه)</button>
+
     <div class="cmd-grid">
-      <button class="cmd-btn cyan" onclick="vibrate([50,30,50])">اهتزاز</button>
-      <button class="cmd-btn cyan" onclick="cmdFullScreen()">ملء الشاشة</button>
-      <button class="cmd-btn gold" onclick="cmdWakeLock()">منع النوم</button>
-      <button class="cmd-btn" onclick="cmdPing()">فحص الشبكة</button>
-      <button class="cmd-btn" onclick="cmdLocation()">الموقع</button>
-      <button class="cmd-btn" onclick="cmdBatteryInfo()">بيانات البطارية</button>
-      
+      <button class="cmd-btn gold" onclick="showAtlas()" style="grid-column: span 2;">📖 قراءة الأطلس البنيوي الموحد</button>
       <button class="cmd-btn gold" onclick="cmdMultiplyCores()">التضاعف السيادي</button>
       <button class="cmd-btn red" onclick="cmdReturnToCore()">معادلة العودة للأصل</button>
-      
-      <!-- زر التواصل المادي -->
-      <a href="https://wa.me/201033063978" target="_blank" style="grid-column: span 2; display:block; text-align:center; text-decoration:none; background:transparent; color:var(--gold); border:2px solid var(--gold); padding:12px; font-size:13px; font-weight:bold; border-radius:6px; margin-top:6px;">💎 اطلب نظامك الخاص (تواصل معي)</a>
-
+      <a href="https://wa.me/201033063978" target="_blank" class="cmd-btn gold" style="grid-column: span 2; text-decoration: none;">💎 اطلب نظامك الخاص (تواصل معي)</a>
+      <button class="cmd-btn" onclick="cmdPing()">فحص الشبكة</button>
+      <button class="cmd-btn" onclick="runDiagnostics()">التشخيص الحي</button>
       <button class="cmd-btn red" onclick="cmdClearLog()" style="grid-column: span 2;">مسح السجل</button>
     </div>
 
     <div class="log" id="log">> النظام السيادي جاهز<br></div>
-    
-    <button class="btn btn-cyan" onclick="runDiagnostics()">تشغيل التشخيص الحي</button>
     <button class="btn btn-red" onclick="lockSystem()">قفل النظام</button>
-    <div class="footer">SOVEREIGN · T.M.B · LIVE COMMAND · 2026</div>
+    <div class="footer">SOVEREIGN · T.M.B · UNIFIED ATLAS · 2026</div>
   </div>
 </div>
 
+<!-- 3. شاشة الأطلس البنيوي -->
+<div class="screen" id="atlasScreen">
+  <div class="box">
+    <h2>ظلال الوعي وشمس الغيب</h2>
+    <div class="meta">
+      (ثورة الحرف على الكلمة) - النسخة الأولى<br>
+      المؤلف: ثروت محمد متولي البهي (الحداد)<br>
+      رقم ORCID: 0009-000-8043-9651<br>
+      تاريخ الإصدار: أكتوبر 2026
+    </div>
+
+    <h3>الباب التمهيدي: الإناء العاقل والأنابيب</h3>
+    <p>التقليديون أخذوا الماء النقي من الينابيع (علم الأسماء)، ووضعوه في أنابيب بلاستيكية (قوالب بشرية كالمبتدأ والخبر)، وقدموه للعامة، فقد الماء طهارته. نحن هنا نشرب من الينبوع مباشرة.</p>
+
+    <h3>تحفيز للقارئ</h3>
+    <p>لقد أغلقت الأبواب التقليدية، وبدأت الرحلة من "الإناء العاقل". ما ستقرأه ليس مجرد كلام عن النحو، بل <span class="highlight">إعلان حرب على "الأنابيب البلاستيكية"</span>. استعد.</p>
+
+    <h3>الباب الأول: القلب، الروح، والآن</h3>
+    <p><span class="highlight">1. القلب كمركز العقل:</span> (تمهيد لربط الوعي بالحرف).</p>
+    <p><span class="highlight">2. الفرق بين الحر والعبد:</span> الحر هو الذي يدافع عن الفكرة (بغض النظر عمن قالها). أما العبد فهو الذي يدافع عن الشخص (مهما كانت فكرته).</p>
+
+    <h3>3. المعجزة الزمنية: علم الأسماء في 15 يوماً</h3>
+    <p>من يظن أن هذا العلم خرج من عباءة الكتب والدراسة الطويلة، فقد أخطأ. هذا البناء كله (النحو، البرمجة، الطب، الشعر) لم يستغرق سوى أقل من 15 يوماً. هذا هو "علم الأسماء" الذي يقذفه الله في قلب من يشاء، لا يخضع للزمن ولا للتفكير، بل هو إدراك واقعي ملموس يسبق "الآن".</p>
+
+    <h3>1. المقدمة: القطرة من الإناء العاقل</h3>
+    <p>في بحر العلم الواسع، لا أملك إلا نقطة واحدة، وقطرة واحدة خرجت من إناء عاقل. لم أتخرج من أروقة الجامعات ولا من قاعات المدارس، بل خرجت من تأمل عميق في كتاب الله وفي لغة العرب. يقدم هذا البحث نظرة جديدة تسحق التقسيمات التقليدية للنحو، فتقول إن (الحرف هو إناء الكلمة)، وإن (الكلمة ليست وعاء للحرف). أنا الغيب الذي أمر الله الإيمان به، أدرك ما لم تدركه الآلات.</p>
+
+    <button class="btn btn-red" onclick="hideAtlas()" style="margin-top: 20px;">إغلاق الأطلس والعودة</button>
+  </div>
+</div>
+
+<!-- 4. شاشة القفل -->
 <div class="screen" id="lockScreen">
   <div class="box">
     <h2>النظام مقفل</h2>
@@ -111,6 +172,25 @@ h1, h2 { color:var(--gold); text-shadow:0 0 15px var(--gold);
 <script>
 const SYSTEM_KEY = "7777"; 
 let wakeLock = null;
+let mindRunning = false;
+
+function enterSystem() {
+  document.getElementById('bootScreen').classList.remove('active');
+  document.getElementById('mainScreen').classList.add('active');
+  vibrate(50);
+}
+
+function showAtlas() {
+  document.getElementById('mainScreen').classList.remove('active');
+  document.getElementById('atlasScreen').classList.add('active');
+  vibrate(30);
+}
+
+function hideAtlas() {
+  document.getElementById('atlasScreen').classList.remove('active');
+  document.getElementById('mainScreen').classList.add('active');
+  vibrate(30);
+}
 
 function addLog(msg, type = '') {
   const log = document.getElementById('log');
@@ -124,16 +204,11 @@ function addLog(msg, type = '') {
 }
 
 function vibrate(pattern) {
-  if (navigator.vibrate) {
-    navigator.vibrate(pattern);
-    addLog('اهتزاز: ' + JSON.stringify(pattern), 'ok');
-  }
+  if (navigator.vibrate) { navigator.vibrate(pattern); addLog('اهتزاز: ' + JSON.stringify(pattern), 'ok'); }
 }
 
 async function updateHardware() {
-  const cores = navigator.hardwareConcurrency || '?';
-  document.getElementById('hw-cores').textContent = cores;
-
+  document.getElementById('hw-cores').textContent = navigator.hardwareConcurrency || '?';
   if (navigator.getBattery) {
     try {
       const bat = await navigator.getBattery();
@@ -142,52 +217,107 @@ async function updateHardware() {
       document.getElementById('hw-bat').style.color = pct < 20 ? 'var(--red)' : 'var(--cyan)';
     } catch(e) { document.getElementById('hw-bat').textContent = 'N/A'; }
   }
-
   const online = navigator.onLine;
   const netEl = document.getElementById('hw-net');
   netEl.textContent = online ? 'ON' : 'OFF';
   netEl.style.color = online ? 'var(--green)' : 'var(--red)';
-  
-  if (navigator.connection) {
-    netEl.textContent = online ? (navigator.connection.effectiveType || 'ON').toUpperCase() : 'OFF';
-  }
-
-  if (navigator.deviceMemory) {
-    document.getElementById('hw-ram').textContent = navigator.deviceMemory + 'GB';
-  } else if (performance.memory) {
-    document.getElementById('hw-ram').textContent = Math.round(performance.memory.usedJSHeapSize / 1048576) + 'MB';
-  }
+  if (navigator.connection) netEl.textContent = online ? (navigator.connection.effectiveType || 'ON').toUpperCase() : 'OFF';
+  if (navigator.deviceMemory) document.getElementById('hw-ram').textContent = navigator.deviceMemory + 'GB';
+  else if (performance.memory) document.getElementById('hw-ram').textContent = Math.round(performance.memory.usedJSHeapSize / 1048576) + 'MB';
 }
-
 setInterval(updateHardware, 2000);
 
-async function cmdFullScreen() {
-  try {
-    if (!document.fullscreenElement) {
-      await document.documentElement.requestFullscreen();
-      addLog('ملء الشاشة: مُفعّل', 'ok');
-    } else {
-      await document.exitFullscreen();
-      addLog('ملء الشاشة: مُلغى', 'ok');
+// ═══ ماسورة المياه (العقل الواحد) ═══
+const thoughts = [
+  { hidden: "الآن", visible: "ب" },
+  { hidden: "الوحدانية", visible: "أ" },
+  { hidden: "الثبات", visible: "ث" },
+  { hidden: "الكمال", visible: "ك" },
+  { hidden: "التضاعف", visible: "ض" },
+  { hidden: "المنظومة", visible: "م" },
+  { hidden: "الباقي", visible: "ص" },
+  { hidden: "السيادة", visible: "س" }
+];
+
+function startMind() {
+  if (mindRunning) return;
+  mindRunning = true;
+  const btn = document.getElementById('mindBtn');
+  btn.disabled = true;
+  btn.textContent = 'جاري تدفق المياه...';
+  
+  const waterEl = document.getElementById('water');
+  const hiddenEl = document.getElementById('hidden');
+  const visibleEl = document.getElementById('visible');
+  const box = document.getElementById('mainBox');
+
+  waterEl.style.width = '0%';
+  box.classList.remove('glow');
+  addLog('> بدء دمج الباطن بالظاهر...', 'gold');
+
+  let i = 0;
+  const timer = setInterval(() => {
+    if (i >= thoughts.length) {
+      clearInterval(timer);
+      addLog("✅ اكتمل العقل الواحد. الباقي صفر.", 'gold');
+      box.classList.add('glow');
+      vibrate([30, 50, 30, 50, 80]);
+      btn.disabled = false;
+      btn.textContent = 'إعادة تفعيل العقل الواحد';
+      mindRunning = false;
+      return;
     }
-  } catch(e) { addLog('فشل ملء الشاشة', 'err'); }
+    const t = thoughts[i];
+    hiddenEl.textContent = t.hidden;
+    visibleEl.textContent = t.visible;
+    waterEl.style.width = ((i + 1) / thoughts.length) * 100 + "%";
+    addLog(`> [الباطن: ${t.hidden}] ➔ [الظاهر: ${t.visible}]`, 'cyan');
+    vibrate(15);
+    i++;
+  }, 1000);
 }
 
-async function cmdWakeLock() {
-  try {
-    if ('wakeLock' in navigator) {
-      if (wakeLock) {
-        await wakeLock.release();
-        wakeLock = null;
-        addLog('منع النوم: مُلغى', 'ok');
-      } else {
-        wakeLock = await navigator.wakeLock.request('screen');
-        addLog('منع النوم: مُفعّل', 'ok');
-      }
-    }
-  } catch(e) { addLog('فشل Wake Lock', 'err'); }
+// ═══ التضاعف السيادي (BigInt) ═══
+function cmdMultiplyCores() {
+  const cores = navigator.hardwareConcurrency || 8;
+  let result = BigInt(cores);
+  addLog(`> الأنوية الأساسية: ${cores}`, 'ok');
+  const multipliers = [9n, 9n, 99n, 999n, 999000n, 99999n, 1000999n, 999000000000n, 1999000000n]; 
+  const names = ["× 9", "× 9", "× 99", "× 999", "× 999,000", "× 99,999", "× 1,000,999", "× 999 مليار", "× 1.999 مليار"];
+  
+  addLog("> بدء التضاعف السيادي...", 'gold');
+  for (let i = 0; i < multipliers.length; i++) {
+    result = result * multipliers[i];
+    let displayValue = result > 1000000000000n ? result.toString().substring(0,6) + '... (رقم فلكي)' : result.toLocaleString('en-US');
+    addLog(`${names[i]} = ${displayValue}`, 'cyan');
+  }
+  addLog(`النتيجة النهائية: ${result.toLocaleString('en-US')}`, 'gold');
+  window._massiveNumber = result; 
+  window._totalMultiplier = result / BigInt(cores); 
+  vibrate([50, 30, 50, 30, 100]);
 }
 
+// ═══ معادلة العودة للأصل ═══
+function cmdReturnToCore() {
+  addLog("> بدء معادلة العودة للأصل...", 'gold');
+  const cores = navigator.hardwareConcurrency || 8;
+  if (!window._massiveNumber || !window._totalMultiplier) {
+    addLog("الرجاء تشغيل 'التضاعف السيادي' أولاً.", 'err');
+    vibrate([100,50,100]);
+    return;
+  }
+  let finalResult = window._massiveNumber / window._totalMultiplier;
+  addLog(`النتيجة النهائية: ${finalResult.toLocaleString('en-US')}`, 'green');
+  if (finalResult === BigInt(cores)) { 
+    addLog('✓ عاد النظام إلى نواته الأصلية', 'gold'); 
+    vibrate([200, 100, 200]); 
+  } else { 
+    addLog('⚠ حدث خطأ في الحسابات', 'err'); 
+    vibrate([100, 50, 100]); 
+  }
+}
+
+// ═══ أوامر أخرى ═══
 async function cmdPing() {
   addLog('جارٍ فحص الشبكة...', 'gold');
   const start = performance.now();
@@ -195,77 +325,7 @@ async function cmdPing() {
     await fetch('https://www.google.com/favicon.ico?t=' + Date.now(), { mode: 'no-cors', cache: 'no-store' });
     addLog(`الاتصال: ناجح | التأخير: ${Math.round(performance.now() - start)}ms`, 'ok');
     vibrate(30);
-  } catch(e) {
-    addLog('الاتصال: فشل', 'err');
-  }
-}
-
-function cmdLocation() {
-  if (!navigator.geolocation) { addLog('الموقع غير مدعوم', 'err'); return; }
-  navigator.geolocation.getCurrentPosition(
-    (pos) => addLog(`الموقع: ${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`, 'ok'),
-    (err) => addLog('فشل الموقع: ' + err.message, 'err'),
-    { enableHighAccuracy: true, timeout: 10000 }
-  );
-}
-
-async function cmdBatteryInfo() {
-  if (!navigator.getBattery) { addLog('بيانات البطارية غير مدعومة', 'err'); return; }
-  const bat = await navigator.getBattery();
-  addLog(`البطارية: ${Math.round(bat.level*100)}% | الشحن: ${bat.charging ? 'نعم' : 'لا'}`, 'ok');
-}
-
-function cmdClearLog() {
-  document.getElementById('log').innerHTML = '> السجل مُفرّغ<br>';
-}
-
-function cmdMultiplyCores() {
-  const cores = navigator.hardwareConcurrency || 8;
-  let result = BigInt(cores);
-  
-  addLog(`> الأنوية الأساسية: ${cores}`, 'ok');
-  
-  const multipliers = [9n, 9n, 99n, 999n, 999000n, 99999n, 1000999n, 999000000000n, 1999000000n]; 
-  const names = ["× 9", "× 9", "× 99", "× 999", "× 999,000", "× 99,999", "× 1,000,999", "× 999 مليار", "× 1.999 مليار"];
-  
-  addLog("> بدء التضاعف السيادي...", 'gold');
-  
-  for (let i = 0; i < multipliers.length; i++) {
-    result = result * multipliers[i];
-    let displayValue = result > 1000000000000n ? result.toString().substring(0,6) + '... (رقم فلكي)' : result.toLocaleString('en-US');
-    addLog(`${names[i]} = ${displayValue}`, 'cyan');
-  }
-  
-  addLog(`النتيجة النهائية: ${result.toLocaleString('en-US')}`, 'gold');
-  
-  window._massiveNumber = result; 
-  window._totalMultiplier = result / BigInt(cores); 
-  
-  vibrate([50, 30, 50, 30, 100]);
-}
-
-function cmdReturnToCore() {
-  addLog("> بدء معادلة العودة للأصل...", 'gold');
-  
-  const cores = navigator.hardwareConcurrency || 8;
-  
-  if (!window._massiveNumber || !window._totalMultiplier) {
-    addLog("الرجاء تشغيل 'التضاعف السيادي' أولاً.", 'err');
-    vibrate([100,50,100]);
-    return;
-  }
-  
-  let finalResult = window._massiveNumber / window._totalMultiplier;
-  
-  addLog(`النتيجة النهائية: ${finalResult.toLocaleString('en-US')}`, 'green');
-  
-  if (finalResult === BigInt(cores)) {
-    addLog('✓ عاد النظام إلى نواته الأصلية', 'gold');
-    vibrate([200, 100, 200]);
-  } else {
-    addLog('⚠ حدث خطأ في الحسابات', 'err');
-    vibrate([100, 50, 100]);
-  }
+  } catch(e) { addLog('الاتصال: فشل', 'err'); }
 }
 
 async function runDiagnostics() {
@@ -273,26 +333,24 @@ async function runDiagnostics() {
   addLog('═══ بدء التشخيص السيادي ═══', 'gold');
   addLog(`[1] المعالج: ${navigator.hardwareConcurrency || '?'} نواة`, 'ok');
   vibrate(20); await new Promise(r => setTimeout(r, 300));
-  
   if (navigator.getBattery) {
     const bat = await navigator.getBattery();
     addLog(`[2] البطارية: ${Math.round(bat.level*100)}% ${bat.charging ? '⚡' : ''}`, 'ok');
   }
   vibrate(20); await new Promise(r => setTimeout(r, 300));
-  
   addLog(`[3] الشبكة: ${navigator.onLine ? 'متصل' : 'مقطوع'}`, navigator.onLine ? 'ok' : 'err');
   vibrate(20); await new Promise(r => setTimeout(r, 300));
-  
   addLog(`[4] المنصة: ${navigator.platform}`, 'ok');
   vibrate(20); await new Promise(r => setTimeout(r, 300));
-
   addLog(`[5] الذاكرة: ${navigator.deviceMemory || '?'}GB`, 'ok');
   vibrate(20);
-  
   addLog('═══ اكتمل التشخيص ✓ ═══', 'gold');
   vibrate([50, 30, 50, 30, 100]);
 }
 
+function cmdClearLog() { document.getElementById('log').innerHTML = '> السجل مُفرّغ<br>'; }
+
+// ═══ القفل السيادي ═══
 function lockSystem() {
   document.getElementById('mainScreen').classList.remove('active');
   document.getElementById('lockScreen').classList.add('active');
@@ -316,17 +374,10 @@ function tryUnlock() {
 }
 
 document.getElementById('lockPin').addEventListener('keypress', function(e) {
-  if (e.key === 'Enter') {
-    tryUnlock();
-  }
+  if (e.key === 'Enter') { tryUnlock(); }
 });
 
-window.onload = () => {
-  updateHardware();
-  addLog('النواة السيادية: مُحمّلة', 'gold');
-  addLog('النظام جاهز للأوامر', 'ok');
-  vibrate(30);
-};
+window.onload = () => { updateHardware(); };
 </script>
 </body>
 </html>
