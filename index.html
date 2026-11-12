@@ -4,9 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0a0e14">
-<title>متولي الموحد v16.0</title>
+<title>متولي الموحد v17.0</title>
 <!-- محرك القراءة البصرية Tesseract.js -->
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<!-- مكتبة إرسال الإيميلات من المتصفح -->
+<script src="https://smtpjs.com/v3/smtp.js"></script>
 <style>
 /* ═══ نظام التصميم ═══ */
 :root {
@@ -55,7 +57,6 @@ header {
   background:var(--card); border:1px solid var(--border); border-radius:var(--r);
   padding:20px; margin-bottom:16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
-.card2 { background:var(--card2); border:1px solid var(--border2); border-radius:var(--rs); padding:12px; }
 h1, h2 { color:var(--text); font-size:20px; margin-bottom:10px; font-weight:700; }
 .subtitle { color:var(--muted); font-size:12px; margin-bottom:16px; }
 .hw-panel { display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin-bottom:16px; }
@@ -113,7 +114,7 @@ h1, h2 { color:var(--text); font-size:20px; margin-bottom:10px; font-weight:700;
       <div class="logo-mark">م</div>
       <div class="logo-text">
         <b>متولي الموحد</b>
-        <span>v16.0 Scientific</span>
+        <span>v17.0 Mail</span>
       </div>
     </div>
     <button class="hdr-btn" onclick="toggleTheme()">🌓</button>
@@ -157,9 +158,9 @@ h1, h2 { color:var(--text); font-size:20px; margin-bottom:10px; font-weight:700;
     <div class="cmd-grid">
       <button class="cmd-btn full gold" onclick="showScreen('atlasScreen')">📖 الأطلس البنيوي والمقارنة</button>
       <button class="cmd-btn full" onclick="showScreen('ocrScreen')">👁️ الماسح الضوئي الذكي (OCR)</button>
+      <button class="cmd-btn full" onclick="showScreen('contactScreen')" style="color:var(--purple); border-color:var(--purple);">✉️ مراسلة المدير</button>
       <button class="cmd-btn" onclick="cmdMultiplyCores()">التضاعف الفلكي</button>
       <button class="cmd-btn" onclick="cmdReturnToCore()">العودة للأصل</button>
-      <a id="whatsappBtn" href="#" target="_blank" class="cmd-btn full" style="color:var(--accent); border-color:var(--accent); text-decoration:none;">💎 تواصل معي (واتساب)</a>
       <button class="cmd-btn full" onclick="showScreen('adminScreen')">⚙️ إعدادات المدير</button>
     </div>
 
@@ -171,33 +172,48 @@ h1, h2 { color:var(--text); font-size:20px; margin-bottom:10px; font-weight:700;
 <div class="screen" id="ocrScreen">
   <div class="card">
     <h2>الماسح الضوئي (OCR)</h2>
-    <div class="subtitle">قراءة النصوص من الصور بالذكاء الاصطناعي</div>
-    
     <input type="file" id="imageInput" accept="image/*" class="input-field" style="padding:10px; background:var(--card2);">
     <div id="ocrProgress" class="subtitle" style="color:var(--gold); height:20px;"></div>
-    
     <textarea id="ocrOutput" class="input-field" rows="8" placeholder="النص المستخرج سيظهر هنا..."></textarea>
-    
     <button class="btn btn-primary" onclick="processImage()">بدء المسح الضوئي</button>
     <button class="btn btn-danger" onclick="showScreen('mainScreen')">رجوع</button>
   </div>
 </div>
 
-<!-- 4. شاشة الأطلس -->
+<!-- 4. شاشة نموذج المراسلة -->
+<div class="screen" id="contactScreen">
+  <div class="card">
+    <h2>مراسلة المدير</h2>
+    <div class="subtitle">ستصل رسالتك مباشرة إلى البريد</div>
+    
+    <label style="color:var(--text); font-size:13px;">الاسم:</label>
+    <input type="text" id="contactName" class="input-field" placeholder="اكتب اسمك">
+    
+    <label style="color:var(--text); font-size:13px;">البريد الإلكتروني:</label>
+    <input type="email" id="contactEmail" class="input-field" placeholder="اكتب بريدك">
+    
+    <label style="color:var(--text); font-size:13px;">الرسالة:</label>
+    <textarea id="contactMsg" class="input-field" rows="5" placeholder="اكتب رسالتك هنا..."></textarea>
+    
+    <button class="btn btn-primary" onclick="sendMail()" style="background:var(--purple);">إرسال الرسالة</button>
+    <button class="btn btn-danger" onclick="showScreen('mainScreen')">رجوع</button>
+  </div>
+</div>
+
+<!-- 5. شاشة الأطلس -->
 <div class="screen" id="atlasScreen">
   <div class="card scroll-box">
-    <h2>الأطلس البنيوي v16.0</h2>
+    <h2>الأطلس البنيوي v17.0</h2>
     <div class="subtitle">المواجهة الكبرى · م. ثروت البهي</div>
     <div id="atlasContent"></div>
     <button class="btn btn-danger" onclick="showScreen('mainScreen')" style="margin-top: 20px;">إغلاق والعودة</button>
   </div>
 </div>
 
-<!-- 5. شاشة الإعدادات -->
+<!-- 6. شاشة الإعدادات -->
 <div class="screen" id="adminScreen">
   <div class="card scroll-box">
     <h2>إعدادات المدير</h2>
-    <div class="subtitle">مشفرة بـ AES-256 (محلية)</div>
     <label style="color:var(--text); font-size:13px;">اسم المالك:</label>
     <input type="text" class="input-field" id="adminName">
     <label style="color:var(--text); font-size:13px;">رقم الواتساب (بدون +):</label>
@@ -205,14 +221,14 @@ h1, h2 { color:var(--text); font-size:20px; margin-bottom:10px; font-weight:700;
     <label style="color:var(--text); font-size:13px;">مفتاح الدخول الجديد:</label>
     <input type="password" class="input-field input-pin" id="adminPin" placeholder="اتركه فارغاً للإبقاء على القديم">
     <label style="color:var(--text); font-size:13px;">نص الأطلس (يدعم HTML):</label>
-    <textarea class="input-field" id="adminAtlas" rows="8"></textarea>
+    <textarea class="input-field" id="adminAtlas" rows="6"></textarea>
     <button class="btn btn-primary" onclick="saveAdminSettings()">حفظ وتشفير</button>
     <button class="btn btn-danger" onclick="showScreen('mainScreen')">إلغاء</button>
   </div>
 </div>
 
 <script>
-// ═══ التشفير السيادي (AES-256) ═══
+// ═══ التشفير السيادي ═══
 async function getCryptoKey(pin) {
   const enc = new TextEncoder();
   const keyMaterial = await crypto.subtle.importKey("raw", enc.encode(pin.padEnd(32, '0').slice(0, 32)), { name: "PBKDF2" }, false, ["deriveBits", "deriveKey"]);
@@ -237,38 +253,15 @@ async function decryptData(encryptedStr, pin) {
   } catch (e) { return null; }
 }
 
-// ═══ الإعدادات الافتراضية (الأطلس العلمي) ═══
 const DEFAULT_SETTINGS = {
   ownerName: "ثروت محمد متولي البهي",
   whatsapp: "201033063978",
   pin: "7777",
-  atlas: `
-    <h3>1. المواجهة الكبرى: علم الأسماء ضد الأنابيب البلاستيكية</h3>
-    <p><strong>العلم التقليدي:</strong> قوالب بشرية جامدة (المبتدأ والخبر) تعتمد على "التقدير" وافتراض المحذوف.<br>
-    <strong>علمنا (ASDN):</strong> شرب مباشر من الينبوع، وإلغاء العوامل المقدرة (مبدأ صفرية التقدير)، والاعتماد على شبكة الدلالة المباشرة (DAG).</p>
-
-    <h3>2. الذكاء الاصطناعي: من التخمين إلى الفهم</h3>
-    <p><strong>الذكاء الاصطناعي الحالي (مثل ChatGPT):</strong> صندوق أسود يعتمد على الاحتمالات الإحصائية وتخمين الكلمة التالية.<br>
-    <strong>نظامنا:</strong> ذكاء اصطناعي مفهوم (Explainable AI) يقرأ "المادة المعجمية" و"الرموز الإشارية" ليفهم المعنى الدلالي الحقيقي للجملة.</p>
-
-    <h3>3. المعجزة الزمنية</h3>
-    <p><strong>المنظومة التقليدية:</strong> سنوات من الحفظ والتلقين داخل أروقة الجامعات.<br>
-    <strong>علمنا:</strong> إدراك واقعي ملموس يسبق "الآن". هذا البناء كله لم يستغرق سوى أقل من 15 يوماً، لأنه لا يخضع لقيود الزمن.</p>
-
-    <h3>4. السيادة المعرفية</h3>
-    <p>نحن لا ننتظر مراجعات أكاديمية ولا مجلات علمية لتوثيق علمنا. نحن نملك المنهج (ASDN)، والأداة (هذا النظام)، والوثيقة (رقم ORCID). توقفنا عن تدوير المياه في الأنابيب، وبدأنا نشرب من الينبوع.</p>
-
-    <h3>5. المصطلحات المعتمدة (المسرد)</h3>
-    <p><span class="highlight">ASDN:</span> شبكة الاعتماد الدلالي.<br>
-    <span class="highlight">DAG:</span> الرسم البياني الموجه غير الدوري.<br>
-    <span class="highlight">Indexical Marker:</span> الرمز الإشاري الإعرابي.<br>
-    <span class="highlight">UD:</span> نظام التبعيات الكونية.</p>
-  `
+  atlas: `<h3>1. المواجهة الكبرى</h3><p>العلم التقليدي: قوالب بشرية جامدة. علمنا: شرب مباشر من الينبوع وإلغاء العوامل المقدرة.</p>`
 };
 
 let currentSettings = { ...DEFAULT_SETTINGS };
 let currentPin = "7777";
-let mindRunning = false;
 
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -290,8 +283,7 @@ async function tryUnlock() {
   const storedData = localStorage.getItem('MATWALI_V15_DATA');
   if (!storedData) {
     if (pin === DEFAULT_SETTINGS.pin) {
-      currentPin = pin;
-      currentSettings = { ...DEFAULT_SETTINGS };
+      currentPin = pin; currentSettings = { ...DEFAULT_SETTINGS };
       localStorage.setItem('MATWALI_V15_DATA', await encryptData(currentSettings, pin));
       enterSystem();
     } else { wrongPin(); }
@@ -307,7 +299,6 @@ function wrongPin() {
 }
 function enterSystem() {
   document.getElementById('uiName').textContent = currentSettings.ownerName;
-  document.getElementById('whatsappBtn').href = `https://wa.me/${currentSettings.whatsapp}`;
   document.getElementById('atlasContent').innerHTML = currentSettings.atlas;
   showScreen('mainScreen');
   updateHardware();
@@ -353,23 +344,12 @@ const thoughts = [
   { h: "التضاعف", v: "ض" }, { h: "المنظومة", v: "م" }, { h: "الباقي", v: "ص" }, { h: "السيادة", v: "س" }
 ];
 function startMind() {
-  if (mindRunning) return;
-  mindRunning = true;
-  document.getElementById('mindBtn').disabled = true;
-  const waterEl = document.getElementById('water');
-  waterEl.style.width = '0%';
   let i = 0;
   const timer = setInterval(() => {
-    if (i >= thoughts.length) {
-      clearInterval(timer);
-      document.getElementById('mindBtn').disabled = false;
-      document.getElementById('mindBtn').textContent = 'إعادة التفعيل';
-      mindRunning = false;
-      return;
-    }
+    if (i >= thoughts.length) { clearInterval(timer); return; }
     document.getElementById('hidden').textContent = thoughts[i].h;
     document.getElementById('visible').textContent = thoughts[i].v;
-    waterEl.style.width = ((i + 1) / thoughts.length) * 100 + "%";
+    document.getElementById('water').style.width = ((i + 1) / thoughts.length) * 100 + "%";
     i++;
   }, 1000);
 }
@@ -385,9 +365,7 @@ function cmdMultiplyCores() {
 function cmdReturnToCore() {
   if (!window._massiveNumber) { addLog("شغل التضاعف أولاً", 'err'); return; }
   let finalResult = window._massiveNumber / window._totalMultiplier;
-  if (finalResult === BigInt(navigator.hardwareConcurrency || 8)) {
-    addLog('✓ عاد النظام إلى نواته الأصلية', 'ok');
-  }
+  if (finalResult === BigInt(navigator.hardwareConcurrency || 8)) addLog('✓ عاد النظام إلى نواته الأصلية', 'ok');
 }
 
 async function processImage() {
@@ -395,30 +373,63 @@ async function processImage() {
   const progress = document.getElementById('ocrProgress');
   const output = document.getElementById('ocrOutput');
   if (!fileInput.files.length) { alert("الرجاء اختيار صورة أولاً"); return; }
-  const file = fileInput.files[0];
-  output.value = "";
-  progress.textContent = "جاري تهيئة محرك الذكاء الاصطناعي...";
+  output.value = ""; progress.textContent = "جاري التهيئة...";
   try {
     const worker = await Tesseract.createWorker('ara');
-    progress.textContent = "جاري تحليل الصورة واستخراج النص...";
-    const ret = await worker.recognize(file);
-    output.value = ret.data.text;
-    progress.textContent = "✅ تمت القراءة بنجاح!";
+    progress.textContent = "جاري التحليل...";
+    const ret = await worker.recognize(fileInput.files[0]);
+    output.value = ret.data.text; progress.textContent = "✅ تمت القراءة!";
     await worker.terminate();
-  } catch (err) {
-    console.error(err);
-    progress.textContent = "❌ فشل في القراءة: " + err.message;
+  } catch (err) { progress.textContent = "❌ فشل: " + err.message; }
+}
+
+// ═══ دالة إرسال الإيميل (SMTP.js) ═══
+function sendMail() {
+  const name = document.getElementById('contactName').value;
+  const email = document.getElementById('contactEmail').value;
+  const msg = document.getElementById('contactMsg').value;
+
+  if(!name || !email || !msg) { alert("الرجاء ملء جميع الحقول"); return; }
+"lfrqhcyveswgyezt⚠️
+  const MY_GMAIL = "aldhyalmtwly@gmail.com";
+  const MY_APP_PASSWORD = "ثروت متولي"; 
+
+  if (MY_APP_PASSWORD === "ثروت متولي") {
+    alert("تنبيه: يجب وضع كلمة مرور التطبيق (16 حرفاً) في الكود أولاً!");
+    return;
   }
+
+  const btn = event.target;
+  btn.textContent = "جاري الإرسال...";
+
+  Email.send({
+    Host : "smtp.gmail.com",
+    Username : MY_GMAIL,
+    Password : MY_APP_PASSWORD,
+    To : MY_GMAIL,
+    From : MY_GMAIL,
+    Subject : "رسالة سيادية جديدة من البوابة",
+    Body : `<b>الاسم:</b> ${name} <br> <b>البريد:</b> ${email} <br> <b>الرسالة:</b> ${msg}`
+  }).then(
+    message => {
+      alert("✅ تم إرسال الرسالة بنجاح إلى بريدك!");
+      btn.textContent = "إرسال الرسالة";
+      document.getElementById('contactName').value = "";
+      document.getElementById('contactEmail').value = "";
+      document.getElementById('contactMsg').value = "";
+    }
+  ).catch(
+    error => {
+      alert("❌ حدث خطأ أثناء الإرسال: " + error);
+      btn.textContent = "إرسال الرسالة";
+    }
+  );
 }
 
 window.onload = () => {
-  if (localStorage.getItem('MATWALI_V15_DATA')) {
-    document.getElementById('lockTitle').textContent = "النظام المحمي";
-  } else {
-    document.getElementById('lockTitle').textContent = "الإعداد الأول (7777)";
-  }
+  if (localStorage.getItem('MATWALI_V15_DATA')) document.getElementById('lockTitle').textContent = "النظام المحمي";
+  else document.getElementById('lockTitle').textContent = "الإعداد الأول (7777)";
 };
 </script>
 </body>
-</html
-  
+</html>
