@@ -84,6 +84,9 @@ h1, h2 { color:var(--gold); text-shadow:0 0 15px var(--gold);
       <button class="cmd-btn gold" onclick="cmdMultiplyCores()">التضاعف السيادي</button>
       <button class="cmd-btn red" onclick="cmdReturnToCore()">معادلة العودة للأصل</button>
       
+      <!-- زر التواصل المادي -->
+      <a href="https://wa.me/201033063978" target="_blank" style="grid-column: span 2; display:block; text-align:center; text-decoration:none; background:transparent; color:var(--gold); border:2px solid var(--gold); padding:12px; font-size:13px; font-weight:bold; border-radius:6px; margin-top:6px;">💎 اطلب نظامك الخاص (تواصل معي)</a>
+
       <button class="cmd-btn red" onclick="cmdClearLog()" style="grid-column: span 2;">مسح السجل</button>
     </div>
 
@@ -216,7 +219,6 @@ function cmdClearLog() {
   document.getElementById('log').innerHTML = '> السجل مُفرّغ<br>';
 }
 
-// ═══ التضاعف السيادي (BigInt) ═══
 function cmdMultiplyCores() {
   const cores = navigator.hardwareConcurrency || 8;
   let result = BigInt(cores);
@@ -236,14 +238,12 @@ function cmdMultiplyCores() {
   
   addLog(`النتيجة النهائية: ${result.toLocaleString('en-US')}`, 'gold');
   
-  // حفظ الرقم الفلكي، وحفظ معامل الضرب الكلي للعودة الدقيقة
   window._massiveNumber = result; 
   window._totalMultiplier = result / BigInt(cores); 
   
   vibrate([50, 30, 50, 30, 100]);
 }
 
-// ═══ معادلة العودة للأصل (التصحيح الرياضي) ═══
 function cmdReturnToCore() {
   addLog("> بدء معادلة العودة للأصل...", 'gold');
   
@@ -255,9 +255,6 @@ function cmdReturnToCore() {
     return;
   }
   
-  addLog(`المعادلة: (${window._massiveNumber.toString().substring(0,10)}...) ÷ (المعامل الكلي)`, 'cyan');
-  
-  // القسمة على المعامل الكلي للعودة الدقيقة إلى الأنوية الأصلية
   let finalResult = window._massiveNumber / window._totalMultiplier;
   
   addLog(`النتيجة النهائية: ${finalResult.toLocaleString('en-US')}`, 'green');
@@ -318,7 +315,6 @@ function tryUnlock() {
   }
 }
 
-// دالة الدخول التلقائي عند الضغط على Enter
 document.getElementById('lockPin').addEventListener('keypress', function(e) {
   if (e.key === 'Enter') {
     tryUnlock();
