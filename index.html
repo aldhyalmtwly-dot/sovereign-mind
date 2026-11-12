@@ -5,58 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0a0e14">
 <title>متولي الموحد v17.0</title>
-<!-- محرك القراءة البصرية Tesseract.js -->
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<!-- مكتبة إرسال الإيميلات من المتصفح -->
 <script src="https://smtpjs.com/v3/smtp.js"></script>
 <style>
-/* ═══ نظام التصميم ═══ */
-:root {
-  --bg:#0a0e14; --card:#141b27; --card2:#1a2233; --border:#243044; --border2:#2f3d54;
-  --text:#e8eef5; --muted:#8a97a8; --muted2:#5c6a7e; --accent:#4ea1ff;
-  --ok:#3fb950; --warn:#d29922; --err:#f85149; --purple:#a371f7; --gold:#d4a04c;
-  --r:14px; --rs:10px;
-}
-:root.light {
-  --bg:#f5f7fa; --card:#fff; --card2:#f0f3f7; --border:#dfe5ec; --border2:#c8d1dc;
-  --text:#0d1621; --muted:#5c6a7e; --muted2:#9a97a8; --accent:#0066d6;
-}
+:root { --bg:#0a0e14; --card:#141b27; --card2:#1a2233; --border:#243044; --border2:#2f3d54; --text:#e8eef5; --muted:#8a97a8; --muted2:#5c6a7e; --accent:#4ea1ff; --ok:#3fb950; --warn:#d29922; --err:#f85149; --purple:#a371f7; --gold:#d4a04c; --r:14px; --rs:10px; }
+:root.light { --bg:#f5f7fa; --card:#fff; --card2:#f0f3f7; --border:#dfe5ec; --border2:#c8d1dc; --text:#0d1621; --muted:#5c6a7e; --muted2:#9a97a8; --accent:#0066d6; }
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-body {
-  background:var(--bg); color:var(--text);
-  font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, sans-serif;
-  font-size:15px; line-height:1.7; padding-bottom:calc(20px + env(safe-area-inset-bottom));
-  transition: background 0.3s, color 0.3s;
-}
-header {
-  position:sticky; top:0; z-index:100; background:rgba(20,27,39,.9);
-  backdrop-filter:blur(20px); border-bottom:1px solid var(--border);
-  padding:env(safe-area-inset-top) 16px 0;
-}
+body { background:var(--bg); color:var(--text); font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, sans-serif; font-size:15px; line-height:1.7; padding-bottom:calc(20px + env(safe-area-inset-bottom)); transition: background 0.3s, color 0.3s; }
+header { position:sticky; top:0; z-index:100; background:rgba(20,27,39,.9); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); padding:env(safe-area-inset-top) 16px 0; }
 :root.light header { background:rgba(255,255,255,.9); }
 .hdr { display:flex; align-items:center; gap:12px; height:56px; }
 .logo { display:flex; align-items:center; gap:10px; flex:1; cursor:pointer; }
-.logo-mark {
-  width:34px; height:34px; border-radius:10px;
-  background:linear-gradient(135deg, var(--accent), var(--purple));
-  display:grid; place-items:center; font-size:17px; font-weight:800; color:#fff;
-}
+.logo-mark { width:34px; height:34px; border-radius:10px; background:linear-gradient(135deg, var(--accent), var(--purple)); display:grid; place-items:center; font-size:17px; font-weight:800; color:#fff; }
 .logo-text { display:flex; flex-direction:column; line-height:1.15; }
 .logo-text b { font-size:15px; color:var(--text); }
 .logo-text span { font-size:10px; color:var(--muted); }
-.hdr-btn {
-  width:38px; height:38px; border-radius:11px; background:var(--card);
-  border:1px solid var(--border); color:var(--text); font-size:17px;
-  cursor:pointer; display:grid; place-items:center; transition:0.2s;
-}
+.hdr-btn { width:38px; height:38px; border-radius:11px; background:var(--card); border:1px solid var(--border); color:var(--text); font-size:17px; cursor:pointer; display:grid; place-items:center; transition:0.2s; }
 .hdr-btn:active { transform:scale(.92); }
 .screen { display:none; padding: 16px; max-width: 600px; margin: 0 auto; }
 .screen.active { display:block; animation: fadeIn 0.4s ease; }
 @keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
-.card {
-  background:var(--card); border:1px solid var(--border); border-radius:var(--r);
-  padding:20px; margin-bottom:16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-}
+.card { background:var(--card); border:1px solid var(--border); border-radius:var(--r); padding:20px; margin-bottom:16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
 h1, h2 { color:var(--text); font-size:20px; margin-bottom:10px; font-weight:700; }
 .subtitle { color:var(--muted); font-size:12px; margin-bottom:16px; }
 .hw-panel { display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin-bottom:16px; }
@@ -69,35 +38,20 @@ h1, h2 { color:var(--text); font-size:20px; margin-bottom:10px; font-weight:700;
 .mind-item { background: var(--card2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; text-align: center; }
 .mind-title { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
 .mind-value { font-size: 18px; color: var(--text); font-weight: bold; }
-.btn {
-  width:100%; background:var(--card2); color:var(--text); border:1px solid var(--border);
-  padding:14px; font-size:15px; font-weight:bold; border-radius:12px; cursor:pointer;
-  font-family:inherit; margin-top:8px; transition:.2s; text-decoration: none; display: block; text-align: center;
-}
+.btn { width:100%; background:var(--card2); color:var(--text); border:1px solid var(--border); padding:14px; font-size:15px; font-weight:bold; border-radius:12px; cursor:pointer; font-family:inherit; margin-top:8px; transition:.2s; text-decoration: none; display: block; text-align: center; }
 .btn:active { transform:scale(.98); }
 .btn-primary { background:linear-gradient(135deg, var(--accent), var(--purple)); color:#fff; border:none; }
 .btn-danger { border-color:var(--err); color:var(--err); }
 .btn-danger:active { background:var(--err); color:#fff; }
 .cmd-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; }
-.cmd-btn {
-  background:var(--card2); border:1px solid var(--border); color:var(--text);
-  padding:12px; font-size:12px; border-radius:10px; cursor:pointer; font-family:inherit;
-  transition:.2s; text-align: center; display: flex; align-items: center; justify-content: center;
-}
+.cmd-btn { background:var(--card2); border:1px solid var(--border); color:var(--text); padding:12px; font-size:12px; border-radius:10px; cursor:pointer; font-family:inherit; transition:.2s; text-align: center; display: flex; align-items: center; justify-content: center; }
 .cmd-btn:active { background:var(--border); }
 .cmd-btn.full { grid-column: span 2; }
 .cmd-btn.gold { border-color:var(--gold); color:var(--gold); }
-.input-field {
-  width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text);
-  padding:12px; font-size:14px; border-radius:8px; font-family:inherit; outline:none; margin-bottom:12px;
-}
+.input-field { width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text); padding:12px; font-size:14px; border-radius:8px; font-family:inherit; outline:none; margin-bottom:12px; }
 .input-field:focus { border-color:var(--accent); box-shadow:0 0 0 2px rgba(78,161,255,0.2); }
 .input-pin { text-align:center; letter-spacing:8px; font-size:24px; font-weight:bold; }
-.log {
-  background:#000; color:#0f0; border:1px solid var(--border); height:100px;
-  overflow-y:auto; padding:10px; font-size:11px; font-family:'Courier New', monospace;
-  border-radius:8px; margin-top:16px; direction:ltr; text-align:left;
-}
+.log { background:#000; color:#0f0; border:1px solid var(--border); height:100px; overflow-y:auto; padding:10px; font-size:11px; font-family:'Courier New', monospace; border-radius:8px; margin-top:16px; direction:ltr; text-align:left; }
 .log .l-err { color:var(--err); }
 .log .l-ok { color:var(--ok); }
 .scroll-box { max-height: 75vh; overflow-y: auto; padding-right: 4px; }
@@ -122,7 +76,6 @@ h1, h2 { color:var(--text); font-size:20px; margin-bottom:10px; font-weight:700;
   </div>
 </header>
 
-<!-- 1. شاشة القفل -->
 <div class="screen active" id="lockScreen">
   <div class="card" style="margin-top: 40px; text-align: center;">
     <div class="logo-mark" style="margin: 0 auto 20px; width: 60px; height: 60px; font-size: 28px;">0x</div>
@@ -134,27 +87,22 @@ h1, h2 { color:var(--text); font-size:20px; margin-bottom:10px; font-weight:700;
   </div>
 </div>
 
-<!-- 2. لوحة التحكم -->
 <div class="screen" id="mainScreen">
   <div class="card">
     <h1>لوحة التحكم</h1>
     <div class="subtitle">مرحباً بك، <span id="uiName">المدير</span></div>
-    
     <div class="hw-panel">
       <div class="hw-item"><div class="hw-label">الأنوية</div><div class="hw-val" id="hw-cores">-</div></div>
       <div class="hw-item"><div class="hw-label">البطارية</div><div class="hw-val" id="hw-bat">-</div></div>
       <div class="hw-item"><div class="hw-label">الشبكة</div><div class="hw-val" id="hw-net">-</div></div>
       <div class="hw-item"><div class="hw-label">الذاكرة</div><div class="hw-val" id="hw-ram">-</div></div>
     </div>
-
     <div class="pipe-container"><div class="water" id="water"></div></div>
     <div class="mind-box">
       <div class="mind-item"><div class="mind-title">الباطن (المعنى)</div><div class="mind-value" id="hidden">-</div></div>
       <div class="mind-item"><div class="mind-title">الظاهر (الحرف)</div><div class="mind-value" id="visible">-</div></div>
     </div>
-    
     <button class="btn btn-primary" id="mindBtn" onclick="startMind()">تفعيل العقل الواحد</button>
-
     <div class="cmd-grid">
       <button class="cmd-btn full gold" onclick="showScreen('atlasScreen')">📖 الأطلس البنيوي والمقارنة</button>
       <button class="cmd-btn full" onclick="showScreen('ocrScreen')">👁️ الماسح الضوئي الذكي (OCR)</button>
@@ -163,12 +111,10 @@ h1, h2 { color:var(--text); font-size:20px; margin-bottom:10px; font-weight:700;
       <button class="cmd-btn" onclick="cmdReturnToCore()">العودة للأصل</button>
       <button class="cmd-btn full" onclick="showScreen('adminScreen')">⚙️ إعدادات المدير</button>
     </div>
-
     <div class="log" id="log">> النظام جاهز<br></div>
   </div>
 </div>
 
-<!-- 3. شاشة الماسح الضوئي OCR -->
 <div class="screen" id="ocrScreen">
   <div class="card">
     <h2>الماسح الضوئي (OCR)</h2>
@@ -180,27 +126,21 @@ h1, h2 { color:var(--text); font-size:20px; margin-bottom:10px; font-weight:700;
   </div>
 </div>
 
-<!-- 4. شاشة نموذج المراسلة -->
 <div class="screen" id="contactScreen">
   <div class="card">
     <h2>مراسلة المدير</h2>
     <div class="subtitle">ستصل رسالتك مباشرة إلى البريد</div>
-    
     <label style="color:var(--text); font-size:13px;">الاسم:</label>
     <input type="text" id="contactName" class="input-field" placeholder="اكتب اسمك">
-    
     <label style="color:var(--text); font-size:13px;">البريد الإلكتروني:</label>
     <input type="email" id="contactEmail" class="input-field" placeholder="اكتب بريدك">
-    
     <label style="color:var(--text); font-size:13px;">الرسالة:</label>
     <textarea id="contactMsg" class="input-field" rows="5" placeholder="اكتب رسالتك هنا..."></textarea>
-    
     <button class="btn btn-primary" onclick="sendMail()" style="background:var(--purple);">إرسال الرسالة</button>
     <button class="btn btn-danger" onclick="showScreen('mainScreen')">رجوع</button>
   </div>
 </div>
 
-<!-- 5. شاشة الأطلس -->
 <div class="screen" id="atlasScreen">
   <div class="card scroll-box">
     <h2>الأطلس البنيوي v17.0</h2>
@@ -210,7 +150,6 @@ h1, h2 { color:var(--text); font-size:20px; margin-bottom:10px; font-weight:700;
   </div>
 </div>
 
-<!-- 6. شاشة الإعدادات -->
 <div class="screen" id="adminScreen">
   <div class="card scroll-box">
     <h2>إعدادات المدير</h2>
@@ -228,7 +167,6 @@ h1, h2 { color:var(--text); font-size:20px; margin-bottom:10px; font-weight:700;
 </div>
 
 <script>
-// ═══ التشفير السيادي ═══
 async function getCryptoKey(pin) {
   const enc = new TextEncoder();
   const keyMaterial = await crypto.subtle.importKey("raw", enc.encode(pin.padEnd(32, '0').slice(0, 32)), { name: "PBKDF2" }, false, ["deriveBits", "deriveKey"]);
@@ -383,16 +321,16 @@ async function processImage() {
   } catch (err) { progress.textContent = "❌ فشل: " + err.message; }
 }
 
-// ═══ دالة إرسال الإيميل (SMTP.js) ═══
 function sendMail() {
   const name = document.getElementById('contactName').value;
   const email = document.getElementById('contactEmail').value;
   const msg = document.getElementById('contactMsg').value;
 
   if(!name || !email || !msg) { alert("الرجاء ملء جميع الحقول"); return; }
-"lfrqhcyveswgyezt⚠️
+
   const MY_GMAIL = "aldhyalmtwly@gmail.com";
-  const MY_APP_PASSWORD = "ثروت متولي"; 
+  // ⚠️ هنا المكان المطلوب: امسح كلمة "ثروت متولي" وضع مكانها الـ 16 حرفاً ⚠️
+  const MY_APP_PASSWORD = "lfrqhcyveswgyezt";
 
   if (MY_APP_PASSWORD === "ثروت متولي") {
     alert("تنبيه: يجب وضع كلمة مرور التطبيق (16 حرفاً) في الكود أولاً!");
