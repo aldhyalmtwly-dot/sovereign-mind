@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0a0e14">
-<title>متولي الموحد v17.0</title>
+<title>متولي الموحد v18.0</title>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script src="https://smtpjs.com/v3/smtp.js"></script>
 <style>
@@ -55,9 +55,6 @@ h1, h2 { color:var(--text); font-size:20px; margin-bottom:10px; font-weight:700;
 .log .l-err { color:var(--err); }
 .log .l-ok { color:var(--ok); }
 .scroll-box { max-height: 75vh; overflow-y: auto; padding-right: 4px; }
-.scroll-box h3 { color: var(--accent); font-size: 16px; margin-top: 16px; margin-bottom: 8px; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
-.scroll-box p { font-size: 14px; color: var(--muted); margin-bottom: 10px; text-align: justify; }
-.scroll-box .highlight { color: var(--gold); font-weight: bold; }
 </style>
 </head>
 <body>
@@ -68,7 +65,7 @@ h1, h2 { color:var(--text); font-size:20px; margin-bottom:10px; font-weight:700;
       <div class="logo-mark">م</div>
       <div class="logo-text">
         <b>متولي الموحد</b>
-        <span>v17.0 Mail</span>
+        <span>v18.0 Final</span>
       </div>
     </div>
     <button class="hdr-btn" onclick="toggleTheme()">🌓</button>
@@ -143,7 +140,7 @@ h1, h2 { color:var(--text); font-size:20px; margin-bottom:10px; font-weight:700;
 
 <div class="screen" id="atlasScreen">
   <div class="card scroll-box">
-    <h2>الأطلس البنيوي v17.0</h2>
+    <h2>الأطلس البنيوي v18.0</h2>
     <div class="subtitle">المواجهة الكبرى · م. ثروت البهي</div>
     <div id="atlasContent"></div>
     <button class="btn btn-danger" onclick="showScreen('mainScreen')" style="margin-top: 20px;">إغلاق والعودة</button>
@@ -159,6 +156,11 @@ h1, h2 { color:var(--text); font-size:20px; margin-bottom:10px; font-weight:700;
     <input type="text" class="input-field" id="adminWhatsapp" inputmode="numeric">
     <label style="color:var(--text); font-size:13px;">مفتاح الدخول الجديد:</label>
     <input type="password" class="input-field input-pin" id="adminPin" placeholder="اتركه فارغاً للإبقاء على القديم">
+    
+    <!-- المكان الجديد الآمن للـ 16 حرفاً -->
+    <label style="color:var(--text); font-size:13px;">كلمة مرور التطبيق (16 حرفاً):</label>
+    <input type="password" class="input-field" id="adminMailPass" placeholder="الصق الـ 16 حرفاً هنا">
+    
     <label style="color:var(--text); font-size:13px;">نص الأطلس (يدعم HTML):</label>
     <textarea class="input-field" id="adminAtlas" rows="6"></textarea>
     <button class="btn btn-primary" onclick="saveAdminSettings()">حفظ وتشفير</button>
@@ -195,6 +197,7 @@ const DEFAULT_SETTINGS = {
   ownerName: "ثروت محمد متولي البهي",
   whatsapp: "201033063978",
   pin: "7777",
+  mailPass: "",
   atlas: `<h3>1. المواجهة الكبرى</h3><p>العلم التقليدي: قوالب بشرية جامدة. علمنا: شرب مباشر من الينبوع وإلغاء العوامل المقدرة.</p>`
 };
 
@@ -251,12 +254,14 @@ function loadAdminUI() {
   document.getElementById('adminName').value = currentSettings.ownerName;
   document.getElementById('adminWhatsapp').value = currentSettings.whatsapp;
   document.getElementById('adminPin').value = '';
+  document.getElementById('adminMailPass').value = currentSettings.mailPass || '';
   document.getElementById('adminAtlas').value = currentSettings.atlas;
 }
 async function saveAdminSettings() {
   const updatedSettings = {
     ownerName: document.getElementById('adminName').value.trim(),
     whatsapp: document.getElementById('adminWhatsapp').value.trim(),
+    mailPass: document.getElementById('adminMailPass').value.trim(),
     atlas: document.getElementById('adminAtlas').value.trim(),
     pin: document.getElementById('adminPin').value.trim() || currentPin
   };
@@ -329,11 +334,12 @@ function sendMail() {
   if(!name || !email || !msg) { alert("الرجاء ملء جميع الحقول"); return; }
 
   const MY_GMAIL = "aldhyalmtwly@gmail.com";
-  // ⚠️ هنا المكان المطلوب: امسح كلمة "ثروت متولي" وضع مكانها الـ 16 حرفاً ⚠️
-  const MY_APP_PASSWORD = "lfrqhcyveswgyezt";
+  
+  // الآن النظام يقرأ الباسورد من إعدادات المدير بدلاً من الكود
+  const MY_APP_PASSWORD = currentSettings.mailPass;
 
-  if (MY_APP_PASSWORD === "ثروت متولي") {
-    alert("تنبيه: يجب وضع كلمة مرور التطبيق (16 حرفاً) في الكود أولاً!");
+  if (!MY_APP_PASSWORD) {
+    alert("تنبيه: يجب الذهاب إلى 'إعدادات المدير' ووضع كلمة مرور التطبيق (16 حرفاً) أولاً!");
     return;
   }
 
