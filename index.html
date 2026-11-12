@@ -2,324 +2,324 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#000000">
-<title>النظام السيادي · لوحة التحكم</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0e14">
+<title>متولي الموحد v15.5</title>
+<!-- محرك القراءة البصرية Tesseract.js -->
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
-:root { --gold:#ffd700; --cyan:#00ffcc; --red:#ff0055; --green:#00ff88; --bg:#000; --dim:#555; }
-* { -webkit-tap-highlight-color:transparent; box-sizing:border-box; }
-body { background:var(--bg); color:var(--cyan); font-family:'Courier New',monospace; margin:0; padding:10px; min-height:100vh; display:flex; align-items:center; justify-content:center; user-select:none; -webkit-user-select:none; overflow-x:hidden; }
-.screen { display:none; width:100%; max-width:480px; }
-.screen.active { display:block; animation:fadeIn .4s ease; }
-@keyframes fadeIn { from{opacity:0;transform:scale(.98);} to{opacity:1;transform:scale(1);} }
-
-/* الشاشات الأساسية */
-#bootScreen { text-align: center; }
-.circle-container { width: 140px; height: 140px; border-radius: 50%; border: 3px solid var(--gold); box-shadow: 0 0 25px var(--gold), inset 0 0 20px var(--cyan); display: flex; align-items: center; justify-content: center; margin: 0 auto 30px auto; animation: pulse 2s infinite alternate; }
-@keyframes pulse { from { box-shadow: 0 0 15px var(--gold); } to { box-shadow: 0 0 35px var(--gold), inset 0 0 30px var(--cyan); } }
-.circle-text { font-size: 36px; color: var(--gold); text-shadow: 0 0 15px var(--gold); font-weight: bold; }
-.main-name { font-size: 26px; font-weight: bold; margin-bottom: 10px; text-shadow: 0 0 20px var(--gold); color: var(--gold); }
-.sub-name { font-size: 13px; color: var(--cyan); letter-spacing: 2px; margin-bottom: 40px; }
-
-.box { border:2px solid var(--gold); border-radius:12px; padding:18px; background:#050505; box-shadow:0 0 50px rgba(255,215,0,.15); }
-h1, h2 { color:var(--gold); text-shadow:0 0 15px var(--gold); text-align:center; margin:0 0 4px; font-size:20px; }
-.subtitle { color:var(--dim); font-size:10px; text-align:center; letter-spacing:2px; margin-bottom:14px; }
-
-/* لوحة العتاد */
-.hw-panel { display:grid; grid-template-columns:repeat(4, 1fr); gap:5px; margin-bottom:12px; }
-.hw-item { background:#080808; border:1px solid #222; border-radius:5px; padding:6px 3px; text-align:center; }
-.hw-label { font-size:8px; color:var(--dim); }
-.hw-val { font-size:11px; color:var(--cyan); font-weight:bold; margin-top:2px; min-height:14px; }
-
-/* الماسورة */
-.pipe-container { width: 100%; height: 12px; background: #111; border-radius: 6px; overflow: hidden; margin-bottom: 12px; border: 1px solid #333; }
-.water { height: 100%; width: 0%; background: linear-gradient(90deg, var(--cyan), var(--gold)); transition: width 0.3s ease; box-shadow: 0 0 15px var(--cyan); }
-.mind-box { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-.mind-item { border: 1px solid #333; padding: 8px; border-radius: 6px; background: #050505; text-align: center; }
-.mind-title { font-size: 10px; color: var(--dim); margin-bottom: 4px; }
-.mind-value { font-size: 16px; color: var(--cyan); font-weight: bold; min-height: 20px; }
-
-/* الأزرار */
-.btn { width:100%; background:transparent; color:var(--gold); border:2px solid var(--gold); padding:12px; font-size:14px; font-weight:bold; border-radius:8px; cursor:pointer; font-family:inherit; margin-top:6px; transition:.3s; text-decoration: none; display: block; }
-.btn:active:not(:disabled) { background:var(--gold); color:#000; }
-.btn-red { border-color:var(--red); color:var(--red); }
-.btn-red:active { background:var(--red); color:#000; }
-.btn-cyan { border-color:var(--cyan); color:var(--cyan); }
-.btn-cyan:active { background:var(--cyan); color:#000; }
-.cmd-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:8px; }
-.cmd-btn { background:#0a0a0a; border:1px solid #333; color:var(--cyan); padding:10px; font-size:11px; border-radius:6px; cursor:pointer; font-family:inherit; transition:.2s; text-align: center; }
-.cmd-btn:active { background:var(--cyan); color:#000; }
+/* ═══ نظام التصميم v15.0 ═══ */
+:root {
+  --bg:#0a0e14; --card:#141b27; --card2:#1a2233; --border:#243044; --border2:#2f3d54;
+  --text:#e8eef5; --muted:#8a97a8; --muted2:#5c6a7e; --accent:#4ea1ff;
+  --ok:#3fb950; --warn:#d29922; --err:#f85149; --purple:#a371f7; --gold:#d4a04c;
+  --r:14px; --rs:10px;
+}
+:root.light {
+  --bg:#f5f7fa; --card:#fff; --card2:#f0f3f7; --border:#dfe5ec; --border2:#c8d1dc;
+  --text:#0d1621; --muted:#5c6a7e; --muted2:#9a97a8; --accent:#0066d6;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body {
+  background:var(--bg); color:var(--text);
+  font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, sans-serif;
+  font-size:15px; line-height:1.7; padding-bottom:calc(20px + env(safe-area-inset-bottom));
+  transition: background 0.3s, color 0.3s;
+}
+header {
+  position:sticky; top:0; z-index:100; background:rgba(20,27,39,.9);
+  backdrop-filter:blur(20px); border-bottom:1px solid var(--border);
+  padding:env(safe-area-inset-top) 16px 0;
+}
+:root.light header { background:rgba(255,255,255,.9); }
+.hdr { display:flex; align-items:center; gap:12px; height:56px; }
+.logo { display:flex; align-items:center; gap:10px; flex:1; cursor:pointer; }
+.logo-mark {
+  width:34px; height:34px; border-radius:10px;
+  background:linear-gradient(135deg, var(--accent), var(--purple));
+  display:grid; place-items:center; font-size:17px; font-weight:800; color:#fff;
+}
+.logo-text { display:flex; flex-direction:column; line-height:1.15; }
+.logo-text b { font-size:15px; color:var(--text); }
+.logo-text span { font-size:10px; color:var(--muted); }
+.hdr-btn {
+  width:38px; height:38px; border-radius:11px; background:var(--card);
+  border:1px solid var(--border); color:var(--text); font-size:17px;
+  cursor:pointer; display:grid; place-items:center; transition:0.2s;
+}
+.hdr-btn:active { transform:scale(.92); }
+.screen { display:none; padding: 16px; max-width: 600px; margin: 0 auto; }
+.screen.active { display:block; animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+.card {
+  background:var(--card); border:1px solid var(--border); border-radius:var(--r);
+  padding:20px; margin-bottom:16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+.card2 { background:var(--card2); border:1px solid var(--border2); border-radius:var(--rs); padding:12px; }
+h1, h2 { color:var(--text); font-size:20px; margin-bottom:10px; font-weight:700; }
+.subtitle { color:var(--muted); font-size:12px; margin-bottom:16px; }
+.hw-panel { display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin-bottom:16px; }
+.hw-item { background:var(--card2); border:1px solid var(--border); border-radius:8px; padding:8px; text-align:center; }
+.hw-label { font-size:10px; color:var(--muted); }
+.hw-val { font-size:13px; color:var(--accent); font-weight:bold; margin-top:4px; }
+.pipe-container { width: 100%; height: 8px; background: var(--card2); border-radius: 4px; overflow: hidden; margin-bottom: 16px; }
+.water { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--purple)); transition: width 0.3s ease; }
+.mind-box { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.mind-item { background: var(--card2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; text-align: center; }
+.mind-title { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+.mind-value { font-size: 18px; color: var(--text); font-weight: bold; }
+.btn {
+  width:100%; background:var(--card2); color:var(--text); border:1px solid var(--border);
+  padding:14px; font-size:15px; font-weight:bold; border-radius:12px; cursor:pointer;
+  font-family:inherit; margin-top:8px; transition:.2s; text-decoration: none; display: block; text-align: center;
+}
+.btn:active { transform:scale(.98); }
+.btn-primary { background:linear-gradient(135deg, var(--accent), var(--purple)); color:#fff; border:none; }
+.btn-danger { border-color:var(--err); color:var(--err); }
+.btn-danger:active { background:var(--err); color:#fff; }
+.cmd-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; }
+.cmd-btn {
+  background:var(--card2); border:1px solid var(--border); color:var(--text);
+  padding:12px; font-size:12px; border-radius:10px; cursor:pointer; font-family:inherit;
+  transition:.2s; text-align: center; display: flex; align-items: center; justify-content: center;
+}
+.cmd-btn:active { background:var(--border); }
+.cmd-btn.full { grid-column: span 2; }
 .cmd-btn.gold { border-color:var(--gold); color:var(--gold); }
-.cmd-btn.gold:active { background:var(--gold); color:#000; }
-.log { background:#000; border:1px solid #222; height:100px; overflow-y:auto; padding:6px; font-size:9px; text-align:left; border-radius:5px; margin-top:10px; line-height:1.5; font-family:monospace; color:var(--cyan); }
-.log .l-ok { color:var(--green); }
-.log .l-err { color:var(--red); }
-.input-field { width:100%; background:#000; border:1px solid #333; color:var(--cyan); padding:10px; font-size:14px; border-radius:8px; font-family:inherit; outline:none; margin-bottom:10px; }
-.input-field:focus { border-color:var(--cyan); }
-.input-pin { text-align:center; letter-spacing:4px; font-size:18px; }
-.footer { text-align:center; color:#333; font-size:8px; margin-top:10px; letter-spacing:1px; }
-.glow { box-shadow: inset 0 0 80px var(--gold) !important; background: #0a0500 !important; }
-
-/* شاشة الأطلس ولوحة التحكم */
-.scroll-box { text-align: right; max-height: 80vh; overflow-y: auto; }
-.scroll-box h3 { color: var(--gold); font-size: 16px; margin-top: 15px; margin-bottom: 8px; border-bottom: 1px dashed var(--dim); padding-bottom: 4px; }
-.scroll-box p { font-size: 13px; line-height: 1.8; color: #ccc; margin-bottom: 10px; text-align: justify; }
-.scroll-box .meta { color: var(--cyan); font-size: 11px; text-align: center; margin-bottom: 15px; }
+.input-field {
+  width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text);
+  padding:12px; font-size:14px; border-radius:8px; font-family:inherit; outline:none; margin-bottom:12px;
+}
+.input-field:focus { border-color:var(--accent); box-shadow:0 0 0 2px rgba(78,161,255,0.2); }
+.input-pin { text-align:center; letter-spacing:8px; font-size:24px; font-weight:bold; }
+.log {
+  background:#000; color:#0f0; border:1px solid var(--border); height:100px;
+  overflow-y:auto; padding:10px; font-size:11px; font-family:'Courier New', monospace;
+  border-radius:8px; margin-top:16px; direction:ltr; text-align:left;
+}
+.log .l-err { color:var(--err); }
+.log .l-ok { color:var(--ok); }
+.scroll-box { max-height: 75vh; overflow-y: auto; padding-right: 4px; }
+.scroll-box h3 { color: var(--accent); font-size: 16px; margin-top: 16px; margin-bottom: 8px; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+.scroll-box p { font-size: 14px; color: var(--muted); margin-bottom: 10px; text-align: justify; }
+.scroll-box .highlight { color: var(--gold); font-weight: bold; }
 </style>
 </head>
 <body>
 
-<!-- 1. شاشة الإقلاع -->
-<div class="screen active" id="bootScreen">
-  <div class="circle-container"><div class="circle-text">0x00</div></div>
-  <div class="main-name" id="bootName">جاري التحميل...</div>
-  <div class="sub-name">المدير السيادي - المالك المحقق</div>
-  <button class="btn btn-cyan" onclick="showScreen('lockScreen')">دخول النظام السيادي</button>
-</div>
+<header>
+  <div class="hdr">
+    <div class="logo" onclick="showScreen('mainScreen')">
+      <div class="logo-mark">م</div>
+      <div class="logo-text">
+        <b>متولي الموحد</b>
+        <span>v15.5 OCR AI</span>
+      </div>
+    </div>
+    <button class="hdr-btn" onclick="toggleTheme()">🌓</button>
+    <button class="hdr-btn" onclick="lockSystem()">🔒</button>
+  </div>
+</header>
 
-<!-- 2. شاشة القفل -->
-<div class="screen" id="lockScreen">
-  <div class="box">
-    <h2>النظام مقفل</h2>
-    <div class="subtitle">أدخل مفتاح الدخول السيادي</div>
+<!-- 1. شاشة القفل -->
+<div class="screen active" id="lockScreen">
+  <div class="card" style="margin-top: 40px; text-align: center;">
+    <div class="logo-mark" style="margin: 0 auto 20px; width: 60px; height: 60px; font-size: 28px;">0x</div>
+    <h1 id="lockTitle">النظام مقفل</h1>
+    <p class="subtitle">أدخل مفتاح الدخول السيادي</p>
     <input type="password" class="input-field input-pin" id="lockPin" placeholder="••••" maxlength="10" inputmode="numeric">
-    <button class="btn" onclick="tryUnlock()">دخول مشفر</button>
-    <div class="log" style="height:50px;" id="lockLog">> بانتظار المفتاح...</div>
+    <button class="btn btn-primary" onclick="tryUnlock()">دخول مشفر</button>
+    <div class="log" id="lockLog">> بانتظار المفتاح...</div>
   </div>
 </div>
 
-<!-- 3. لوحة التحكم الرئيسية -->
+<!-- 2. لوحة التحكم -->
 <div class="screen" id="mainScreen">
-  <div class="box" id="mainBox">
-    <h1>النظام السيادي</h1>
-    <div class="subtitle">MATWALI Sovereign OS</div>
+  <div class="card">
+    <h1>لوحة التحكم</h1>
+    <div class="subtitle">مرحباً بك، <span id="uiName">المدير</span></div>
+    
     <div class="hw-panel">
       <div class="hw-item"><div class="hw-label">الأنوية</div><div class="hw-val" id="hw-cores">-</div></div>
       <div class="hw-item"><div class="hw-label">البطارية</div><div class="hw-val" id="hw-bat">-</div></div>
       <div class="hw-item"><div class="hw-label">الشبكة</div><div class="hw-val" id="hw-net">-</div></div>
       <div class="hw-item"><div class="hw-label">الذاكرة</div><div class="hw-val" id="hw-ram">-</div></div>
     </div>
+
     <div class="pipe-container"><div class="water" id="water"></div></div>
     <div class="mind-box">
-      <div class="mind-item"><div class="mind-title">الباطن</div><div class="mind-value" id="hidden">-</div></div>
-      <div class="mind-item"><div class="mind-title">الظاهر</div><div class="mind-value" id="visible">-</div></div>
+      <div class="mind-item"><div class="mind-title">الباطن (المعنى)</div><div class="mind-value" id="hidden">-</div></div>
+      <div class="mind-item"><div class="mind-title">الظاهر (الحرف)</div><div class="mind-value" id="visible">-</div></div>
     </div>
-    <button class="btn btn-cyan" id="mindBtn" onclick="startMind()">تفعيل العقل الواحد</button>
+    
+    <button class="btn btn-primary" id="mindBtn" onclick="startMind()">تفعيل العقل الواحد</button>
+
     <div class="cmd-grid">
-      <button class="cmd-btn gold" onclick="showScreen('atlasScreen')" style="grid-column: span 2;">📖 قراءة الأطلس البنيوي</button>
-      <button class="cmd-btn gold" onclick="cmdMultiplyCores()">التضاعف السيادي</button>
-      <button class="cmd-btn red" onclick="cmdReturnToCore()">معادلة العودة للأصل</button>
-      <a id="whatsappBtn" href="#" target="_blank" class="cmd-btn gold" style="grid-column: span 2; text-decoration: none;">💎 اطلب نظامك الخاص (تواصل معي)</a>
-      <button class="cmd-btn" onclick="showScreen('adminScreen')">⚙️ لوحة التحكم (المدير)</button>
-      <button class="cmd-btn" onclick="runDiagnostics()">التشخيص الحي</button>
+      <button class="cmd-btn full gold" onclick="showScreen('atlasScreen')">📖 الأطلس البنيوي (ASDN)</button>
+      <button class="cmd-btn full" onclick="showScreen('ocrScreen')">👁️ الماسح الضوئي الذكي (OCR)</button>
+      <button class="cmd-btn" onclick="cmdMultiplyCores()">التضاعف الفلكي</button>
+      <button class="cmd-btn" onclick="cmdReturnToCore()">العودة للأصل</button>
+      <a id="whatsappBtn" href="#" target="_blank" class="cmd-btn full" style="color:var(--accent); border-color:var(--accent); text-decoration:none;">💎 تواصل معي (واتساب)</a>
+      <button class="cmd-btn full" onclick="showScreen('adminScreen')">⚙️ إعدادات المدير</button>
     </div>
-    <div class="log" id="log">> النظام السيادي جاهز<br></div>
-    <button class="btn btn-red" onclick="lockSystem()">قفل النظام</button>
-    <div class="footer">SOVEREIGN · ENCRYPTED · 2026</div>
+
+    <div class="log" id="log">> النظام جاهز<br></div>
+  </div>
+</div>
+
+<!-- 3. شاشة الماسح الضوئي OCR -->
+<div class="screen" id="ocrScreen">
+  <div class="card">
+    <h2>الماسح الضوئي (OCR)</h2>
+    <div class="subtitle">قراءة النصوص من الصور بالذكاء الاصطناعي</div>
+    
+    <input type="file" id="imageInput" accept="image/*" class="input-field" style="padding:10px; background:var(--card2);">
+    <div id="ocrProgress" class="subtitle" style="color:var(--gold); height:20px;"></div>
+    
+    <textarea id="ocrOutput" class="input-field" rows="8" placeholder="النص المستخرج سيظهر هنا..."></textarea>
+    
+    <button class="btn btn-primary" onclick="processImage()">بدء المسح الضوئي</button>
+    <button class="btn btn-danger" onclick="showScreen('mainScreen')">رجوع</button>
   </div>
 </div>
 
 <!-- 4. شاشة الأطلس -->
 <div class="screen" id="atlasScreen">
-  <div class="box scroll-box">
-    <h2 id="atlasTitle">ظلال الوعي وشمس الغيب</h2>
-    <div class="meta" id="atlasMeta"></div>
+  <div class="card scroll-box">
+    <h2>الأطلس البنيوي</h2>
+    <div class="subtitle">نموذج ASDN · م. ثروت البهي</div>
     <div id="atlasContent"></div>
-    <button class="btn btn-red" onclick="showScreen('mainScreen')" style="margin-top: 20px;">إغلاق والعودة</button>
+    <button class="btn btn-danger" onclick="showScreen('mainScreen')" style="margin-top: 20px;">إغلاق والعودة</button>
   </div>
 </div>
 
-<!-- 5. لوحة تحكم المدير (المشفرة) -->
+<!-- 5. شاشة الإعدادات -->
 <div class="screen" id="adminScreen">
-  <div class="box scroll-box">
-    <h2>⚙️ لوحة التحكم السيادية</h2>
-    <div class="subtitle">تعديلاتك تُحفظ مشفرة (AES-256)</div>
-    
-    <label style="color:var(--gold); font-size:12px;">اسم المالك (يظهر في الإقلاع):</label>
+  <div class="card scroll-box">
+    <h2>إعدادات المدير</h2>
+    <div class="subtitle">مشفرة بـ AES-256 (محلية)</div>
+    <label style="color:var(--text); font-size:13px;">اسم المالك:</label>
     <input type="text" class="input-field" id="adminName">
-    
-    <label style="color:var(--gold); font-size:12px;">رقم الواتساب (بدون +):</label>
+    <label style="color:var(--text); font-size:13px;">رقم الواتساب (بدون +):</label>
     <input type="text" class="input-field" id="adminWhatsapp" inputmode="numeric">
-    
-    <label style="color:var(--gold); font-size:12px;">مفتاح الدخول الجديد (PIN):</label>
+    <label style="color:var(--text); font-size:13px;">مفتاح الدخول الجديد:</label>
     <input type="password" class="input-field input-pin" id="adminPin" placeholder="اتركه فارغاً للإبقاء على القديم">
-    
-    <label style="color:var(--gold); font-size:12px;">نص الأطلس البنيوي:</label>
-    <textarea class="input-field" id="adminAtlas" rows="6"></textarea>
-
-    <button class="btn btn-cyan" onclick="saveAdminSettings()">حفظ وتشفير البيانات</button>
-    <button class="btn btn-red" onclick="showScreen('mainScreen')">إلغاء</button>
+    <label style="color:var(--text); font-size:13px;">نص الأطلس (يدعم HTML):</label>
+    <textarea class="input-field" id="adminAtlas" rows="8"></textarea>
+    <button class="btn btn-primary" onclick="saveAdminSettings()">حفظ وتشفير</button>
+    <button class="btn btn-danger" onclick="showScreen('mainScreen')">إلغاء</button>
   </div>
 </div>
 
 <script>
-// ═══ محرك التشفير السيادي (AES-256) ═══
-// هذا المحرك يضمن أن أي بيانات تحفظها (الاسم، الرقم، الباسورد) تتحول لرموز مشفرة
-// لا يمكن لأي مخترق قراءتها من الـ localStorage أو من الكود.
-
+// ═══ التشفير السيادي (AES-256) ═══
 async function getCryptoKey(pin) {
   const enc = new TextEncoder();
-  const keyMaterial = await crypto.subtle.importKey(
-    "raw", enc.encode(pin.padEnd(32, '0').slice(0, 32)), { name: "PBKDF2" }, false, ["deriveBits", "deriveKey"]
-  );
-  return crypto.subtle.deriveKey(
-    { name: "PBKDF2", salt: enc.encode("SOVEREIGN_SALT_2026"), iterations: 100000, hash: "SHA-256" },
-    keyMaterial, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]
-  );
+  const keyMaterial = await crypto.subtle.importKey("raw", enc.encode(pin.padEnd(32, '0').slice(0, 32)), { name: "PBKDF2" }, false, ["deriveBits", "deriveKey"]);
+  return crypto.subtle.deriveKey({ name: "PBKDF2", salt: enc.encode("SOVEREIGN_SALT_2026"), iterations: 100000, hash: "SHA-256" }, keyMaterial, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
 }
-
 async function encryptData(data, pin) {
   const key = await getCryptoKey(pin);
   const iv = crypto.getRandomValues(new Uint8Array(12));
-  const enc = new TextEncoder();
-  const encrypted = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, enc.encode(JSON.stringify(data)));
+  const encrypted = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, new TextEncoder().encode(JSON.stringify(data)));
   const combined = new Uint8Array(iv.length + encrypted.byteLength);
-  combined.set(iv);
-  combined.set(new Uint8Array(encrypted), iv.length);
+  combined.set(iv); combined.set(new Uint8Array(encrypted), iv.length);
   return btoa(String.fromCharCode(...combined));
 }
-
 async function decryptData(encryptedStr, pin) {
   try {
     const str = atob(encryptedStr);
     const combined = new Uint8Array(str.split('').map(c => c.charCodeAt(0)));
-    const iv = combined.slice(0, 12);
-    const data = combined.slice(12);
+    const iv = combined.slice(0, 12); const data = combined.slice(12);
     const key = await getCryptoKey(pin);
     const decrypted = await crypto.subtle.decrypt({ name: "AES-GCM", iv }, key, data);
     return JSON.parse(new TextDecoder().decode(decrypted));
-  } catch (e) {
-    return null; // فشل فك التشفير (باسورد خاطئ)
-  }
+  } catch (e) { return null; }
 }
 
-// ═══ الإعدادات الافتراضية ═══
 const DEFAULT_SETTINGS = {
-  ownerName: "ثروت المتولي",
+  ownerName: "ثروت محمد متولي البهي",
   whatsapp: "201033063978",
   pin: "7777",
-  atlas: `<h3>الباب التمهيدي: الإناء العاقل والأنابيب</h3><p>التقليديون أخذوا الماء النقي من الينابيع (علم الأسماء)، ووضعوه في أنابيب بلاستيكية (قوالب بشرية كالمبتدأ والخبر)، وقدموه للعامة، فقد الماء طهارته. نحن هنا نشرب من الينبوع مباشرة.</p><h3>المعجزة الزمنية</h3><p>هذا البناء كله (النحو، البرمجة، الطب، الشعر) لم يستغرق سوى أقل من 15 يوماً. هذا هو "علم الأسماء" الذي يقذفه الله في قلب من يشاء.</p>`
+  atlas: `
+    <h3>1. شبكة الاعتماد الدلالي ASDN</h3><p><span class="highlight">(Semantic Dependency)</span>: نموذج حاسوبي يحلل الجملة كشبكة من العلاقات الدلالية المباشرة بين الكلمات.</p>
+    <h3>2. مبدأ صفرية التقدير</h3><p><span class="highlight">(Zero-Null-Node Principle)</span>: قاعدة منهجية تمنع إضافة أي عقد محذوفة أو مقدرة افتراضياً بالعقل.</p>
+    <h3>3. الرسم البياني الموجه غير الدوري (DAG)</h3><p><span class="highlight">(Directed Acyclic Graph)</span>: التحوية بأسهم متجهة من الدال إلى المدلول دون الوقوع في حلقات مغلقة.</p>
+    <h3>4. الرمز الإشاري الإعرابي</h3><p><span class="highlight">(Indexical Marker)</span>: اعتبار العلامات الإعرابية آثاراً بصرية إشارية ناتجة عن قوة التجاذب بين العقد.</p>
+    <h3>5. نظام التبعيات الكونية (UD)</h3><p><span class="highlight">(Universal Dependencies)</span>: إطار عمل معياري عالمي لتمثيل نحو التبعيات عبر اللغات البشرية.</p>
+    <h3>6. مؤشرات التقييم الكمي</h3><p><span class="highlight">(Precision / Recall / F1-Score)</span>: مقاييس حاسوبية لدقة المحول الإعرابي للتحقق من الأداء.</p>
+  `
 };
 
 let currentSettings = { ...DEFAULT_SETTINGS };
-let currentPin = "7777"; // الباسورد الحالي في الذاكرة
-let wakeLock = null;
+let currentPin = "7777";
 let mindRunning = false;
 
-// ═══ دوال واجهة المستخدم ═══
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   if (id === 'adminScreen') loadAdminUI();
-  vibrate(20);
 }
-
-function vibrate(pattern) { if (navigator.vibrate) navigator.vibrate(pattern); }
-
+function toggleTheme() { document.documentElement.classList.toggle('light'); }
 function addLog(msg, type = '') {
   const log = document.getElementById('log');
   if (!log) return;
-  const time = new Date().toLocaleTimeString('en-GB');
   const line = document.createElement('div');
   line.className = type ? 'l-' + type : '';
-  line.textContent = `[${time}] ${msg}`;
+  line.textContent = `> ${msg}`;
   log.appendChild(line);
   log.scrollTop = log.scrollHeight;
 }
-
-// ═══ الإقلاع والدخول ═══
 async function tryUnlock() {
   const pin = document.getElementById('lockPin').value;
-  const storedData = localStorage.getItem('SOVEREIGN_ENCRYPTED_DATA');
-  
+  const storedData = localStorage.getItem('MATWALI_V15_DATA');
   if (!storedData) {
-    // أول مرة: استخدام الافتراضي
     if (pin === DEFAULT_SETTINGS.pin) {
       currentPin = pin;
       currentSettings = { ...DEFAULT_SETTINGS };
-      // حفظ مشفر
-      const enc = await encryptData(currentSettings, pin);
-      localStorage.setItem('SOVEREIGN_ENCRYPTED_DATA', enc);
+      localStorage.setItem('MATWALI_V15_DATA', await encryptData(currentSettings, pin));
       enterSystem();
     } else { wrongPin(); }
   } else {
-    // محاولة فك التشفير
     const decrypted = await decryptData(storedData, pin);
-    if (decrypted) {
-      currentPin = pin;
-      currentSettings = decrypted;
-      enterSystem();
-    } else {
-      wrongPin();
-    }
+    if (decrypted) { currentPin = pin; currentSettings = decrypted; enterSystem(); } 
+    else { wrongPin(); }
   }
 }
-
 function wrongPin() {
-  document.getElementById('lockLog').innerHTML = '<span class="l-err">> مفتاح خاطئ ✗ (النظام مشفر)</span>';
-  vibrate([150, 50, 150]);
+  document.getElementById('lockLog').innerHTML = '<span class="l-err">> مفتاح خاطئ ✗</span>';
   document.getElementById('lockPin').value = '';
 }
-
 function enterSystem() {
-  document.getElementById('bootName').textContent = currentSettings.ownerName;
+  document.getElementById('uiName').textContent = currentSettings.ownerName;
   document.getElementById('whatsappBtn').href = `https://wa.me/${currentSettings.whatsapp}`;
-  document.getElementById('atlasTitle').textContent = `الأطلس البنيوي · ${currentSettings.ownerName}`;
-  document.getElementById('atlasMeta').innerHTML = `المؤلف: ${currentSettings.ownerName}<br>تاريخ الإصدار: 2026`;
   document.getElementById('atlasContent').innerHTML = currentSettings.atlas;
-  
   showScreen('mainScreen');
   updateHardware();
   setInterval(updateHardware, 3000);
-  vibrate([20, 40, 20]);
 }
-
 function lockSystem() {
   document.getElementById('lockPin').value = '';
   document.getElementById('lockLog').innerHTML = '> بانتظار المفتاح...';
   showScreen('lockScreen');
-  vibrate(100);
 }
-
-// ═══ لوحة تحكم المدير ═══
 function loadAdminUI() {
   document.getElementById('adminName').value = currentSettings.ownerName;
   document.getElementById('adminWhatsapp').value = currentSettings.whatsapp;
   document.getElementById('adminPin').value = '';
   document.getElementById('adminAtlas').value = currentSettings.atlas;
 }
-
 async function saveAdminSettings() {
-  const newName = document.getElementById('adminName').value.trim();
-  const newWa = document.getElementById('adminWhatsapp').value.trim();
-  const newPin = document.getElementById('adminPin').value.trim();
-  const newAtlas = document.getElementById('adminAtlas').value.trim();
-  
-  if (!newName || !newWa) {
-    alert('الاسم ورقم الواتساب مطلوبان!');
-    return;
-  }
-  
   const updatedSettings = {
-    ownerName: newName,
-    whatsapp: newWa,
-    atlas: newAtlas,
-    pin: newPin || currentPin // إذا لم يضع باسورد جديد، نحتفظ بالقديم
+    ownerName: document.getElementById('adminName').value.trim(),
+    whatsapp: document.getElementById('adminWhatsapp').value.trim(),
+    atlas: document.getElementById('adminAtlas').value.trim(),
+    pin: document.getElementById('adminPin').value.trim() || currentPin
   };
-  
-  // تشفير البيانات الجديدة وحفظها
-  const enc = await encryptData(updatedSettings, updatedSettings.pin);
-  localStorage.setItem('SOVEREIGN_ENCRYPTED_DATA', enc);
-  
-  // تحديث الذاكرة
-  currentSettings = updatedSettings;
-  currentPin = updatedSettings.pin;
-  
-  alert('تم تشفير البيانات وحفظها بنجاح! سيتم إعادة تشغيل النظام لتطبيق التغييرات.');
-  location.reload(); // إعادة التشغيل لتطبيق الباسورد الجديد إن وجد
+  localStorage.setItem('MATWALI_V15_DATA', await encryptData(updatedSettings, updatedSettings.pin));
+  alert('تم التشفير بنجاح! جاري إعادة التشغيل.');
+  location.reload();
 }
-
-// ═══ العتاد الحي ═══
 async function updateHardware() {
   document.getElementById('hw-cores').textContent = navigator.hardwareConcurrency || '?';
   if (navigator.getBattery) {
@@ -329,88 +329,91 @@ async function updateHardware() {
     } catch(e) {}
   }
   document.getElementById('hw-net').textContent = navigator.onLine ? 'ON' : 'OFF';
-  document.getElementById('hw-net').style.color = navigator.onLine ? 'var(--green)' : 'var(--red)';
+  document.getElementById('hw-net').style.color = navigator.onLine ? 'var(--ok)' : 'var(--err)';
   if (navigator.deviceMemory) document.getElementById('hw-ram').textContent = navigator.deviceMemory + 'GB';
 }
 
-// ═══ العقل الواحد (المياه) ═══
+// ═══ الماسورة ═══
 const thoughts = [
-  { h: "الآن", v: "ب" }, { h: "الوحدانية", v: "أ" },
-  { h: "الثبات", v: "ث" }, { h: "الكمال", v: "ك" },
-  { h: "التضاعف", v: "ض" }, { h: "المنظومة", v: "م" },
-  { h: "الباقي", v: "ص" }, { h: "السيادة", v: "س" }
+  { h: "الآن", v: "ب" }, { h: "الوحدانية", v: "أ" }, { h: "الثبات", v: "ث" }, { h: "الكمال", v: "ك" },
+  { h: "التضاعف", v: "ض" }, { h: "المنظومة", v: "م" }, { h: "الباقي", v: "ص" }, { h: "السيادة", v: "س" }
 ];
-
 function startMind() {
   if (mindRunning) return;
   mindRunning = true;
-  const btn = document.getElementById('mindBtn');
-  btn.disabled = true;
+  document.getElementById('mindBtn').disabled = true;
   const waterEl = document.getElementById('water');
-  const hiddenEl = document.getElementById('hidden');
-  const visibleEl = document.getElementById('visible');
-  const box = document.getElementById('mainBox');
-  
   waterEl.style.width = '0%';
-  box.classList.remove('glow');
-  addLog('> بدء تدفق المياه...', 'gold');
-
   let i = 0;
   const timer = setInterval(() => {
     if (i >= thoughts.length) {
       clearInterval(timer);
-      addLog("✅ اكتمل العقل الواحد.", 'gold');
-      box.classList.add('glow');
-      btn.disabled = false;
-      btn.textContent = 'إعادة التفعيل';
+      document.getElementById('mindBtn').disabled = false;
+      document.getElementById('mindBtn').textContent = 'إعادة التفعيل';
       mindRunning = false;
       return;
     }
-    hiddenEl.textContent = thoughts[i].h;
-    visibleEl.textContent = thoughts[i].v;
+    document.getElementById('hidden').textContent = thoughts[i].h;
+    document.getElementById('visible').textContent = thoughts[i].v;
     waterEl.style.width = ((i + 1) / thoughts.length) * 100 + "%";
-    vibrate(15);
     i++;
   }, 1000);
 }
 
-// ═══ الرياضيات الفلكية ═══
+// ═══ التضاعف ═══
 function cmdMultiplyCores() {
-  const cores = navigator.hardwareConcurrency || 8;
-  let result = BigInt(cores);
-  const multipliers = [9n, 9n, 99n, 999n, 999000n, 99999n, 1000999n, 999000000000n, 1999000000n]; 
-  addLog("> بدء التضاعف...", 'gold');
-  for (let i = 0; i < multipliers.length; i++) {
-    result = result * multipliers[i];
-  }
-  addLog(`النتيجة الفلكية: ${result.toString().substring(0,10)}...`, 'cyan');
-  window._massiveNumber = result; 
-  window._totalMultiplier = result / BigInt(cores); 
-  vibrate([50, 30, 50, 30, 100]);
+  let result = BigInt(navigator.hardwareConcurrency || 8);
+  const multipliers = [9n, 9n, 99n, 999n, 999000n, 99999n, 1000999n, 999000000000n, 1999000000n];
+  for (let m of multipliers) { result *= m; }
+  addLog(`النتيجة: ${result.toString().substring(0,8)}...`, 'ok');
+  window._massiveNumber = result;
+  window._totalMultiplier = result / BigInt(navigator.hardwareConcurrency || 8);
 }
-
 function cmdReturnToCore() {
   if (!window._massiveNumber) { addLog("شغل التضاعف أولاً", 'err'); return; }
   let finalResult = window._massiveNumber / window._totalMultiplier;
   if (finalResult === BigInt(navigator.hardwareConcurrency || 8)) {
-    addLog('✓ عاد النظام إلى نواته الأصلية', 'gold'); vibrate([200, 100, 200]);
+    addLog('✓ عاد النظام إلى نواته الأصلية', 'ok');
   }
 }
 
-async function runDiagnostics() {
-  addLog('═══ تشخيص سيادي ═══', 'gold');
-  addLog(`الأنوية: ${navigator.hardwareConcurrency}`, 'ok');
-  addLog(`المنصة: ${navigator.platform}`, 'ok');
-  vibrate([50, 30, 50]);
+// ═══ محرك القراءة البصرية OCR ═══
+async function processImage() {
+  const fileInput = document.getElementById('imageInput');
+  const progress = document.getElementById('ocrProgress');
+  const output = document.getElementById('ocrOutput');
+  
+  if (!fileInput.files.length) {
+    alert("الرجاء اختيار صورة أولاً");
+    return;
+  }
+  
+  const file = fileInput.files[0];
+  output.value = "";
+  progress.textContent = "جاري تهيئة محرك الذكاء الاصطناعي...";
+  
+  try {
+    // إنشاء العامل (Worker) للغة العربية
+    const worker = await Tesseract.createWorker('ara');
+    
+    progress.textContent = "جاري تحليل الصورة واستخراج النص...";
+    
+    const ret = await worker.recognize(file);
+    output.value = ret.data.text;
+    
+    progress.textContent = "✅ تمت القراءة بنجاح!";
+    await worker.terminate();
+  } catch (err) {
+    console.error(err);
+    progress.textContent = "❌ فشل في القراءة: " + err.message;
+  }
 }
 
-// ═══ التهيئة عند التحميل ═══
 window.onload = () => {
-  // إذا كان هناك بيانات مشفرة محفوظة، نظهر شاشة القفل مباشرة
-  if (localStorage.getItem('SOVEREIGN_ENCRYPTED_DATA')) {
-    document.getElementById('bootName').textContent = "النظام المحمي";
+  if (localStorage.getItem('MATWALI_V15_DATA')) {
+    document.getElementById('lockTitle').textContent = "النظام المحمي";
   } else {
-    document.getElementById('bootName').textContent = "الإعداد الأول";
+    document.getElementById('lockTitle').textContent = "الإعداد الأول (7777)";
   }
 };
 </script>
