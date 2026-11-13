@@ -2,7 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0e14" />
   <title>المنصة الشاملة — النظام السيادي</title>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <style>
@@ -78,14 +79,9 @@
     }
 
     .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 24px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--border-subtle);
-      flex-wrap: wrap;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; margin-bottom: 24px; padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-subtle); flex-wrap: wrap;
     }
 
     .brand { display: flex; align-items: center; gap: 12px; }
@@ -263,6 +259,15 @@
     .mt-16 { margin-top: 16px; }
     .mt-20 { margin-top: 20px; }
     .hidden { display: none !important; }
+
+    /* Simulator Styles */
+    .chat-box { height: 220px; overflow-y: auto; background:#080c12; border:1px solid var(--border-subtle); border-radius:12px; padding:12px; display:flex; flex-direction:column; gap:10px; margin-bottom:12px; }
+    .msg { padding:10px 14px; border-radius:12px; max-width:85%; font-size:0.92rem; }
+    .msg.ai { background:var(--surface-2); border:1px solid var(--border-subtle); align-self:flex-start; }
+    .msg.user { background:var(--blue); color:#fff; align-self:flex-end; }
+    .meter-box { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
+    .meter { background:var(--surface-2); padding:12px; border-radius:12px; text-align:center; border:1px solid var(--border-subtle); }
+    .meter-val { font-size:1.4rem; font-weight:800; color:var(--gold); }
   </style>
 </head>
 <body>
@@ -280,10 +285,7 @@
         <p class="subtitle mt-12">أدخل رمز التحقق (PIN) للدخول إلى النظام</p>
 
         <div class="pin-dots" id="pin-dots" aria-hidden="true">
-          <span class="pin-dot"></span>
-          <span class="pin-dot"></span>
-          <span class="pin-dot"></span>
-          <span class="pin-dot"></span>
+          <span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span>
         </div>
 
         <input id="pin-input" type="password" inputmode="numeric" maxlength="4" class="input" style="text-align:center; letter-spacing: 8px; font-size: 1.25rem; direction: ltr;" placeholder="••••" autocomplete="off" />
@@ -326,12 +328,21 @@
         </div>
 
         <div class="hub-grid">
+          <button type="button" class="hub-tile" data-nav="screen-sim">
+            <div class="tile-head">
+              <div class="tile-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
+              </div>
+              <span class="badge blue">محاكاة</span>
+            </div>
+            <div class="tile-title">المحاكي التنفيذي</div>
+            <div class="tile-desc">محاكاة مكالمات مبيعات بالصوت والنص مع تحليل لحظي.</div>
+          </button>
+
           <button type="button" class="hub-tile" data-nav="screen-scanner">
             <div class="tile-head">
               <div class="tile-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><line x1="7" y1="12" x2="17" y2="12"></line>
-                </svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><line x1="7" y1="12" x2="17" y2="12"></line></svg>
               </div>
               <span id="hub-ocr-badge" class="badge">مقفل</span>
             </div>
@@ -342,9 +353,7 @@
           <button type="button" class="hub-tile blue-accent" data-nav="screen-asdn">
             <div class="tile-head">
               <div class="tile-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line>
-                </svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
               </div>
               <span class="badge blue">صفرية التقدير</span>
             </div>
@@ -355,9 +364,7 @@
           <button type="button" class="hub-tile" data-nav="screen-atlas">
             <div class="tile-head">
               <div class="tile-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                </svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
               </div>
               <span class="badge">ORCID</span>
             </div>
@@ -368,9 +375,7 @@
           <button type="button" class="hub-tile blue-accent" data-nav="screen-settings">
             <div class="tile-head">
               <div class="tile-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                </svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
               </div>
               <span class="badge blue">محلي</span>
             </div>
@@ -381,14 +386,44 @@
       </div>
     </section>
 
-    <!-- 3. شاشة الماسح الضوئي -->
-    <section id="screen-scanner" class="screen">
+    <!-- 3. شاشة المحاكي -->
+    <section id="screen-sim" class="screen">
       <div class="card">
         <div class="topbar">
           <div>
-            <h2 class="screen-title">الماسح الضوئي (OCR)</h2>
-            <p class="subtitle">استخراج النصوص من الصور محلياً في المتصفح عبر Tesseract.js</p>
+            <h2 class="screen-title">المحاكي التنفيذي</h2>
+            <p class="subtitle">العميل: المدير المالي (CFO) - يرفض الميزانية</p>
           </div>
+          <button type="button" class="btn btn-outline" data-nav="screen-hub">العودة للمركز</button>
+        </div>
+
+        <div class="meter-box">
+          <div class="meter">احتمالية الإغلاق<br><span class="meter-val" id="simProbability">50%</span></div>
+          <div class="meter">مؤشر المزاج<br><span class="meter-val" id="simSentiment">محايد</span></div>
+        </div>
+
+        <div class="chat-box" id="simChat">
+          <div class="msg ai">مرحباً، لقد راجعت عرضكم. التكلفة مرتفعة جداً مقارنة بالميزانية المعتمدة.</div>
+        </div>
+
+        <div class="row" style="margin-bottom:10px;">
+          <button class="btn btn-outline" style="flex:1; font-size:11px;" onclick="simReply('لكننا نوفر لك عائد استثمار 300% في السنة الأولى.')">التحدث: العائد على الاستثمار</button>
+          <button class="btn btn-outline" style="flex:1; font-size:11px;" onclick="simReply('تكلفة التأخير عليك أكبر من تكلفة النظام.')">التحدث: تكلفة التأخير</button>
+        </div>
+
+        <div class="row">
+          <input type="text" id="simInput" class="input" placeholder="اكتب ردك هنا..." style="flex:1;">
+          <button class="btn btn-gold" onclick="sendSimMsg()">إرسال</button>
+        </div>
+        <button class="btn btn-outline mt-16" onclick="showScreen('screen-hub')">إنهاء المحاكاة</button>
+      </div>
+    </section>
+
+    <!-- 4. شاشة الماسح الضوئي -->
+    <section id="screen-scanner" class="screen">
+      <div class="card">
+        <div class="topbar">
+          <div><h2 class="screen-title">الماسح الضوئي (OCR)</h2><p class="subtitle">استخراج النصوص من الصور محلياً</p></div>
           <button type="button" class="btn btn-outline" data-nav="screen-hub">العودة للمركز</button>
         </div>
 
@@ -397,7 +432,6 @@
             <span class="badge">الماسح مقفل</span>
             <h3 style="margin-top:10px; font-size:1.15rem;">تفعيل وحدة الماسح الضوئي</h3>
             <p class="subtitle mt-12">هذه الوحدة مقفلة. أدخل كود التفعيل الصحيح لفتح أداة استخراج النصوص من الصور.</p>
-
             <div class="mt-16">
               <label for="ocr-code-input" class="label">كود التفعيل</label>
               <div class="row">
@@ -409,21 +443,16 @@
           </div>
 
           <h4 style="color:var(--blue); font-size:1rem; margin-bottom:6px;">خيارات الحصول على كود التفعيل عبر واتساب</h4>
-          <p class="subtitle">اختر الباقة المناسبة للتواصل الفوري والحصول على كود التفعيل:</p>
-
           <div class="payment-grid">
             <div class="payment-box">
               <span class="badge">داخل مصر</span>
               <div class="price-tag">10 جنيهات مصرية</div>
-              <p class="subtitle">اشتراك وتفعيل كامل لأداة الماسح الضوئي داخل جمهورية مصر العربية.</p>
-              <a class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer" href="https://wa.me/201033063978?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%AA%D9%81%D8%B9%D9%8A%D9%84%20%D8%A7%D9%84%D9%85%D8%A7%D8%B3%D8%AD%20%D8%A7%D9%84%D8%B6%D9%88%D8%A6%D9%8A%20(%D8%A8%D8%A7%D9%82%D8%A9%20%D9%85%D8%B5%D8%B1%20-%2010%20%D8%AC%D9%86%D9%8A%D9%87%D8%A7%D8%AA).">طلب التفعيل (10 جنيهات - مصر)</a>
+              <a class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer" href="https://wa.me/201033063978?text=%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%AA%D9%81%D8%B9%D9%8A%D9%84%20%D8%A7%D9%84%D9%85%D8%A7%D8%B3%D8%AD%20(10%20%D8%AC%D9%86%D9%8A%D9%87)">طلب التفعيل (10 جنيهات)</a>
             </div>
-
             <div class="payment-box">
               <span class="badge blue">خارج مصر / دولي</span>
               <div class="price-tag" style="color:var(--blue);">1 دولار أمريكي</div>
-              <p class="subtitle">تفعيل دولي فوري لأداة الماسح الضوئي خارج جمهورية مصر العربية.</p>
-              <a class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer" href="https://wa.me/201033063978?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%AA%D9%81%D8%B9%D9%8A%D9%84%20%D8%A7%D9%84%D9%85%D8%A7%D8%B3%D8%AD%20%D8%A7%D9%84%D8%B6%D9%88%D8%A6%D9%8A%20(%D8%A7%D9%84%D8%A8%D8%A7%D9%82%D8%A9%20%D8%A7%D9%84%D8%AF%D9%88%D9%84%D9%8A%D8%A9%20-%201%20%D8%AF%D9%88%D9%84%D8%A7%D8%B1).">طلب التفعيل (1 دولار - للخارج)</a>
+              <a class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer" href="https://wa.me/201033063978?text=%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%AA%D9%81%D8%B9%D9%8A%D9%84%20%D8%A7%D9%84%D9%85%D8%A7%D8%B3%D8%AD%20(1%20%D8%AF%D9%88%D9%84%D8%A7%D8%B1)">طلب التفعيل (1 دولار)</a>
             </div>
           </div>
         </div>
@@ -433,36 +462,18 @@
             <span class="badge">تم التفعيل بنجاح</span>
             <button type="button" id="ocr-relock-btn" class="btn btn-outline" style="padding:8px 14px; font-size:0.85rem;">إعادة قفل الماسح</button>
           </div>
-
-          <div class="row" style="margin-bottom:14px;">
-            <div style="flex:1; min-width:200px;">
-              <label for="ocr-lang" class="label">لغة القراءة الضوئية</label>
-              <select id="ocr-lang" class="select">
-                <option value="ara+eng">العربية + الإنجليزية (ara+eng)</option>
-                <option value="ara">العربية فقط (ara)</option>
-                <option value="eng">الإنجليزية فقط (eng)</option>
-              </select>
-            </div>
-          </div>
-
           <label for="ocr-file" class="dropzone" style="display:block;">
             <strong style="color:var(--gold); font-size:1.05rem;">اضغط لاختيار صورة أو اسحبها هنا</strong>
-            <p class="subtitle mt-12">يدعم PNG و JPG و WEBP — تتم المعالجة مباشرة داخل متصفحك</p>
             <input id="ocr-file" type="file" accept="image/*" class="hidden" />
             <img id="ocr-preview" class="preview-img" alt="معاينة الصورة" />
           </label>
-
           <div class="row mt-16">
             <button type="button" id="ocr-run-btn" class="btn btn-blue">استخراج النص الآن</button>
             <button type="button" id="ocr-copy-btn" class="btn btn-outline">نسخ النص</button>
             <button type="button" id="ocr-clear-btn" class="btn btn-outline">مسح</button>
           </div>
-
-          <div id="ocr-progress-track" class="progress-track">
-            <div id="ocr-progress-fill" class="progress-fill"></div>
-          </div>
+          <div id="ocr-progress-track" class="progress-track"><div id="ocr-progress-fill" class="progress-fill"></div></div>
           <div id="ocr-status" class="status-msg info"></div>
-
           <div class="mt-16">
             <label for="ocr-output" class="label">النص المستخرج</label>
             <textarea id="ocr-output" class="textarea" placeholder="سيظهر النص المستخرج من الصورة هنا..."></textarea>
@@ -471,19 +482,16 @@
       </div>
     </section>
 
-    <!-- 4. شاشة محلل ASDN -->
+    <!-- 5. شاشة محلل ASDN -->
     <section id="screen-asdn" class="screen">
       <div class="card">
         <div class="topbar">
-          <div>
-            <h2 class="screen-title">محلل ASDN — صفرية التقدير</h2>
-            <p class="subtitle">تفكيك الجملة العربية واستخلاص الحرف الأخير من كل كلمة كرمز إشاري</p>
-          </div>
+          <div><h2 class="screen-title">محلل ASDN — صفرية التقدير</h2><p class="subtitle">تفكيك الجملة العربية واستخلاص الحرف الأخير</p></div>
           <button type="button" class="btn btn-outline" data-nav="screen-hub">العودة للمركز</button>
         </div>
 
         <label for="asdn-input" class="label">أدخل الجملة العربية</label>
-        <textarea id="asdn-input" class="textarea" placeholder="اكتب جملة عربية هنا لتحليلها إلى كلمات واستخراج الرمز الإشاري لكل كلمة..."></textarea>
+        <textarea id="asdn-input" class="textarea" placeholder="اكتب جملة عربية هنا..."></textarea>
 
         <div class="row mt-16">
           <button type="button" id="asdn-analyze-btn" class="btn btn-gold">تحليل الجملة</button>
@@ -494,7 +502,7 @@
         <div id="asdn-results" class="hidden">
           <div class="asdn-summary">
             <div>
-              <div style="font-size:0.9rem; color:var(--text-muted);">تسلسل الرموز الإشارية (صفرية التقدير):</div>
+              <div style="font-size:0.9rem; color:var(--text-muted);">تسلسل الرموز الإشارية:</div>
               <div id="asdn-chain" class="asdn-chain"></div>
             </div>
             <div class="badge blue" id="asdn-count-badge">0 كلمات</div>
@@ -505,14 +513,11 @@
       </div>
     </section>
 
-    <!-- 5. شاشة الأطلس البنيوي -->
+    <!-- 6. شاشة الأطلس البنيوي -->
     <section id="screen-atlas" class="screen">
       <div class="card">
         <div class="topbar">
-          <div>
-            <h2 class="screen-title">الأطلس البنيوي</h2>
-            <p class="subtitle">البطاقة المرجعية والتوثيق العلمي للمؤلف</p>
-          </div>
+          <div><h2 class="screen-title">الأطلس البنيوي</h2><p class="subtitle">البطاقة المرجعية والتوثيق العلمي</p></div>
           <button type="button" class="btn btn-outline" data-nav="screen-hub">العودة للمركز</button>
         </div>
 
@@ -521,10 +526,8 @@
           <h3 style="font-size:1.5rem; margin-top:12px; color:var(--gold);">ثروت البهي</h3>
           <p class="mt-12" style="color:var(--text); line-height:1.9;">
             الأطلس البنيوي هو المرجع النظري والتطبيقي الذي يقدمه الباحث والمؤلف <strong>ثروت البهي</strong>،
-            لتأسيس منهجية التحليل البنيوي الإشاري القائمة على مبدأ <strong>صفرية التقدير</strong>؛ حيث تُقرأ
-            البنية اللغوية بوصفها إشارات محكمة ومنضبطة بالحرف الأخير في كل كلمة دون اجتهاد تأويلي أو تقدير شخصي.
+            لتأسيس منهجية التحليل البنيوي الإشاري القائمة على مبدأ <strong>صفرية التقدير</strong>.
           </p>
-
           <div class="orcid-box">
             <div>
               <div style="font-size:0.82rem; color:var(--text-muted);">المعرّف البحثي الدولي (ORCID)</div>
@@ -537,20 +540,17 @@
       </div>
     </section>
 
-    <!-- 6. شاشة إعدادات المدير -->
+    <!-- 7. شاشة الإعدادات -->
     <section id="screen-settings" class="screen">
       <div class="card">
         <div class="topbar">
-          <div>
-            <h2 class="screen-title">إعدادات المدير</h2>
-            <p class="subtitle">حفظ كلمة مرور التطبيق محلياً في المتصفح (localStorage)</p>
-          </div>
+          <div><h2 class="screen-title">إعدادات المدير</h2><p class="subtitle">حفظ كلمة المرور محلياً</p></div>
           <button type="button" class="btn btn-outline" data-nav="screen-hub">العودة للمركز</button>
         </div>
 
         <label for="app-password-input" class="label">كلمة مرور التطبيق 16 حرفاً</label>
         <div class="row">
-          <input id="app-password-input" type="password" maxlength="16" class="input" style="flex:1; min-width:240px; direction:ltr; font-family:monospace; letter-spacing:2px;" placeholder="أدخل 16 حرفاً أو رقماً" autocomplete="off" />
+          <input id="app-password-input" type="password" maxlength="16" class="input" style="flex:1; min-width:240px; direction:ltr; font-family:monospace; letter-spacing:2px;" placeholder="أدخل 16 حرفاً" autocomplete="off" />
           <button type="button" id="toggle-pass-btn" class="btn btn-outline">إظهار</button>
         </div>
 
@@ -563,17 +563,14 @@
           <button type="button" id="save-pass-btn" class="btn btn-gold">حفظ في localStorage</button>
           <button type="button" id="delete-pass-btn" class="btn btn-outline">حذف المحفوظ</button>
         </div>
-
         <div id="settings-status" class="status-msg"></div>
       </div>
     </section>
   </main>
 
   <!-- زر واتساب عائم -->
-  <a id="floating-whatsapp" class="floating-wa" href="https://wa.me/201033063978?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%AA%D9%88%D8%A7%D8%B5%D9%84%20%D9%85%D8%B9%D9%83%D9%85%20%D8%B9%D8%A8%D8%B1%20%D8%A7%D9%84%D9%85%D9%86%D8%B5%D8%A9%20%D8%A7%D9%84%D8%B4%D8%A7%D9%85%D9%84%D8%A9." target="_blank" rel="noopener noreferrer" aria-label="تواصل عبر واتساب">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M20.52 3.48A11.86 11.86 0 0 0 12.06 0C5.49 0 .14 5.34.14 11.91c0 2.1.55 4.15 1.6 5.95L0 24l6.31-1.65a11.88 11.88 0 0 0 5.75 1.47h.01c6.57 0 11.92-5.34 11.92-11.91 0-3.18-1.24-6.17-3.47-8.43zm-8.46 18.32h-.01a9.9 9.9 0 0 1-5.05-1.38l-.36-.22-3.74.98 1-3.64-.24-.37a9.89 9.89 0 0 1-1.52-5.26C2.14 6.45 6.6 2 12.07 2c2.64 0 5.13 1.03 7 2.9a9.84 9.84 0 0 1 2.9 7.01c0 5.46-4.45 9.89-9.91 9.89zm5.43-7.42c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.76-1.66-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.21 5.09 4.5.71.31 1.27.49 1.7.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/>
-    </svg>
+  <a id="floating-whatsapp" class="floating-wa" href="https://wa.me/201033063978?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B" target="_blank" rel="noopener noreferrer" aria-label="تواصل عبر واتساب">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.52 3.48A11.86 11.86 0 0 0 12.06 0C5.49 0 .14 5.34.14 11.91c0 2.1.55 4.15 1.6 5.95L0 24l6.31-1.65a11.88 11.88 0 0 0 5.75 1.47h.01c6.57 0 11.92-5.34 11.92-11.91 0-3.18-1.24-6.17-3.47-8.43zm-8.46 18.32h-.01a9.9 9.9 0 0 1-5.05-1.38l-.36-.22-3.74.98 1-3.64-.24-.37a9.89 9.89 0 0 1-1.52-5.26C2.14 6.45 6.6 2 12.07 2c2.64 0 5.13 1.03 7 2.9a9.84 9.84 0 0 1 2.9 7.01c0 5.46-4.45 9.89-9.91 9.89zm5.43-7.42c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.76-1.66-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.21 5.09 4.5.71.31 1.27.49 1.7.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/></svg>
     <span>واتساب</span>
   </a>
 
@@ -585,9 +582,7 @@
       const STORAGE_OCR_KEY = "almanassa_ocr_unlocked";
 
       let isUnlocked = false;
-      let ocrUnlocked = false;
-      try { ocrUnlocked = localStorage.getItem(STORAGE_OCR_KEY) === "true"; } catch (e) {}
-      
+      let ocrUnlocked = localStorage.getItem(STORAGE_OCR_KEY) === "true";
       let selectedImageFile = null;
 
       const screens = document.querySelectorAll(".screen");
@@ -605,417 +600,215 @@
         el.className = "status-msg";
       }
 
-      function navigate(screenId) {
-        if (!isUnlocked && screenId !== "screen-lock") {
-          screenId = "screen-lock";
-        }
+      window.showScreen = function(screenId) {
+        if (!isUnlocked && screenId !== "screen-lock") screenId = "screen-lock";
         screens.forEach((s) => s.classList.toggle("active", s.id === screenId));
-        if (floatingWa) {
-          floatingWa.classList.toggle("visible", isUnlocked && screenId !== "screen-lock");
-        }
-        if (screenId === "screen-scanner") {
-          renderOcrLockState();
-        }
-      }
+        floatingWa.classList.toggle("visible", isUnlocked && screenId !== "screen-lock");
+        if (screenId === "screen-scanner") renderOcrLockState();
+      };
 
       document.querySelectorAll("[data-nav]").forEach((btn) => {
-        btn.addEventListener("click", () => navigate(btn.getAttribute("data-nav")));
+        btn.addEventListener("click", () => window.showScreen(btn.getAttribute("data-nav")));
       });
 
-      // ---------------- 1. شاشة القفل ----------------
+      // Lock Screen
       const pinInput = document.getElementById("pin-input");
       const pinDots = document.querySelectorAll("#pin-dots .pin-dot");
       const lockStatus = document.getElementById("lock-status");
-      const unlockBtn = document.getElementById("unlock-btn");
 
       function syncPinDots() {
-        if(!pinInput) return;
         const len = pinInput.value.length;
         pinDots.forEach((dot, idx) => dot.classList.toggle("filled", idx < len));
       }
 
       function attemptUnlock() {
-        if(!pinInput) return;
-        const entered = pinInput.value.trim();
-        if (entered === CORRECT_PIN) {
+        if (pinInput.value.trim() === CORRECT_PIN) {
           isUnlocked = true;
           hideStatus(lockStatus);
           pinInput.value = "";
           syncPinDots();
-          navigate("screen-hub");
+          window.showScreen("screen-hub");
         } else {
-          showStatus(lockStatus, "رمز PIN غير صحيح. الرمز المطلوب مكوّن من 4 أرقام.", "error");
+          showStatus(lockStatus, "رمز PIN غير صحيح.", "error");
           pinInput.value = "";
           syncPinDots();
-          pinInput.focus();
         }
       }
 
-      if (pinInput) {
-        pinInput.addEventListener("input", () => {
-          pinInput.value = pinInput.value.replace(/\D/g, "").slice(0, 4);
+      pinInput.addEventListener("input", () => {
+        pinInput.value = pinInput.value.replace(/\D/g, "").slice(0, 4);
+        syncPinDots();
+        if (pinInput.value.length === 4) attemptUnlock();
+      });
+
+      document.getElementById("pin-keypad").addEventListener("click", (e) => {
+        const btn = e.target.closest("button");
+        if (!btn) return;
+        const key = btn.getAttribute("data-key");
+        const action = btn.getAttribute("data-action");
+        if (key !== null && pinInput.value.length < 4) {
+          pinInput.value += key;
           syncPinDots();
-          hideStatus(lockStatus);
-          if (pinInput.value.length === 4) {
-            attemptUnlock();
-          }
-        });
+          if (pinInput.value.length === 4) attemptUnlock();
+        } else if (action === "clear") {
+          pinInput.value = ""; syncPinDots();
+        } else if (action === "back") {
+          pinInput.value = pinInput.value.slice(0, -1); syncPinDots();
+        }
+      });
 
-        pinInput.addEventListener("keydown", (e) => {
-          if (e.key === "Enter") {
-            attemptUnlock();
-          }
-        });
-      }
+      document.getElementById("unlock-btn").addEventListener("click", attemptUnlock);
+      document.getElementById("lock-system-btn").addEventListener("click", () => {
+        isUnlocked = false;
+        window.showScreen("screen-lock");
+      });
 
-      const pinKeypad = document.getElementById("pin-keypad");
-      if (pinKeypad) {
-        pinKeypad.addEventListener("click", (e) => {
-          const btn = e.target.closest("button");
-          if (!btn) return;
-          const key = btn.getAttribute("data-key");
-          const action = btn.getAttribute("data-action");
-          if (key !== null && pinInput && pinInput.value.length < 4) {
-            pinInput.value += key;
-            syncPinDots();
-            hideStatus(lockStatus);
-            if (pinInput.value.length === 4) {
-              attemptUnlock();
-            }
-          } else if (action === "clear" && pinInput) {
-            pinInput.value = "";
-            syncPinDots();
-            hideStatus(lockStatus);
-          } else if (action === "back" && pinInput) {
-            pinInput.value = pinInput.value.slice(0, -1);
-            syncPinDots();
-          }
-        });
-      }
-
-      if (unlockBtn) unlockBtn.addEventListener("click", attemptUnlock);
-
-      const lockSystemBtn = document.getElementById("lock-system-btn");
-      if (lockSystemBtn) {
-        lockSystemBtn.addEventListener("click", () => {
-          isUnlocked = false;
-          navigate("screen-lock");
-        });
-      }
-
-      // ---------------- 3. شاشة الماسح الضوئي ----------------
+      // Scanner
       const ocrLockView = document.getElementById("ocr-lock-view");
       const ocrWorkspace = document.getElementById("ocr-workspace");
       const hubOcrBadge = document.getElementById("hub-ocr-badge");
-      const ocrCodeInput = document.getElementById("ocr-code-input");
-      const ocrLockStatus = document.getElementById("ocr-lock-status");
-      const ocrFile = document.getElementById("ocr-file");
-      const ocrPreview = document.getElementById("ocr-preview");
-      const ocrProgressTrack = document.getElementById("ocr-progress-track");
-      const ocrProgressFill = document.getElementById("ocr-progress-fill");
-      const ocrStatus = document.getElementById("ocr-status");
-      const ocrOutput = document.getElementById("ocr-output");
-      const ocrLang = document.getElementById("ocr-lang");
 
       function renderOcrLockState() {
-        if(ocrLockView) ocrLockView.classList.toggle("hidden", ocrUnlocked);
-        if(ocrWorkspace) ocrWorkspace.classList.toggle("hidden", !ocrUnlocked);
-        if(hubOcrBadge) hubOcrBadge.textContent = ocrUnlocked ? "مفعّل" : "مقفل";
+        ocrLockView.classList.toggle("hidden", ocrUnlocked);
+        ocrWorkspace.classList.toggle("hidden", !ocrUnlocked);
+        hubOcrBadge.textContent = ocrUnlocked ? "مفعّل" : "مقفل";
       }
-
       renderOcrLockState();
 
-      const ocrActivateBtn = document.getElementById("ocr-activate-btn");
-      if (ocrActivateBtn) {
-        ocrActivateBtn.addEventListener("click", () => {
-          const code = ocrCodeInput ? ocrCodeInput.value.trim() : "";
-          if (code === OCR_CODE) {
-            ocrUnlocked = true;
-            try { localStorage.setItem(STORAGE_OCR_KEY, "true"); } catch (e) {}
-            hideStatus(ocrLockStatus);
-            if(ocrCodeInput) ocrCodeInput.value = "";
-            renderOcrLockState();
-          } else {
-            showStatus(ocrLockStatus, "كود التفعيل غير صحيح. يرجى التأكد من الكود أو طلبه عبر واتساب.", "error");
-          }
-        });
-      }
-
-      if (ocrCodeInput) {
-        ocrCodeInput.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" && ocrActivateBtn) {
-            ocrActivateBtn.click();
-          }
-        });
-      }
-
-      const ocrRelockBtn = document.getElementById("ocr-relock-btn");
-      if (ocrRelockBtn) {
-        ocrRelockBtn.addEventListener("click", () => {
-          ocrUnlocked = false;
-          try { localStorage.removeItem(STORAGE_OCR_KEY); } catch (e) {}
+      document.getElementById("ocr-activate-btn").addEventListener("click", () => {
+        if (document.getElementById("ocr-code-input").value.trim() === OCR_CODE) {
+          ocrUnlocked = true;
+          localStorage.setItem(STORAGE_OCR_KEY, "true");
           renderOcrLockState();
-        });
-      }
-
-      if (ocrFile) {
-        ocrFile.addEventListener("change", () => {
-          const file = ocrFile.files && ocrFile.files[0];
-          if (!file) return;
-          selectedImageFile = file;
-          const reader = new FileReader();
-          reader.onload = (ev) => {
-            if(ocrPreview) {
-              ocrPreview.src = ev.target.result;
-              ocrPreview.style.display = "inline-block";
-            }
-          };
-          reader.readAsDataURL(file);
-          hideStatus(ocrStatus);
-        });
-      }
-
-      const ocrRunBtn = document.getElementById("ocr-run-btn");
-      if (ocrRunBtn) {
-        ocrRunBtn.addEventListener("click", async () => {
-          if (!ocrUnlocked) return;
-          if (!selectedImageFile) {
-            showStatus(ocrStatus, "يرجى اختيار صورة أولاً قبل بدء الاستخراج.", "error");
-            return;
-          }
-          if (typeof Tesseract === "undefined") {
-            showStatus(ocrStatus, "تعذر تحميل مكتبة Tesseract.js من CDN. تحقق من الاتصال بالإنترنت.", "error");
-            return;
-          }
-
-          if(ocrProgressTrack) ocrProgressTrack.style.display = "block";
-          if(ocrProgressFill) ocrProgressFill.style.width = "5%";
-          showStatus(ocrStatus, "جاري تهيئة محرك القراءة الضوئية ومعالجة الصورة...", "info");
-
-          try {
-            const result = await Tesseract.recognize(selectedImageFile, ocrLang ? ocrLang.value : "ara+eng", {
-              logger: (info) => {
-                if (typeof info.progress === "number") {
-                  const pct = Math.max(5, Math.round(info.progress * 100));
-                  if(ocrProgressFill) ocrProgressFill.style.width = pct + "%";
-                  showStatus(ocrStatus, "جاري استخراج النص... (" + pct + "%)", "info");
-                }
-              }
-            });
-
-            const text = (result && result.data && result.data.text ? result.data.text : "").trim();
-            if(ocrOutput) ocrOutput.value = text;
-            if(ocrProgressFill) ocrProgressFill.style.width = "100%";
-            if (text) {
-              showStatus(ocrStatus, "تم استخراج النص بنجاح.", "success");
-            } else {
-              showStatus(ocrStatus, "لم يتم العثور على نص واضح داخل الصورة.", "info");
-            }
-          } catch (err) {
-            showStatus(ocrStatus, "حدث خطأ أثناء معالجة الصورة: " + (err.message || err), "error");
-          }
-        });
-      }
-
-      const ocrCopyBtn = document.getElementById("ocr-copy-btn");
-      if (ocrCopyBtn) {
-        ocrCopyBtn.addEventListener("click", async () => {
-          if (!ocrOutput || !ocrOutput.value.trim()) return;
-          try {
-            await navigator.clipboard.writeText(ocrOutput.value);
-            showStatus(ocrStatus, "تم نسخ النص المستخرج إلى الحافظة.", "success");
-          } catch {
-            ocrOutput.select();
-            document.execCommand("copy");
-            showStatus(ocrStatus, "تم نسخ النص.", "success");
-          }
-        });
-      }
-
-      const ocrClearBtn = document.getElementById("ocr-clear-btn");
-      if (ocrClearBtn) {
-        ocrClearBtn.addEventListener("click", () => {
-          selectedImageFile = null;
-          if(ocrFile) ocrFile.value = "";
-          if(ocrPreview) { ocrPreview.src = ""; ocrPreview.style.display = "none"; }
-          if(ocrOutput) ocrOutput.value = "";
-          if(ocrProgressTrack) ocrProgressTrack.style.display = "none";
-          if(ocrProgressFill) ocrProgressFill.style.width = "0%";
-          hideStatus(ocrStatus);
-        });
-      }
-
-      // ---------------- 4. شاشة محلل ASDN ----------------
-      const asdnInput = document.getElementById("asdn-input");
-      const asdnResults = document.getElementById("asdn-results");
-      const asdnChain = document.getElementById("asdn-chain");
-      const asdnGrid = document.getElementById("asdn-grid");
-      const asdnCountBadge = document.getElementById("asdn-count-badge");
-      const asdnStatus = document.getElementById("asdn-status");
-
-      function extractLastLetter(rawWord) {
-        const cleaned = rawWord
-          .replace(/[\u064B-\u065F\u0670\u0640]/g, "")
-          .replace(/[.,،؛:!؟?"'()\[\]{}«»\-_/\\]/g, "");
-        if (!cleaned.length) {
-          return rawWord.slice(-1);
+        } else {
+          showStatus(document.getElementById("ocr-lock-status"), "كود التفعيل غير صحيح.", "error");
         }
-        const chars = Array.from(cleaned);
-        return chars[chars.length - 1];
-      }
+      });
 
-      function analyzeAsdn() {
-        if(!asdnInput) return;
-        const raw = asdnInput.value.trim();
-        if (!raw) {
-          if(asdnResults) asdnResults.classList.add("hidden");
-          showStatus(asdnStatus, "أدخل جملة عربية أولاً لتطبيق تحليل صفرية التقدير.", "error");
-          return;
+      document.getElementById("ocr-file").addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        selectedImageFile = file;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = document.getElementById("ocr-preview");
+          img.src = ev.target.result;
+          img.style.display = "inline-block";
+        };
+        reader.readAsDataURL(file);
+      });
+
+      document.getElementById("ocr-run-btn").addEventListener("click", async () => {
+        if (!selectedImageFile) return alert("اختر صورة أولاً");
+        const pTrack = document.getElementById("ocr-progress-track");
+        const pFill = document.getElementById("ocr-progress-fill");
+        pTrack.style.display = "block"; pFill.style.width = "5%";
+        showStatus(document.getElementById("ocr-status"), "جاري التحليل...", "info");
+
+        try {
+          const res = await Tesseract.recognize(selectedImageFile, "ara+eng", {
+            logger: (m) => { if (m.progress) pFill.style.width = Math.round(m.progress * 100) + "%"; }
+          });
+          document.getElementById("ocr-output").value = res.data.text;
+          pFill.style.width = "100%";
+          showStatus(document.getElementById("ocr-status"), "✅ تم الاستخراج!", "success");
+        } catch (e) {
+          showStatus(document.getElementById("ocr-status"), "❌ فشل.", "error");
         }
-        hideStatus(asdnStatus);
+      });
 
-        const words = raw.split(/\s+/).filter(Boolean);
-        if(asdnChain) asdnChain.innerHTML = "";
-        if(asdnGrid) asdnGrid.innerHTML = "";
+      // ASDN
+      function extractLastLetter(w) {
+        const clean = w.replace(/[\u064B-\u065F\u0670\u0640]/g, "").replace(/[.,،؛:!؟?"'()\[\]{}«»\-_/\\]/g, "");
+        return clean.length ? clean.slice(-1) : w.slice(-1);
+      }
 
-        words.forEach((word, index) => {
-          const signifier = extractLastLetter(word);
+      document.getElementById("asdn-analyze-btn").addEventListener("click", () => {
+        const txt = document.getElementById("asdn-input").value.trim();
+        if (!txt) return;
+        const words = txt.split(/\s+/);
+        let htmlChain = "", htmlGrid = "";
+        words.forEach((w, i) => {
+          const sig = extractLastLetter(w);
+          htmlChain += `<span class="signifier-pill">${sig}</span>`;
+          htmlGrid += `<div class="word-card"><div class="word-index">كلمة #${i+1}</div><div class="word-text">${w}</div><div class="word-signifier">${sig}</div></div>`;
+        });
+        document.getElementById("asdn-chain").innerHTML = htmlChain;
+        document.getElementById("asdn-grid").innerHTML = htmlGrid;
+        document.getElementById("asdn-count-badge").textContent = words.length + " كلمات";
+        document.getElementById("asdn-results").classList.remove("hidden");
+      });
 
-          if(asdnChain) {
-            const pill = document.createElement("span");
-            pill.className = "signifier-pill";
-            pill.textContent = signifier;
-            asdnChain.appendChild(pill);
+      // Simulator
+      let simProb = 50;
+      window.simReply = function(text) {
+        const chat = document.getElementById("simChat");
+        chat.innerHTML += `<div class="msg user">${text}</div>`;
+        simProb = Math.min(95, simProb + 15);
+        document.getElementById("simProbability").textContent = simProb + "%";
+        
+        setTimeout(() => {
+          let reply = text.includes('عائد') ? "حسناً، العائد مغرٍ. كيف نضمنه؟" : "نقطة وجيهة. أخبرني عن الجدول الزمني.";
+          let mood = text.includes('عائد') ? "إيجابي" : "مهتم";
+          chat.innerHTML += `<div class="msg ai">${reply}</div>`;
+          chat.scrollTop = chat.scrollHeight;
+          document.getElementById("simSentiment").textContent = mood;
+          if ('speechSynthesis' in window) {
+            const u = new SpeechSynthesisUtterance(reply); u.lang = 'ar-SA'; speechSynthesis.speak(u);
           }
+        }, 1000);
+        chat.scrollTop = chat.scrollHeight;
+        document.getElementById("simInput").value = "";
+      };
 
-          if(asdnGrid) {
-            const card = document.createElement("div");
-            card.className = "word-card";
-            const idxEl = document.createElement("div");
-            idxEl.className = "word-index";
-            idxEl.textContent = "كلمة #" + (index + 1);
-            const wordEl = document.createElement("div");
-            wordEl.className = "word-text";
-            wordEl.textContent = word;
-            const sigLabel = document.createElement("div");
-            sigLabel.style.fontSize = "0.75rem";
-            sigLabel.style.color = "var(--text-muted)";
-            sigLabel.textContent = "الرمز الإشاري";
-            const sigEl = document.createElement("div");
-            sigEl.className = "word-signifier";
-            sigEl.textContent = signifier;
-            
-            card.appendChild(idxEl); card.appendChild(wordEl); card.appendChild(sigLabel); card.appendChild(sigEl);
-            asdnGrid.appendChild(card);
-          }
-        });
+      window.sendSimMsg = function() {
+        const txt = document.getElementById("simInput").value.trim();
+        if (txt) window.simReply(txt);
+      };
 
-        if(asdnCountBadge) asdnCountBadge.textContent = words.length + " كلمة — صفرية التقدير";
-        if(asdnResults) asdnResults.classList.remove("hidden");
-      }
-
-      const asdnAnalyzeBtn = document.getElementById("asdn-analyze-btn");
-      if (asdnAnalyzeBtn) asdnAnalyzeBtn.addEventListener("click", analyzeAsdn);
-
-      const asdnSampleBtn = document.getElementById("asdn-sample-btn");
-      if (asdnSampleBtn) {
-        asdnSampleBtn.addEventListener("click", () => {
-          if(asdnInput) asdnInput.value = "المنصة الشاملة توثق البنية الإشارية وفق صفرية التقدير";
-          analyzeAsdn();
-        });
-      }
-
-      const asdnClearBtn = document.getElementById("asdn-clear-btn");
-      if (asdnClearBtn) {
-        asdnClearBtn.addEventListener("click", () => {
-          if(asdnInput) asdnInput.value = "";
-          if(asdnChain) asdnChain.innerHTML = "";
-          if(asdnGrid) asdnGrid.innerHTML = "";
-          if(asdnResults) asdnResults.classList.add("hidden");
-          hideStatus(asdnStatus);
-        });
-      }
-
-      // ---------------- 5. شاشة الأطلس البنيوي ----------------
-      const atlasStatus = document.getElementById("atlas-status");
-      const copyOrcidBtn = document.getElementById("copy-orcid-btn");
-      if (copyOrcidBtn) {
-        copyOrcidBtn.addEventListener("click", async () => {
-          const orcid = "0009-000-8043-9651";
-          try {
-            await navigator.clipboard.writeText(orcid);
-            showStatus(atlasStatus, "تم نسخ رقم ORCID بنجاح: " + orcid, "success");
-          } catch {
-            showStatus(atlasStatus, "رقم ORCID: " + orcid, "info");
-          }
-        });
-      }
-
-      // ---------------- 6. شاشة الإعدادات ----------------
+      // Settings
       const passInput = document.getElementById("app-password-input");
       const passCounter = document.getElementById("pass-counter");
       const passSavedIndicator = document.getElementById("pass-saved-indicator");
-      const settingsStatus = document.getElementById("settings-status");
-      const togglePassBtn = document.getElementById("toggle-pass-btn");
 
       function updatePassUI() {
-        if(!passInput) return;
-        const len = passInput.value.length;
-        if(passCounter) passCounter.textContent = len + " / 16 حرف";
-        let saved = null;
-        try { saved = localStorage.getItem(STORAGE_PASS_KEY); } catch(e) {}
-        if(passSavedIndicator) passSavedIndicator.textContent = saved ? "الحالة: توجد كلمة مرور محفوظة" : "الحالة: غير محفوظة";
+        passCounter.textContent = passInput.value.length + " / 16 حرف";
+        passSavedIndicator.textContent = localStorage.getItem(STORAGE_PASS_KEY) ? "الحالة: محفوظة" : "";
       }
 
-      let existingPass = null;
-      try { existingPass = localStorage.getItem(STORAGE_PASS_KEY); } catch(e) {}
-      if (existingPass && passInput) {
-        passInput.value = existingPass;
-      }
+      const savedPass = localStorage.getItem(STORAGE_PASS_KEY);
+      if (savedPass) passInput.value = savedPass;
       updatePassUI();
 
-      if (passInput) {
-        passInput.addEventListener("input", () => {
-          if (passInput.value.length > 16) {
-            passInput.value = passInput.value.slice(0, 16);
-          }
-          updatePassUI();
-          hideStatus(settingsStatus);
-        });
-      }
+      passInput.addEventListener("input", () => {
+        if (passInput.value.length > 16) passInput.value = passInput.value.slice(0, 16);
+        updatePassUI();
+      });
 
-      if (togglePassBtn && passInput) {
-        togglePassBtn.addEventListener("click", () => {
-          const isHidden = passInput.type === "password";
-          passInput.type = isHidden ? "text" : "password";
-          togglePassBtn.textContent = isHidden ? "إخفاء" : "إظهار";
-        });
-      }
+      document.getElementById("toggle-pass-btn").addEventListener("click", () => {
+        passInput.type = passInput.type === "password" ? "text" : "password";
+      });
 
-      const savePassBtn = document.getElementById("save-pass-btn");
-      if (savePassBtn) {
-        savePassBtn.addEventListener("click", () => {
-          if(!passInput) return;
-          const val = passInput.value;
-          if (val.length !== 16) {
-            showStatus(settingsStatus, "يجب أن تتكون كلمة مرور التطبيق من 16 حرفاً بالضبط (الحالي: " + val.length + ").", "error");
-            return;
-          }
-          try { localStorage.setItem(STORAGE_PASS_KEY, val); } catch(e) {}
-          updatePassUI();
-          showStatus(settingsStatus, "تم حفظ كلمة مرور التطبيق (16 حرفاً) في localStorage بنجاح.", "success");
-        });
-      }
+      document.getElementById("save-pass-btn").addEventListener("click", () => {
+        if (passInput.value.length !== 16) return alert("يجب أن تكون 16 حرفاً");
+        localStorage.setItem(STORAGE_PASS_KEY, passInput.value);
+        updatePassUI();
+        showStatus(document.getElementById("settings-status"), "✅ تم الحفظ!", "success");
+      });
 
-      const deletePassBtn = document.getElementById("delete-pass-btn");
-      if (deletePassBtn) {
-        deletePassBtn.addEventListener("click", () => {
-          try { localStorage.removeItem(STORAGE_PASS_KEY); } catch(e) {}
-          if(passInput) passInput.value = "";
-          updatePassUI();
-          showStatus(settingsStatus, "تم حذف كلمة مرور التطبيق من localStorage.", "info");
-        });
-      }
+      document.getElementById("delete-pass-btn").addEventListener("click", () => {
+        localStorage.removeItem(STORAGE_PASS_KEY);
+        passInput.value = "";
+        updatePassUI();
+        showStatus(document.getElementById("settings-status"), "تم الحذف", "info");
+      });
+      
+      // Copy ORCID
+      document.getElementById("copy-orcid-btn").addEventListener("click", () => {
+        navigator.clipboard.writeText("0009-000-8043-9651");
+        showStatus(document.getElementById("atlas-status"), "✅ تم النسخ!", "success");
+      });
+
     })();
   </script>
 </body>
