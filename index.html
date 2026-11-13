@@ -4,164 +4,190 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0a0e14">
-<title>متولي الموحد v21.0</title>
+<title>MATWALI Sovereign Hub</title>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<script src="https://smtpjs.com/v3/smtp.js"></script>
 <style>
 :root { --bg:#0a0e14; --card:#141b27; --card2:#1a2233; --border:#243044; --text:#e8eef5; --muted:#8a97a8; --accent:#4ea1ff; --ok:#3fb950; --err:#f85149; --purple:#a371f7; --gold:#d4a04c; }
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-body { background:var(--bg); color:var(--text); font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, sans-serif; font-size:15px; line-height:1.7; padding:16px; }
+body { background:var(--bg); color:var(--text); font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, sans-serif; font-size:15px; line-height:1.7; padding:16px; padding-bottom: 80px; }
 .screen { display:none; max-width: 600px; margin: 0 auto; }
 .screen.active { display:block; animation: fadeIn 0.3s; }
 @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
-.card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px; margin-bottom:16px; text-align:center; }
-h1, h2 { font-size:22px; margin-bottom:10px; color:var(--gold); }
+h1, h2 { font-size:22px; margin-bottom:10px; color:var(--gold); text-align:center; }
 p { color:var(--muted); margin-bottom:15px; }
-.btn { width:100%; padding:16px; font-size:16px; font-weight:bold; border-radius:12px; cursor:pointer; margin-top:8px; border:none; background:var(--card2); color:var(--text); transition:0.2s; }
+.card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px; margin-bottom:16px; }
+.card h3 { color:var(--accent); font-size:18px; margin-bottom:8px; }
+.card p { font-size:13px; margin-bottom:10px; }
+.btn { width:100%; padding:16px; font-size:16px; font-weight:bold; border-radius:12px; cursor:pointer; margin-top:8px; border:none; background:var(--card2); color:var(--text); transition:0.2s; text-align:center; text-decoration:none; display:block; }
 .btn:active { transform:scale(0.98); }
 .btn-primary { background:linear-gradient(135deg, var(--accent), var(--purple)); color:#fff; }
-.btn-danger { background:var(--err); color:#fff; }
+.btn-wa { background:#25D366; color:#fff; }
 .input-field { width:100%; background:#000; border:1px solid var(--border); color:var(--text); padding:14px; font-size:16px; border-radius:8px; margin-bottom:12px; outline:none; text-align:right; }
 .input-field:focus { border-color:var(--accent); }
 .input-pin { text-align:center; letter-spacing:6px; font-size:24px; font-weight:bold; color:var(--gold); }
 .hw-panel { display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin-bottom:16px; }
 .hw-item { background:var(--card2); padding:10px; border-radius:8px; text-align:center; font-size:12px; }
 .hw-item b { display:block; font-size:14px; color:var(--accent); margin-top:4px; }
-.cmd-btn { display:block; width:100%; padding:14px; margin-bottom:8px; background:var(--card2); color:var(--text); border:1px solid var(--border); border-radius:10px; text-align:center; text-decoration:none; font-weight:bold; font-size:14px; }
-.formula-box { background:#000; border:1px solid var(--border); padding:10px; border-radius:8px; margin-bottom:15px; font-family:monospace; font-size:14px; color:var(--accent); }
+
+/* زر واتساب العائم */
+.float-wa { position:fixed; bottom:20px; left:20px; width:60px; height:60px; background:#25D366; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 15px rgba(37,211,102,0.4); cursor:pointer; z-index:1000; animation: bounce 2s infinite; }
+.float-wa svg { width:35px; height:35px; fill:white; }
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+/* محلل ASDN */
+.asdn-node { display:inline-block; background:var(--card2); border:1px solid var(--accent); border-radius:6px; padding:5px 10px; margin:5px; font-weight:bold; position:relative; }
+.asdn-marker { color:var(--gold); font-size:10px; position:absolute; bottom:-15px; left:50%; transform:translateX(-50%); }
+.asdn-result { background:#000; padding:15px; border-radius:8px; border:1px dashed var(--border); text-align:center; margin-top:15px; }
+
+/* صناديق الدفع */
+.pay-option { background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:12px; margin-bottom:10px; text-align:center; }
+.pay-option h4 { color:var(--gold); margin-bottom:5px; font-size:14px; }
+.pay-option p { font-size:11px; margin-bottom:8px; }
 </style>
 </head>
 <body>
 
-<!-- الشاشة الأولى: القفل المتغير -->
+<!-- الشاشة الأولى: القفل -->
 <div class="screen active" id="lockScreen">
-  <div class="card" style="margin-top: 40px;">
-    <h1>النظام المحمي</h1>
-    <p style="font-size:12px;">المعادلة تتغير كل يوم</p>
-    
-    <div class="formula-box" id="equationDisplay">جاري الحساب...</div>
-    
+  <div class="card" style="margin-top: 40px; text-align:center;">
+    <h1>بوابة السيادة</h1>
+    <p style="font-size:12px;">النظام السيادي الموحد · v25.0</p>
     <input type="password" id="lockPin" class="input-field input-pin" placeholder="••••" maxlength="6" inputmode="numeric">
-    <button class="btn btn-primary" onclick="tryUnlock()">دخول سيادي</button>
-    <button class="btn btn-danger" onclick="emergencyBypass()">⚠️ دخول طوارئ (بدون رمز)</button>
+    <button class="btn btn-primary" onclick="tryUnlock()">دخول النظام</button>
     <p id="lockMsg" style="color:var(--err); font-weight:bold; margin-top:10px;"></p>
   </div>
 </div>
 
-<!-- الشاشة الثانية: لوحة التحكم -->
+<!-- الشاشة الثانية: مركز المنتجات -->
 <div class="screen" id="mainScreen">
-  <div class="card">
-    <h1>لوحة التحكم</h1>
-    <div class="hw-panel">
-      <div class="hw-item">الأنوية <b id="hw-cores">-</b></div>
-      <div class="hw-item">البطارية <b id="hw-bat">-</b></div>
-      <div class="hw-item">الشبكة <b id="hw-net">-</b></div>
-      <div class="hw-item">الذاكرة <b id="hw-ram">-</b></div>
-    </div>
+  <h1>مركز المنتجات السيادي</h1>
+  <div class="hw-panel">
+    <div class="hw-item">الأنوية <b id="hw-cores">-</b></div>
+    <div class="hw-item">البطارية <b id="hw-bat">-</b></div>
+    <div class="hw-item">الشبكة <b id="hw-net">-</b></div>
+    <div class="hw-item">الذاكرة <b id="hw-ram">-</b></div>
+  </div>
 
-    <a href="#" class="cmd-btn" onclick="showScreen('contactScreen')">✉️ مراسلة المدير</a>
-    <a href="#" class="cmd-btn" onclick="showScreen('ocrScreen')">👁️ الماسح الضوئي (OCR)</a>
-    <a href="#" class="cmd-btn" onclick="showScreen('adminScreen')">⚙️ إعدادات المدير (السر)</a>
-    
-    <button class="btn btn-danger" onclick="lockSystem()">قفل النظام</button>
+  <div class="card" onclick="showScreen('ocrScreen')" style="cursor:pointer; border-color:var(--gold);">
+    <h3>👁️ الماسح الضوئي الذكي (OCR)</h3>
+    <p>استثمار رمزي: 10 جنيهات (مصر) أو 1 دولار (خارج مصر).</p>
+    <span style="color:var(--gold); font-size:12px;">اضغط للفتح ←</span>
+  </div>
+
+  <div class="card" onclick="showScreen('asdnScreen')" style="cursor:pointer; border-color:var(--accent);">
+    <h3>🧠 محلل ASDN الحي</h3>
+    <p>تجربة نظرية "صفرية التقدير" على أي جملة عربية.</p>
+  </div>
+
+  <div class="card" onclick="showScreen('atlasScreen')" style="cursor:pointer;">
+    <h3>📖 الأطلس البنيوي</h3>
+    <p>الوثيقة العلمية الموثقة برقم ORCID.</p>
+  </div>
+
+  <div class="card" onclick="showScreen('adminScreen')" style="cursor:pointer;">
+    <h3>⚙️ إعدادات المدير</h3>
+    <p>التحكم في مفاتيح النظام.</p>
   </div>
 </div>
 
-<!-- الشاشة الثالثة: الإيميل -->
-<div class="screen" id="contactScreen">
-  <div class="card">
-    <h2>مراسلة المدير</h2>
-    <input type="text" id="contactName" class="input-field" placeholder="الاسم">
-    <input type="email" id="contactEmail" class="input-field" placeholder="البريد الإلكتروني">
-    <textarea id="contactMsg" class="input-field" placeholder="الرسالة" rows="4"></textarea>
-    <button class="btn btn-primary" onclick="sendMail()">إرسال الرسالة</button>
-    <button class="btn" onclick="showScreen('mainScreen')">رجوع</button>
-  </div>
-</div>
-
-<!-- الشاشة الرابعة: الإعدادات -->
-<div class="screen" id="adminScreen">
-  <div class="card">
-    <h2>إعدادات المدير</h2>
-    <label style="font-size:12px; color:var(--gold); text-align:right; display:block;">السر المتغير (رقم من 1 إلى 999):</label>
-    <input type="number" id="adminSeed" class="input-field" placeholder="مثال: 13">
-    
-    <label style="font-size:12px; color:var(--gold); text-align:right; display:block;">كلمة مرور التطبيق (16 حرفاً):</label>
-    <input type="password" id="adminMailPass" class="input-field" placeholder="الـ 16 حرفاً">
-    
-    <button class="btn btn-primary" onclick="saveAdminSettings()">حفظ الإعدادات</button>
-    <button class="btn" onclick="showScreen('mainScreen')">رجوع</button>
-  </div>
-</div>
-
-<!-- الشاشة الخامسة: الماسح الضوئي -->
+<!-- الشاشة الثالثة: الماسح OCR (نظام الدفع المزدوج) -->
 <div class="screen" id="ocrScreen">
   <div class="card">
     <h2>الماسح الضوئي (OCR)</h2>
-    <input type="file" id="imageInput" accept="image/*" class="input-field" style="padding:10px;">
-    <div id="ocrProgress" style="color:var(--gold); margin-bottom:10px;"></div>
-    <textarea id="ocrOutput" class="input-field" rows="6" placeholder="النص المستخرج..."></textarea>
-    <button class="btn btn-primary" onclick="processImage()">بدء المسح الضوئي</button>
+    
+    <!-- قسم الدفع -->
+    <div id="ocrPaymentSection" style="margin-bottom:15px;">
+      <p style="text-align:center; color:var(--muted); font-size:12px; margin-bottom:15px;">اختر بوابة الدفع المناسبة لك:</p>
+      
+      <!-- بوابة مصر -->
+      <div class="pay-option">
+        <h4>🇪🇬 داخل مصر</h4>
+        <p>10 جنيهات (فودافون كاش)</p>
+        <a href="https://wa.me/201033063978?text=أريد%20شراء%20كود%20تفعيل%20الماسح%20(10%20جنيه%20فودافون)" class="btn btn-wa" target="_blank">اطلب عبر الواتساب</a>
+      </div>
+
+      <!-- بوابة خارج البلاد (معدلة) -->
+      <div class="pay-option">
+        <h4>🌍 خارج البلاد</h4>
+        <p>1 دولار أمريكي (عبر الواتساب)</p>
+        <a href="https://wa.me/201033063978?text=أريد%20شراء%20كود%20تفعيل%20الماسح%20(1%20دولار%20من%20الخارج)" class="btn btn-wa" target="_blank">تواصل للدفع (1$)</a>
+        <p style="margin-top:5px; font-size:10px;">(سيتم توجيهك لطريقة التحويل الدولي المناسبة)</p>
+      </div>
+      
+      <input type="text" id="ocrUnlockCode" class="input-field" placeholder="أدخل كود التفعيل هنا" style="margin-top:15px; text-align:center;">
+      <button class="btn btn-primary" onclick="verifyOcrCode()">تفعيل الماسح</button>
+    </div>
+
+    <!-- قسم الأداة -->
+    <div id="ocrToolSection" style="display:none;">
+      <p style="color:var(--ok); text-align:center; margin-bottom:10px;">✓ الماسح مُفعل. شكراً لثقتك.</p>
+      <input type="file" id="imageInput" accept="image/*" class="input-field" style="padding:10px;">
+      <div id="ocrProgress" style="color:var(--gold); margin-bottom:10px; text-align:center;"></div>
+      <textarea id="ocrOutput" class="input-field" rows="6" placeholder="النص المستخرج سيظهر هنا..."></textarea>
+      <button class="btn btn-primary" onclick="processImage()">بدء المسح</button>
+    </div>
+    
+    <button class="btn" onclick="showScreen('mainScreen')" style="margin-top:15px;">رجوع للرئيسية</button>
+  </div>
+</div>
+
+<!-- الشاشة الرابعة: محلل ASDN -->
+<div class="screen" id="asdnScreen">
+  <div class="card">
+    <h2>محلل ASDN الدلالي</h2>
+    <input type="text" id="asdnInput" class="input-field" placeholder="مثال: ضربت زيداً" value="ضربت زيداً">
+    <button class="btn btn-primary" onclick="analyzeASDN()">تحليل الشبكة الدلالية</button>
+    <div class="asdn-result" id="asdnResult"><p style="color:var(--muted);">النتيجة ستظهر هنا...</p></div>
+    <button class="btn" onclick="showScreen('mainScreen')" style="margin-top:15px;">رجوع</button>
+  </div>
+</div>
+
+<!-- الشاشة الخامسة: الأطلس -->
+<div class="screen" id="atlasScreen">
+  <div class="card">
+    <h2>الأطلس البنيوي</h2>
+    <p><b>النموذج (ASDN):</b> شبكة العلاقات الدلالية المباشرة وإلغاء العوامل المقدرة. الحركات هي رموز إشارية فقط.</p>
+    <p style="color:var(--gold); font-size:12px; margin-top:15px;">المؤلف: ثروت محمد متولي البهي<br>ORCID: 0009-000-8043-9651</p>
+    <button class="btn" onclick="showScreen('mainScreen')" style="margin-top:15px;">رجوع</button>
+  </div>
+</div>
+
+<!-- الشاشة السادسة: الإعدادات -->
+<div class="screen" id="adminScreen">
+  <div class="card">
+    <h2>إعدادات المدير</h2>
+    <label style="font-size:12px; color:var(--gold);">كلمة مرور التطبيق (16 حرفاً):</label>
+    <input type="password" id="adminMailPass" class="input-field" placeholder="الصق الـ 16 حرفاً">
+    <button class="btn btn-primary" onclick="saveAdminSettings()">حفظ التغييرات</button>
     <button class="btn" onclick="showScreen('mainScreen')">رجوع</button>
   </div>
 </div>
 
+<!-- زر واتساب عائم -->
+<a href="https://wa.me/201033063978?text=مرحباً%20مدير%20السيادة،%20أريد%20طلب%20نظام%20خاص" class="float-wa" target="_blank">
+  <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16 2a14 14 0 0 0-14 14c0 2.47.65 4.88 1.87 7L2 30l7.25-1.9a14 14 0 1 0 6.75-26.1zM16 27.6a11.6 11.6 0 0 1-5.91-1.61l-.42-.25-4.3 1.13 1.14-4.19-.27-.44A11.6 11.6 0 1 1 16 27.6zm6.36-8.69c-.35-.18-2.08-1.02-2.4-1.14-.32-.12-.56-.18-.79.18s-.91 1.14-1.12 1.38-.41.27-.76.09-1.47-.54-2.8-1.73a10.44 10.44 0 0 1-1.94-2.42c-.2-.35 0-.54.15-.71s.35-.41.53-.61.23-.35.35-.58.06-.44 0-.61c-.06-.18-.79-1.9-1.08-2.6a5.31 5.31 0 0 0-.36-.85c-.18-.26-.38-.27-.55-.27s-.49-.02-.75-.02a1.45 1.45 0 0 0-1 .47 4.22 4.22 0 0 0-1.34 3.12 7.28 7.28 0 0 0 1.54 3.92 14.77 14.77 0 0 0 6 5.3c1.61.7 2.86.87 3.84.73a3.68 3.68 0 0 0 2.42-1.7c.3-.59.3-1.1.21-1.2s-.31-.18-.66-.35z"/></svg>
+</a>
+
 <script>
-// ═══ الإعدادات الأساسية ═══
-let currentSettings = { seed: 13, mailPass: "" };
-
-// ═══ المعادلة المتغيرة ═══
-function getExpectedPin() {
-  const d = new Date();
-  const day = d.getDate();
-  const month = d.getMonth() + 1;
-  const result = (currentSettings.seed * day) + month;
-  return String(result).padStart(4, '0').slice(-4);
-}
-
-function updateEquationDisplay() {
-  const d = new Date();
-  const day = d.getDate();
-  const month = d.getMonth() + 1;
-  const el = document.getElementById('equationDisplay');
-  if(el) {
-    el.innerHTML = `اليوم: <b>${day}</b> | الشهر: <b>${month}</b><br>السر: <b>${currentSettings.seed}</b><br>المعادلة: (${currentSettings.seed} × ${day}) + ${month}`;
-  }
-}
-
-// ═══ الدخول ═══
+// ═══ 1. القفل والتنقل ═══
 function tryUnlock() {
-  const enteredPin = document.getElementById('lockPin').value.trim();
-  const expectedPin = getExpectedPin();
-  
-  if (enteredPin === expectedPin || enteredPin === "7777") {
-    document.getElementById('lockMsg').textContent = "";
+  const pin = document.getElementById('lockPin').value;
+  if (pin === "7777") {
     showScreen('mainScreen');
   } else {
-    document.getElementById('lockMsg').textContent = "❌ رمز خاطئ. راجع المعادلة.";
+    document.getElementById('lockMsg').textContent = "❌ مفتاح خاطئ. يرجى المحاولة مرة أخرى.";
+    document.getElementById('lockPin').value = '';
   }
 }
 
-// زر الطوارئ المضمون
-function emergencyBypass() {
-  showScreen('mainScreen');
-}
-
-function lockSystem() {
-  document.getElementById('lockPin').value = '';
-  document.getElementById('lockMsg').textContent = "";
-  updateEquationDisplay();
-  showScreen('lockScreen');
-}
-
-// ═══ التنقل والعتاد ═══
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   if (id === 'mainScreen') updateHardware();
-  if (id === 'adminScreen') loadSettingsUI();
+  if (id === 'ocrScreen') checkOcrStatus();
 }
 
+// ═══ 2. العتاد الحي ═══
 async function updateHardware() {
   document.getElementById('hw-cores').textContent = navigator.hardwareConcurrency || '?';
   if (navigator.getBattery) {
@@ -174,79 +200,68 @@ async function updateHardware() {
   if (navigator.deviceMemory) document.getElementById('hw-ram').textContent = navigator.deviceMemory + 'GB';
 }
 
-// ═══ الإعدادات (بدون تشفير معقد لضمان الفتح) ═══
-function loadSettingsUI() {
-  document.getElementById('adminSeed').value = currentSettings.seed;
-  document.getElementById('adminMailPass').value = currentSettings.mailPass;
+// ═══ 3. الماسح الضوئي (نظام الدفع الرمزي) ═══
+const OCR_SECRET_CODE = "MATWALI-OCR-777"; // الكود الذي ستعطيه للعميل بعد الدفع
+
+function checkOcrStatus() {
+  const isUnlocked = localStorage.getItem('OCR_UNLOCKED');
+  if (isUnlocked === 'true') {
+    document.getElementById('ocrPaymentSection').style.display = 'none';
+    document.getElementById('ocrToolSection').style.display = 'block';
+  } else {
+    document.getElementById('ocrPaymentSection').style.display = 'block';
+    document.getElementById('ocrToolSection').style.display = 'none';
+  }
 }
 
-function saveAdminSettings() {
-  const seed = parseInt(document.getElementById('adminSeed').value);
-  const mailPass = document.getElementById('adminMailPass').value.trim();
-  
-  if (!seed || seed < 1 || seed > 999) { alert('الرجاء إدخال سر صحيح بين 1 و 999'); return; }
-  if (!mailPass) { alert('الرجاء إدخال كلمة المرور (16 حرفاً)'); return; }
-
-  currentSettings.seed = seed;
-  currentSettings.mailPass = mailPass;
-
-  // حفظ في المتصفح
-  localStorage.setItem('MATWALI_SEED', seed);
-  localStorage.setItem('MATWALI_PASS', mailPass);
-  
-  alert('✅ تم الحفظ! المعادلة تغيرت.');
-  updateEquationDisplay();
-  showScreen('mainScreen');
-}
-
-// ═══ التحميل الأولي ═══
-window.onload = () => {
-  const savedSeed = localStorage.getItem('MATWALI_SEED');
-  const savedPass = localStorage.getItem('MATWALI_PASS');
-  if (savedSeed) currentSettings.seed = parseInt(savedSeed);
-  if (savedPass) currentSettings.mailPass = savedPass;
-  updateEquationDisplay();
-};
-
-// ═══ الإيميل والـ OCR ═══
-function sendMail() {
-  const name = document.getElementById('contactName').value;
-  const email = document.getElementById('contactEmail').value;
-  const msg = document.getElementById('contactMsg').value;
-  
-  if(!name || !email || !msg) { alert("الرجاء ملء جميع الحقول"); return; }
-  if (!currentSettings.mailPass) { alert("اذهب للإعدادات وضع الـ 16 حرفاً!"); return; }
-
-  const btn = event.target;
-  btn.textContent = "جاري الإرسال...";
-
-  Email.send({
-    Host : "smtp.gmail.com",
-    Username : "aldhyalmtwly@gmail.com",
-    Password : currentSettings.mailPass,
-    To : "aldhyalmtwly@gmail.com",
-    From : "aldhyalmtwly@gmail.com",
-    Subject : "رسالة سيادية جديدة",
-    Body : `<b>الاسم:</b> ${name} <br> <b>البريد:</b> ${email} <br> <b>الرسالة:</b> ${msg}`
-  }).then(
-    message => { alert("✅ تم الإرسال!"); btn.textContent = "إرسال"; showScreen('mainScreen'); }
-  ).catch(
-    error => { alert("❌ فشل: " + error); btn.textContent = "إرسال"; }
-  );
+function verifyOcrCode() {
+  const code = document.getElementById('ocrUnlockCode').value.trim();
+  if (code === OCR_SECRET_CODE) {
+    localStorage.setItem('OCR_UNLOCKED', 'true');
+    alert('✅ تم تفعيل الماسح بنجاح! يمكنك استخدامه للأبد.');
+    checkOcrStatus();
+  } else {
+    alert('❌ كود غير صحيح. يرجى التواصل عبر الواتساب للحصول على الكود.');
+  }
 }
 
 async function processImage() {
   const fileInput = document.getElementById('imageInput');
   const progress = document.getElementById('ocrProgress');
   const output = document.getElementById('ocrOutput');
-  if (!fileInput.files.length) { alert("الرجاء اختيار صورة"); return; }
-  output.value = ""; progress.textContent = "جاري التحليل...";
+  if (!fileInput.files.length) { alert("الرجاء اختيار صورة أولاً"); return; }
+  output.value = ""; progress.textContent = "جاري التهيئة...";
   try {
     const worker = await Tesseract.createWorker('ara');
+    progress.textContent = "جاري تحليل الصورة...";
     const ret = await worker.recognize(fileInput.files[0]);
-    output.value = ret.data.text; progress.textContent = "✅ تمت القراءة!";
+    output.value = ret.data.text; progress.textContent = "✅ تمت القراءة بنجاح!";
     await worker.terminate();
   } catch (err) { progress.textContent = "❌ فشل: " + err.message; }
+}
+
+// ═══ 4. محلل ASDN ═══
+function analyzeASDN() {
+  const input = document.getElementById('asdnInput').value.trim();
+  const resultBox = document.getElementById('asdnResult');
+  if (!input) { alert("الرجاء كتابة جملة"); return; }
+  const words = input.split(/\s+/);
+  let html = '<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:10px;">';
+  words.forEach(w => {
+    const marker = w.slice(-1);
+    html += `<div class="asdn-node">${w} <span class="asdn-marker">${marker}</span></div>`;
+  });
+  html += '</div>';
+  html += `<p style="margin-top:20px; font-size:12px; color:var(--ok);">✓ تم تحليل ${words.length} كلمات.<br>✓ تم إلغاء العوامل المقدرة.<br>✓ الرموز الإشارية: ${words.map(w=>w.slice(-1)).join(' ')}</p>`;
+  resultBox.innerHTML = html;
+}
+
+// ═══ 5. الإعدادات ═══
+function saveAdminSettings() {
+  const pass = document.getElementById('adminMailPass').value.trim();
+  localStorage.setItem('MATWALI_PASS', pass);
+  alert('✅ تم الحفظ!');
+  showScreen('mainScreen');
 }
 </script>
 </body>
