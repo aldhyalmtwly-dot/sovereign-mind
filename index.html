@@ -31,6 +31,9 @@
     .btn-blue { background: linear-gradient(135deg, var(--blue), #2a7de1); color: #0a0e14; box-shadow: 0 8px 24px rgba(78, 161, 255, 0.25); }
     .btn-outline { background: rgba(255, 255, 255, 0.03); border-color: var(--border-subtle); color: var(--text); }
     .btn-outline:hover { border-color: var(--blue); color: var(--blue); }
+    .btn-mic { background: var(--surface-2); border: 1px solid var(--border-gold); color: var(--gold); flex: 1; font-size: 14px; }
+    .btn-mic.listening { background: var(--danger); color: #fff; border-color: var(--danger); animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 92, 108, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(255, 92, 108, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 92, 108, 0); } }
     .input, .textarea, .select { width: 100%; background: #080c12; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 13px 16px; color: var(--text); font-family: inherit; font-size: 1rem; outline: none; transition: border-color 0.2s ease; }
     .input:focus, .textarea:focus, .select:focus { border-color: var(--blue); }
     .label { display: block; margin-bottom: 8px; font-size: 0.92rem; font-weight: 700; color: var(--gold); }
@@ -54,11 +57,12 @@
     .status-msg { margin-top: 12px; padding: 11px 14px; border-radius: 10px; font-size: 0.9rem; font-weight: 600; display: none; }
     .status-msg.show { display: block; }
     .status-msg.error { background: rgba(255, 92, 108, 0.12); border: 1px solid rgba(255, 92, 108, 0.4); color: #ff99a4; }
-    .status-msg.success { background: rgba(45, 212, 191, 0.12); border: 1px solid rgba(45, 212, 191, 0.4); color: #7ef2e4; }
-    .chat-box { height: 220px; overflow-y: auto; background: #080c12; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
-    .msg { padding: 10px 14px; border-radius: 12px; max-width: 85%; font-size: 0.92rem; }
+    .chat-box { height: 250px; overflow-y: auto; background: #080c12; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+    .msg { padding: 10px 14px; border-radius: 12px; max-width: 85%; font-size: 0.92rem; line-height: 1.5; }
     .msg.ai { background: var(--surface-2); border: 1px solid var(--border-subtle); align-self: flex-start; }
     .msg.user { background: var(--blue); color: #fff; align-self: flex-end; }
+    .msg.thinking { font-style: italic; color: var(--text-muted); animation: blink 1.5s infinite; }
+    @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
     .meter-box { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
     .meter { background: var(--surface-2); padding: 12px; border-radius: 12px; text-align: center; border: 1px solid var(--border-subtle); }
     .meter-val { font-size: 1.4rem; font-weight: 800; color: var(--gold); }
@@ -68,10 +72,8 @@
     .api-terminal { background: #000; border: 1px solid var(--border-gold); border-radius: 8px; padding: 15px; font-family: monospace; font-size: 13px; color: #ccc; margin-top: 15px; overflow-x: auto; direction: ltr; text-align: left; }
     .api-key { color: var(--blue); }
     .api-string { color: var(--gold); }
-    .api-boolean { color: var(--success); }
     #asdnCanvas { width: 100%; height: 300px; background: #000; border: 1px solid var(--border-gold); border-radius: 12px; margin-top: 15px; box-shadow: inset 0 0 20px rgba(212, 160, 76, 0.1); }
     
-    /* Codex Styles */
     .codex-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px; border-bottom: 1px solid var(--border-subtle); }
     .codex-tab { background: transparent; border: 1px solid var(--border-subtle); color: var(--text-muted); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 0.9rem; white-space: nowrap; }
     .codex-tab.active { background: var(--gold-soft); border-color: var(--gold); color: var(--gold); font-weight: bold; }
@@ -123,9 +125,10 @@
             <div class="tile-head"><div class="tile-icon" style="color:var(--blue);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg></div><span class="badge blue">الشبكة الحية</span></div>
             <div class="tile-title">محلل ASDN</div>
           </button>
-          <button type="button" class="hub-tile" data-nav="screen-sim">
-            <div class="tile-head"><div class="tile-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path></svg></div><span class="badge blue">محاكاة</span></div>
+          <button type="button" class="hub-tile" data-nav="screen-sim" style="border-color:var(--gold); box-shadow:0 0 15px rgba(212,160,76,0.2);">
+            <div class="tile-head"><div class="tile-icon" style="color:var(--gold);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path></svg></div><span class="badge" style="background:var(--gold); color:#000;">AI حي</span></div>
             <div class="tile-title">المحاكي التنفيذي</div>
+            <div class="tile-desc">محاكاة صوتية بالذكاء الاصطناعي الفائق.</div>
           </button>
           <button type="button" class="hub-tile" data-nav="screen-scanner">
             <div class="tile-head"><div class="tile-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><line x1="7" y1="12" x2="17" y2="12"></line></svg></div><span id="hub-ocr-badge" class="badge">مقفل</span></div>
@@ -135,49 +138,64 @@
       </div>
     </section>
 
-    <!-- 3. الموسوعة السيادية (The Codex) -->
+    <!-- 3. الموسوعة -->
     <section id="screen-codex" class="screen">
       <div class="card">
         <div class="topbar">
-          <div><h2 class="screen-title">الموسوعة السيادية العظمى</h2><p class="subtitle">خزانة الحقائق والشفرات</p></div>
+          <div><h2 class="screen-title">الموسوعة السيادية</h2></div>
           <button type="button" class="btn btn-outline" data-nav="screen-hub">رجوع</button>
         </div>
-
-        <!-- Language Selector -->
         <div class="lang-selector">
           <select class="select" id="codex-lang" onchange="changeCodexLang()">
-            <option value="ar">العربية</option>
-            <option value="en">English</option>
-            <option value="fr">Français</option>
-            <option value="es">Español</option>
+            <option value="ar">العربية</option><option value="en">English</option><option value="fr">Français</option><option value="es">Español</option>
           </select>
-          <button class="btn btn-gold" onclick="toggleCodexAdmin()">وضع المدير (تحرير)</button>
+          <button class="btn btn-gold" onclick="toggleCodexAdmin()">وضع المدير</button>
         </div>
-
-        <!-- Tabs -->
         <div class="codex-tabs" id="codex-tabs">
           <button class="codex-tab active" onclick="switchCodexTab('quran')">إعجاز القرآن</button>
           <button class="codex-tab" onclick="switchCodexTab('solomon')">حكمة سليمان</button>
           <button class="codex-tab" onclick="switchCodexTab('ciphers')">الشفرات القديمة</button>
           <button class="codex-tab" onclick="switchCodexTab('math')">المعادلات الكونية</button>
         </div>
-
-        <!-- Content Area -->
-        <div class="codex-content" id="codex-display">
-          <!-- Content will be loaded here -->
-        </div>
-
-        <!-- Admin Editor (Hidden by default) -->
+        <div class="codex-content" id="codex-display"></div>
         <div id="codex-admin-panel" style="display:none; margin-top:20px; border-top:1px solid var(--border-subtle); padding-top:20px;">
-          <h3 style="color:var(--danger); margin-bottom:10px;">محرر المدير (يُحفظ محلياً)</h3>
-          <p class="subtitle" style="font-size:12px; margin-bottom:10px;">اكتب هنا الحلول والشفرات التي توصلت إليها. سيتم حفظها في متصفحك.</p>
-          <textarea id="codex-editor" class="textarea" rows="6" placeholder="اكتب النص أو الشفرة هنا..."></textarea>
+          <textarea id="codex-editor" class="textarea" rows="6"></textarea>
           <button class="btn btn-gold" style="width:100%; margin-top:10px;" onclick="saveCodexContent()">حفظ في الموسوعة</button>
         </div>
       </div>
     </section>
 
-    <!-- 4. محلل ASDN -->
+    <!-- 4. المحاكي (AI) -->
+    <section id="screen-sim" class="screen">
+      <div class="card">
+        <div class="topbar">
+          <div><h2 class="screen-title">المحاكي التنفيذي (AI)</h2><p class="subtitle">ذكاء فائق - صوت ونص</p></div>
+          <button type="button" class="btn btn-outline" data-nav="screen-hub">رجوع</button>
+        </div>
+        
+        <div class="meter-box">
+          <div class="meter">احتمالية الإغلاق<br><span class="meter-val" id="simProbability">50%</span></div>
+          <div class="meter">مؤشر المزاج<br><span class="meter-val" id="simSentiment">محايد</span></div>
+        </div>
+        
+        <div class="chat-box" id="simChat">
+          <div class="msg ai">مرحباً، لقد راجعت عرضكم. التكلفة مرتفعة جداً مقارنة بالميزانية المعتمدة.</div>
+        </div>
+        
+        <div class="row" style="margin-bottom:10px;">
+          <button type="button" id="micBtn" class="btn btn-mic" onclick="toggleMic()">
+            🎤 اضغط للتحدث (الذكاء الاصطناعي يستمع)
+          </button>
+        </div>
+        
+        <div class="row">
+          <input type="text" id="simInput" class="input" placeholder="أو اكتب ردك هنا..." style="flex:1;">
+          <button class="btn btn-gold" onclick="sendSimMsg()">إرسال</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. محلل ASDN -->
     <section id="screen-asdn" class="screen">
       <div class="card">
         <div class="topbar"><div><h2 class="screen-title">المحرك البصري (ASDN)</h2></div><button type="button" class="btn btn-outline" data-nav="screen-hub">رجوع</button></div>
@@ -188,7 +206,7 @@
       </div>
     </section>
 
-    <!-- 5. مركز الأعمال -->
+    <!-- 6. مركز الأعمال -->
     <section id="screen-business" class="screen">
       <div class="card">
         <div class="topbar"><div><h2 class="screen-title">محرك الأعمال</h2></div><button type="button" class="btn btn-outline" data-nav="screen-hub">رجوع</button></div>
@@ -204,16 +222,6 @@
           <div class="key-box" id="generated-key">SOV-OCR-XXXX</div>
           <button class="btn btn-blue mt-12" style="width:100%;" onclick="copyKey()">نسخ</button>
         </div>
-      </div>
-    </section>
-
-    <!-- 6. المحاكي -->
-    <section id="screen-sim" class="screen">
-      <div class="card">
-        <div class="topbar"><div><h2 class="screen-title">المحاكي التنفيذي</h2></div><button type="button" class="btn btn-outline" data-nav="screen-hub">رجوع</button></div>
-        <div class="meter-box"><div class="meter">الإغلاق<br><span class="meter-val" id="simProbability">50%</span></div><div class="meter">المزاج<br><span class="meter-val" id="simSentiment">محايد</span></div></div>
-        <div class="chat-box" id="simChat"><div class="msg ai">التكلفة مرتفعة.</div></div>
-        <div class="row"><input type="text" id="simInput" class="input" placeholder="اكتب..." style="flex:1;"><button class="btn btn-gold" onclick="sendSimMsg()">إرسال</button></div>
       </div>
     </section>
 
@@ -263,28 +271,14 @@
         else { document.getElementById("lock-status").textContent = "خطأ"; document.getElementById("lock-status").style.display = "block"; pinInput.value = ""; }
       });
 
-      // --- Codex Logic ---
+      // Codex
       let currentCodexTab = 'quran';
-      
-      // Default data structure
       const defaultCodexData = {
-        ar: {
-          quran: "<h3>إعجاز القرآن الكريم</h3><p>هنا نضع الحسابات والمعادلات التي تم حلها. (اضغط على وضع المدير لتعديل هذا النص)</p>",
-          solomon: "<h3>حكمة سليمان وداوود</h3><p>هنا توضع الشفرات والحكم. (اضغط على وضع المدير لتعديل)</p>",
-          ciphers: "<h3>الشفرات القديمة</h3><p>تحليل الشفرات التي لم تحل منذ آلاف السنين.</p>",
-          math: "<h3>المعادلات الكونية</h3><p>الحقب الزمنية والأرقام المقدسة.</p>"
-        },
-        en: {
-          quran: "<h3>Quranic Miracles</h3><p>Mathematical analysis and codes solved here.</p>",
-          solomon: "<h3>Solomon & David Wisdom</h3><p>Ancient wisdom and ciphers.</p>",
-          ciphers: "<h3>Ancient Ciphers</h3><p>Decoding millennial mysteries.</p>",
-          math: "<h3>Cosmic Equations</h3><p>Time epochs and sacred geometry.</p>"
-        },
-        fr: { quran: "<h3>Miracles du Coran</h3><p>...</p>", solomon: "<h3>Sagesse de Salomon</h3><p>...</p>", ciphers: "<h3>Chiffres Anciens</h3><p>...</p>", math: "<h3>Équations Cosmiques</h3><p>...</p>" },
-        es: { quran: "<h3>Milagros del Corán</h3><p>...</p>", solomon: "<h3>Sabiduría de Salomón</h3><p>...</p>", ciphers: "<h3>Cifrados Antiguos</h3><p>...</p>", math: "<h3>Ecuaciones Cósmicas</h3><p>...</p>" }
+        ar: { quran: "<h3>إعجاز القرآن</h3><p>تحليل الشفرات...</p>", solomon: "<h3>حكمة سليمان</h3><p>...</p>", ciphers: "<h3>الشفرات</h3><p>...</p>", math: "<h3>المعادلات</h3><p>...</p>" },
+        en: { quran: "<h3>Quran</h3><p>...</p>", solomon: "<h3>Solomon</h3><p>...</p>", ciphers: "<h3>Ciphers</h3><p>...</p>", math: "<h3>Math</h3><p>...</p>" },
+        fr: { quran: "<h3>Coran</h3><p>...</p>", solomon: "<h3>Salomon</h3><p>...</p>", ciphers: "<h3>Chiffres</h3><p>...</p>", math: "<h3>Maths</h3><p>...</p>" },
+        es: { quran: "<h3>Corán</h3><p>...</p>", solomon: "<h3>Sabiduría</h3><p>...</p>", ciphers: "<h3>Cifrados</h3><p>...</p>", math: "<h3>Ecuaciones</h3><p>...</p>" }
       };
-
-      // Load saved data from localStorage or default
       let savedData = JSON.parse(localStorage.getItem('SOV_CODEX_DATA')) || defaultCodexData;
 
       window.changeCodexLang = function() {
@@ -293,45 +287,35 @@
         document.getElementById('codex-display').style.textAlign = (lang === 'ar') ? 'right' : 'left';
         renderCodex();
       };
-
       window.switchCodexTab = function(tab) {
         currentCodexTab = tab;
         document.querySelectorAll('.codex-tab').forEach(t => t.classList.remove('active'));
         event.target.classList.add('active');
         renderCodex();
       };
-
       window.toggleCodexAdmin = function() {
         const panel = document.getElementById('codex-admin-panel');
         panel.style.display = (panel.style.display === 'none') ? 'block' : 'none';
       };
-
       window.renderCodex = function() {
         const lang = document.getElementById('codex-lang').value;
         const display = document.getElementById('codex-display');
         const editor = document.getElementById('codex-editor');
-
-        // If language doesn't exist in savedData, fallback to AR
         const langData = savedData[lang] || savedData['ar'];
         const content = langData[currentCodexTab] || "لا يوجد محتوى.";
-        
-        display.innerHTML = content;
-        editor.value = content;
+        display.innerHTML = content; editor.value = content;
       };
-
       window.saveCodexContent = function() {
         const lang = document.getElementById('codex-lang').value;
         const newContent = document.getElementById('codex-editor').value;
-        
         if(!savedData[lang]) savedData[lang] = {};
         savedData[lang][currentCodexTab] = newContent;
-        
         localStorage.setItem('SOV_CODEX_DATA', JSON.stringify(savedData));
-        alert("✅ تم الحفظ في الموسوعة بنجاح!");
+        alert("✅ تم الحفظ!");
         renderCodex();
       };
 
-      // --- Existing Logic ---
+      // Business
       window.requestPlan = function(planId) { window.open(`https://wa.me/201033063978?text=${encodeURIComponent('أريد الاشتراك في: ' + planId)}`, '_blank'); };
       window.generateLicense = function() {
         const name = document.getElementById('client-name-input').value.trim();
@@ -347,7 +331,6 @@
       let animationId = null; let graphNodes = []; let particles = [];
       function resizeCanvas() { const rect = canvas.parentElement.getBoundingClientRect(); canvas.width = rect.width - 56; canvas.height = 300; }
       window.addEventListener('resize', resizeCanvas); setTimeout(resizeCanvas, 100);
-
       function initGraph(words) {
         graphNodes = []; particles = []; if(animationId) cancelAnimationFrame(animationId); if(words.length === 0) return;
         const startX = 50; const endX = canvas.width - 50; const step = (endX - startX) / Math.max(1, words.length - 1);
@@ -355,15 +338,11 @@
           const x = words.length === 1 ? canvas.width/2 : startX + (i * step);
           graphNodes.push({ x, y: canvas.height / 2, text: w, marker: w.slice(-1), pulse: Math.random() * Math.PI * 2 });
         });
-        for(let i=0; i<graphNodes.length - 1; i++) {
-          for(let j=0; j<3; j++) { particles.push({ start: graphNodes[i], end: graphNodes[i+1], progress: Math.random(), speed: 0.005 + Math.random() * 0.01 }); }
-        }
+        for(let i=0; i<graphNodes.length - 1; i++) { for(let j=0; j<3; j++) { particles.push({ start: graphNodes[i], end: graphNodes[i+1], progress: Math.random(), speed: 0.005 + Math.random() * 0.01 }); } }
         animateGraph();
       }
-
       function drawGraph() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.lineWidth = 2;
+        ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.lineWidth = 2;
         for(let i=0; i<graphNodes.length - 1; i++) {
           const n1 = graphNodes[i]; const n2 = graphNodes[i+1];
           ctx.beginPath(); ctx.moveTo(n1.x, n1.y); ctx.bezierCurveTo(n1.x + 30, n1.y - 50, n2.x - 30, n2.y + 50, n2.x, n2.y);
@@ -386,9 +365,7 @@
           ctx.fillStyle = '#4ea1ff'; ctx.font = 'bold 12px "Cairo", sans-serif'; ctx.fillText(n.marker, n.x, n.y + 35);
         });
       }
-
       function animateGraph() { drawGraph(); animationId = requestAnimationFrame(animateGraph); }
-
       document.getElementById("asdn-analyze-btn").addEventListener("click", () => {
         const txt = document.getElementById("asdn-input").value.trim(); if (!txt) return;
         initGraph(txt.split(/\s+/));
@@ -398,7 +375,7 @@
       });
       document.getElementById("asdn-sample-btn").addEventListener("click", () => { document.getElementById("asdn-input").value = "المنصة الشاملة توثق البنية"; document.getElementById("asdn-analyze-btn").click(); });
 
-      // Scanner & Simulator
+      // Scanner
       document.getElementById("ocr-activate-btn").addEventListener("click", () => {
         const code = document.getElementById("ocr-code-input").value.trim().toUpperCase();
         if (code === "MATWALI-OCR-777" || (code.startsWith("SOV-OCR-") && code.length === 12)) {
@@ -411,18 +388,115 @@
         try { const res = await Tesseract.recognize(file, 'ara+eng'); out.value = res.data.text; } catch(e) { out.value = "فشل"; }
       });
 
+      // --- AI SIMULATOR LOGIC ---
       let simProb = 50;
-      window.simReply = function(text) {
-        const chat = document.getElementById("simChat"); chat.innerHTML += `<div class="msg user">${text}</div>`;
-        simProb = Math.min(95, simProb + 15); document.getElementById("simProbability").textContent = simProb + "%";
-        setTimeout(() => {
-          let reply = text.includes('عائد') ? "حسناً، العائد مغرٍ." : "نقطة وجيهة.";
-          chat.innerHTML += `<div class="msg ai">${reply}</div>`; chat.scrollTop = chat.scrollHeight;
-          if ('speechSynthesis' in window) { const u = new SpeechSynthesisUtterance(reply); u.lang = 'ar-SA'; speechSynthesis.speak(u); }
-        }, 1000);
-        document.getElementById("simInput").value = "";
+      let isListening = false;
+      let recognition = null;
+
+      if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.lang = 'ar-EG';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          document.getElementById('simInput').value = transcript;
+          window.sendSimMsg();
+          if(isListening) window.toggleMic(); 
+        };
+        recognition.onerror = (event) => { console.error(event.error); if(isListening) window.toggleMic(); };
+        recognition.onend = () => { if(isListening) window.toggleMic(); };
+      } else {
+        document.getElementById('micBtn').style.display = 'none';
+      }
+
+      window.toggleMic = function() {
+        if (!recognition) return alert("متصفحك لا يدعم المايكروفون.");
+        const btn = document.getElementById('micBtn');
+        if (isListening) {
+          recognition.stop(); btn.textContent = "🎤 اضغط للتحدث (الذكاء الاصطناعي يستمع)"; btn.classList.remove('listening');
+        } else {
+          recognition.start(); btn.textContent = "🔴 جاري الاستماع..."; btn.classList.add('listening');
+        }
+        isListening = !isListening;
       };
-      window.sendSimMsg = function() { const txt = document.getElementById("simInput").value.trim(); if (txt) window.simReply(txt); };
+
+      window.sendSimMsg = async function() {
+        const input = document.getElementById('simInput');
+        const text = input.value.trim();
+        if (!text) return;
+        input.value = "";
+        
+        addSimMsg('user', text);
+        
+        // Local Probability calculation
+        const lowerText = text.toLowerCase();
+        if (lowerText.includes('عائد') || lowerText.includes('ربح') || lowerText.includes('توفير') || lowerText.includes(' roi') || lowerText.includes('value') || lowerText.includes('مكسب')) simProb = Math.min(95, simProb + 10);
+        if (lowerText.includes('تكلفة') || lowerText.includes('خسارة') || lowerText.includes('مخاطرة') || lowerText.includes('risk') || lowerText.includes('غالي')) simProb = Math.max(5, simProb - 10);
+        document.getElementById('simProbability').textContent = simProb + "%";
+        
+        const thinkingId = 'think-' + Date.now();
+        const chat = document.getElementById('simChat');
+        chat.innerHTML += `<div class="msg ai thinking" id="${thinkingId}">جاري التحليل...</div>`;
+        chat.scrollTop = chat.scrollHeight;
+
+        let reply = "";
+        try {
+          const systemPrompt = `أنت المدير المالي التنفيذي (CFO) لشركة تقنية كبرى. أنت ذكي جداً، متشكك، وعقلاني. تتحدث مع المدير السيادي (ثروت) الذي يبيعك نظام ASDN.
+هدفك هو حماية ميزانية الشركة، ولكنك تقدر العائد على الاستثمار (ROI).
+قم بالرد بجملة أو جملتين قصيرتين وقويتين باللغة العربية المصرية أو الفصحى.
+إذا أقنعك، قل ذلك. إذا وجدت ثغرة، هاجمها. لا تكن ودوداً جداً، كن تنفيذياً.`;
+          
+          const res = await fetch('https://text.pollinations.ai/openai', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              model: 'openai',
+              messages: [
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: text }
+              ]
+            })
+          });
+          const data = await res.json();
+          reply = data.choices[0].message.content;
+        } catch (e) {
+          console.error(e);
+          if (text.includes('عائد')) reply = "كيف تضمن لي هذا العائد؟ الأرقام على الورق لا تكفي، أريد ضمانات.";
+          else if (text.includes('تأخير')) reply = "الوقت هو المال. إذا سلمتنا النظام مبكراً، سنناقش الميزانية بجدية أكبر.";
+          else reply = "هذا كلام عام. ما هي الميزة الوحيدة التي ستنقذنا من دفع الغرامات؟";
+        }
+        
+        const thinkEl = document.getElementById(thinkingId);
+        if(thinkEl) thinkEl.remove();
+        
+        addSimMsg('ai', reply);
+        speakText(reply);
+        
+        document.getElementById('simSentiment').textContent = simProb > 70 ? "إيجابي" : simProb < 30 ? "سلبي" : "محايد";
+      };
+
+      function addSimMsg(sender, text) {
+        const chat = document.getElementById('simChat');
+        chat.innerHTML += `<div class="msg ${sender}">${text}</div>`;
+        chat.scrollTop = chat.scrollHeight;
+      }
+
+      function speakText(text) {
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const u = new SpeechSynthesisUtterance(text);
+          u.lang = 'ar-SA';
+          u.rate = 1.0;
+          u.pitch = 1.0;
+          const voices = window.speechSynthesis.getVoices();
+          const arVoice = voices.find(v => v.lang.includes('ar'));
+          if (arVoice) u.voice = arVoice;
+          window.speechSynthesis.speak(u);
+        }
+      }
 
     })();
   </script>
