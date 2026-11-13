@@ -182,9 +182,12 @@
           <div class="msg ai">مرحباً، لقد راجعت عرضكم. التكلفة مرتفعة جداً مقارنة بالميزانية المعتمدة.</div>
         </div>
         
-        <div class="row" style="margin-bottom:10px;">
+        <div class="row" style="margin-bottom:10px; display:flex; gap:10px;">
           <button type="button" id="micBtn" class="btn btn-mic" onclick="toggleMic()">
             🎤 اضغط للتحدث (الذكاء الاصطناعي يستمع)
+          </button>
+          <button type="button" class="btn btn-outline" onclick="testVoice()" style="width:50px;" title="اختبار الصوت">
+            🔊
           </button>
         </div>
         
@@ -396,7 +399,7 @@
       if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         recognition = new SpeechRecognition();
-        recognition.lang = 'ar-EG';
+        recognition.lang = 'ar-SA'; // استخدام العربية الفصحى
         recognition.interimResults = false;
         recognition.maxAlternatives = 1;
 
@@ -406,7 +409,17 @@
           window.sendSimMsg();
           if(isListening) window.toggleMic(); 
         };
-        recognition.onerror = (event) => { console.error(event.error); if(isListening) window.toggleMic(); };
+        
+        recognition.onerror = (event) => {
+          console.error("Mic Error:", event.error);
+          let msg = "حدث خطأ في المايكروفون.";
+          if(event.error === 'not-allowed') msg = "الرجاء السماح للمتصفح باستخدام المايكروفون من الإعدادات.";
+          if(event.error === 'no-speech') msg = "لم نسمع صوتاً، حاول مرة أخرى.";
+          if(event.error === 'network') msg = "شبكة الإنترنت ضعيفة، حاول مرة أخرى.";
+          alert(msg);
+          if(isListening) window.toggleMic();
+        };
+        
         recognition.onend = () => { if(isListening) window.toggleMic(); };
       } else {
         document.getElementById('micBtn').style.display = 'none';
@@ -416,11 +429,25 @@
         if (!recognition) return alert("متصفحك لا يدعم المايكروفون.");
         const btn = document.getElementById('micBtn');
         if (isListening) {
-          recognition.stop(); btn.textContent = "🎤 اضغط للتحدث (الذكاء الاصطناعي يستمع)"; btn.classList.remove('listening');
+          recognition.stop(); 
+          btn.textContent = "🎤 اضغط للتحدث (الذكاء الاصطناعي يستمع)"; 
+          btn.classList.remove('listening');
         } else {
-          recognition.start(); btn.textContent = "🔴 جاري الاستماع..."; btn.classList.add('listening');
+          try {
+            recognition.start(); 
+            btn.textContent = "🔴 جاري الاستماع..."; 
+            btn.classList.add('listening');
+          } catch(e) { alert("فشل تشغيل المايك. حاول إغلاق المتصفح وفتحه."); }
         }
         isListening = !isListening;
+      };
+
+      window.testVoice = function() {
+        if (!('speechSynthesis' in window)) return alert("متصفحك لا يدعم النطق.");
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance("مرحباً بك يا مدير، أنا المحاكي التنفيذي. كيف يمكنني مساعدتك اليوم؟");
+        u.lang = 'ar-SA';
+        window.speechSynthesis.speak(u);
       };
 
       window.sendSimMsg = async function() {
@@ -449,6 +476,9 @@
 قم بالرد بجملة أو جملتين قصيرتين وقويتين باللغة العربية المصرية أو الفصحى.
 إذا أقنعك، قل ذلك. إذا وجدت ثغرة، هاجمها. لا تكن ودوداً جداً، كن تنفيذياً.`;
           
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 seconds timeout
+
           const res = await fetch('https://text.pollinations.ai/openai', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -458,14 +488,18 @@
                 { role: 'system', content: systemPrompt },
                 { role: 'user', content: text }
               ]
-            })
+            }),
+            signal: controller.signal
           });
+          clearTimeout(timeoutId);
           const data = await res.json();
           reply = data.choices[0].message.content;
         } catch (e) {
-          console.error(e);
-          if (text.includes('عائد')) reply = "كيف تضمن لي هذا العائد؟ الأرقام على الورق لا تكفي، أريد ضمانات.";
-          else if (text.includes('تأخير')) reply = "الوقت هو المال. إذا سلمتنا النظام مبكراً، سنناقش الميزانية بجدية أكبر.";
+          console.error("AI Error:", e);
+          // ذكاء احتياطي (Fallback) بناءً على النص
+          if (lowerText.includes('عائد') || lowerText.includes('ربح')) reply = "كيف تضمن لي هذا العائد؟ الأرقام على الورق لا تكفي، أريد ضمانات تعاقدية.";
+          else if (lowerText.includes('تأخير') || lowerText.includes('وقت')) reply = "الوقت هو المال. إذا سلمتنا النظام مبكراً، سنناقش الميزانية بجدية أكبر.";
+          else if (lowerText.includes('تكلفة') || lowerText.includes('ميزانية')) reply = "الميزانية محدودة. أعطني سبباً واحداً يبرر صرف هذا المبلغ الآن.";
           else reply = "هذا كلام عام. ما هي الميزة الوحيدة التي ستنقذنا من دفع الغرامات؟";
         }
         
@@ -491,6 +525,7 @@
           u.lang = 'ar-SA';
           u.rate = 1.0;
           u.pitch = 1.0;
+          // محاولة اختيار صوت عربي إذا كان متاحاً
           const voices = window.speechSynthesis.getVoices();
           const arVoice = voices.find(v => v.lang.includes('ar'));
           if (arVoice) u.voice = arVoice;
